@@ -1,0 +1,29 @@
+@page "/favorites"
+@inject FavoritesService Favorites
+
+<h1>Ulubione</h1>
+
+@if (_entries.Count == 0)
+{
+    <div class="card">Brak ulubionych.</div>
+}
+else
+{
+    @foreach (var entry in _entries)
+    {
+        <div class="card">
+            <strong>@entry.ProjectId</strong>
+            <p>Wynik: @entry.ResultId</p>
+            <p class="muted">@entry.CreatedAt.ToLocalTime()</p>
+        </div>
+    }
+}
+
+@code {
+    private IReadOnlyList<FavoriteEntry> _entries = Array.Empty<FavoriteEntry>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _entries = await Favorites.GetAllAsync();
+    }
+}
