@@ -1,0 +1,22 @@
+{
+  "themeId": "interior-soft",
+  "brandName": "Pokój Makeover",
+  "targetAudience": "room-users",
+  "tone": "inspiring-calm",
+  "primaryColor": "#6366F1",
+  "secondaryColor": "#F59E0B",
+  "accentColor": "#10B981",
+  "backgroundColor": "#F8FAFC",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#1E293B",
+  "mutedTextColor": "#64748B",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "interior-light",
+  "cardStyle": "decor-card",
+  "buttonStyle": "soft-solid",
+  "iconStyle": "home-line",
+  "illustrationStyle": "flat-room",
+  "resultScreenStyle": "makeover-plan",
+  "onboardingStyle": "room-brief",
+  "visualMood": "clean-inspiring"
+}
