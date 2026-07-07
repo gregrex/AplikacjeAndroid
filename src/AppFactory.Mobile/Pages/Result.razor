@@ -4,8 +4,10 @@
 @inject MockAdService Ads
 @inject HistoryService History
 @inject FavoritesService Favorites
+@inject LanguageService Language
 
 <h1>Wynik</h1>
+<p class="muted">Język wyniku: @Language.CurrentLanguage</p>
 
 @if (_freeResult is null)
 {
@@ -90,7 +92,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var results = await ProjectData.LoadResultsAsync("plama-ratownik", "pl");
+        var results = await ProjectData.LoadResultsAsync("plama-ratownik", Language.CurrentLanguage);
         _freeResult = ResultService.FindResult(results, FreeResultId);
         _premiumResult = ResultService.FindResult(results, PremiumResultId);
 
