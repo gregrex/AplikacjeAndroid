@@ -1,0 +1,22 @@
+{
+  "themeId": "draw-coach",
+  "brandName": "Draw Coach",
+  "targetAudience": "creative",
+  "tone": "simple",
+  "primaryColor": "#F97316",
+  "secondaryColor": "#3B82F6",
+  "accentColor": "#22C55E",
+  "backgroundColor": "#FFF7ED",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#7C2D12",
+  "mutedTextColor": "#6B7280",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "light",
+  "cardStyle": "lesson",
+  "buttonStyle": "solid",
+  "iconStyle": "line",
+  "illustrationStyle": "sketch",
+  "resultScreenStyle": "steps",
+  "onboardingStyle": "start",
+  "visualMood": "creative"
+}
