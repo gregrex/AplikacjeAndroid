@@ -1,0 +1,22 @@
+{
+  "themeId": "clean-rescue",
+  "brandName": "Plama Ratownik",
+  "targetAudience": "home-general",
+  "tone": "practical-calm-fast",
+  "primaryColor": "#2563EB",
+  "secondaryColor": "#F97316",
+  "accentColor": "#22C55E",
+  "backgroundColor": "#F8FAFC",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#0F172A",
+  "mutedTextColor": "#64748B",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "light-clean",
+  "cardStyle": "soft-clean-cards",
+  "buttonStyle": "solid-rounded",
+  "iconStyle": "outline-home",
+  "illustrationStyle": "flat-cleaning",
+  "resultScreenStyle": "instruction-card",
+  "onboardingStyle": "short-practical",
+  "visualMood": "clean-fast-help"
+}
