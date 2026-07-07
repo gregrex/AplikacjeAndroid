@@ -1,0 +1,115 @@
+[
+  {
+    "id": "coffee_cotton_fresh_free",
+    "title": "Kawa na bawełnie — szybka pomoc",
+    "summary": "Świeżą plamę z kawy najlepiej ratować od razu zimną lub letnią wodą.",
+    "steps": [
+      "Przepłucz plamę od lewej strony materiału.",
+      "Nie używaj na początku gorącej wody."
+    ],
+    "warnings": ["Najpierw sprawdź środek w niewidocznym miejscu."]
+  },
+  {
+    "id": "coffee_cotton_fresh_premium",
+    "title": "Kawa na bawełnie — pełna instrukcja",
+    "summary": "Działaj szybko i nie susz ubrania, dopóki plama nie zniknie.",
+    "steps": [
+      "Przepłucz plamę od lewej strony zimną lub letnią wodą.",
+      "Nałóż odrobinę delikatnego detergentu.",
+      "Odczekaj 10–15 minut.",
+      "Delikatnie potrzyj materiał palcami lub miękką ściereczką.",
+      "Wypierz zgodnie z metką.",
+      "Sprawdź plamę przed suszeniem. Jeśli została, powtórz procedurę."
+    ],
+    "needed": ["zimna lub letnia woda", "delikatny detergent", "czysta ściereczka"],
+    "dontDo": ["nie susz przed usunięciem plamy", "nie szoruj mocno delikatnej tkaniny"]
+  },
+  {
+    "id": "blood_fresh_free",
+    "title": "Świeża krew — szybka pomoc",
+    "summary": "Przy krwi nie używaj gorącej wody, bo może utrwalić plamę.",
+    "steps": ["Płucz zimną wodą.", "Nie pocieraj agresywnie materiału."],
+    "warnings": ["Unikaj gorącej wody."]
+  },
+  {
+    "id": "blood_fresh_premium",
+    "title": "Świeża krew — pełna instrukcja",
+    "summary": "Najważniejsze jest zimne płukanie i cierpliwe usuwanie zabrudzenia.",
+    "steps": [
+      "Przepłucz plamę zimną wodą od lewej strony.",
+      "Namocz materiał w zimnej wodzie przez 15 minut.",
+      "Nałóż delikatny detergent lub mydło.",
+      "Delikatnie ugniataj materiał.",
+      "Wypierz zgodnie z metką.",
+      "Nie susz, dopóki plama nie zniknie."
+    ],
+    "needed": ["zimna woda", "mydło lub delikatny detergent"],
+    "dontDo": ["nie używaj gorącej wody", "nie susz plamy przed usunięciem"]
+  },
+  {
+    "id": "grease_free",
+    "title": "Tłuszcz — szybka pomoc",
+    "summary": "Tłustą plamę warto najpierw odciążyć papierem i detergentem.",
+    "steps": ["Zbierz nadmiar tłuszczu ręcznikiem papierowym.", "Nie wcieraj tłuszczu głębiej w materiał."],
+    "warnings": ["Sprawdź reakcję materiału na detergent."]
+  },
+  {
+    "id": "grease_premium",
+    "title": "Tłuszcz — pełna instrukcja",
+    "summary": "Tłuszcz wymaga środka, który rozbija zabrudzenie, np. płynu do naczyń.",
+    "steps": [
+      "Przyłóż ręcznik papierowy i zbierz nadmiar tłuszczu.",
+      "Nałóż małą ilość płynu do naczyń na plamę.",
+      "Odczekaj 10 minut.",
+      "Spłucz letnią wodą.",
+      "Wypierz zgodnie z metką.",
+      "Sprawdź efekt przed suszeniem."
+    ],
+    "needed": ["ręcznik papierowy", "płyn do naczyń", "letnia woda"],
+    "dontDo": ["nie prasuj zabrudzonego miejsca", "nie susz w suszarce przed kontrolą"]
+  },
+  {
+    "id": "red_wine_free",
+    "title": "Czerwone wino — szybka pomoc",
+    "summary": "Nie pocieraj plamy. Najpierw odsącz nadmiar płynu.",
+    "steps": ["Przyłóż czystą ściereczkę.", "Nie trzyj plamy na boki."],
+    "warnings": ["Uważaj na delikatne tkaniny."]
+  },
+  {
+    "id": "red_wine_premium",
+    "title": "Czerwone wino — pełna instrukcja",
+    "summary": "Czerwone wino wymaga szybkiego odsączenia i łagodnego czyszczenia.",
+    "steps": [
+      "Odsącz nadmiar płynu czystą ściereczką.",
+      "Przepłucz chłodną wodą od lewej strony.",
+      "Nałóż delikatny detergent.",
+      "Odczekaj 10 minut.",
+      "Wypierz zgodnie z metką.",
+      "Nie susz, dopóki nie sprawdzisz efektu."
+    ],
+    "needed": ["czysta ściereczka", "chłodna woda", "delikatny detergent"],
+    "dontDo": ["nie trzyj mocno", "nie używaj wysokiej temperatury na początku"]
+  },
+  {
+    "id": "default_free",
+    "title": "Szybka pomoc przy plamie",
+    "summary": "Zacznij od najbezpieczniejszego kroku: usuń nadmiar zabrudzenia i sprawdź metkę.",
+    "steps": ["Usuń nadmiar zabrudzenia.", "Sprawdź metkę materiału."],
+    "warnings": ["Nie używaj agresywnych środków bez testu."]
+  },
+  {
+    "id": "default_premium",
+    "title": "Ogólna procedura usuwania plamy",
+    "summary": "Gdy nie masz pewności, działaj ostrożnie i nie utrwalaj plamy temperaturą.",
+    "steps": [
+      "Usuń nadmiar zabrudzenia bez wcierania.",
+      "Sprawdź metkę materiału.",
+      "Przetestuj środek w niewidocznym miejscu.",
+      "Zacznij od chłodnej lub letniej wody.",
+      "Użyj delikatnego detergentu.",
+      "Nie susz, dopóki plama nie zniknie."
+    ],
+    "needed": ["woda", "delikatny detergent", "czysta ściereczka"],
+    "dontDo": ["nie używaj od razu wysokiej temperatury", "nie mieszaj przypadkowych środków chemicznych"]
+  }
+]
