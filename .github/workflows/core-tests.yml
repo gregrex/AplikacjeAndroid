@@ -1,0 +1,27 @@
+name: Core tests
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+jobs:
+  test-core:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore core tests
+        run: dotnet restore .\tests\AppFactory.Mobile.Tests\AppFactory.Mobile.Tests.csproj
+
+      - name: Run core tests
+        run: dotnet test .\tests\AppFactory.Mobile.Tests\AppFactory.Mobile.Tests.csproj --configuration Release --no-restore
