@@ -1,0 +1,22 @@
+{
+  "themeId": "tool-safe",
+  "brandName": "Kołek Dobieracz",
+  "targetAudience": "home-diy",
+  "tone": "technical-safe-clear",
+  "primaryColor": "#334155",
+  "secondaryColor": "#F59E0B",
+  "accentColor": "#0EA5E9",
+  "backgroundColor": "#F1F5F9",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#111827",
+  "mutedTextColor": "#64748B",
+  "dangerColor": "#B91C1C",
+  "backgroundStyle": "workshop-light",
+  "cardStyle": "technical-cards",
+  "buttonStyle": "solid-strong",
+  "iconStyle": "line-tools",
+  "illustrationStyle": "flat-diy",
+  "resultScreenStyle": "safety-checklist",
+  "onboardingStyle": "tool-guide",
+  "visualMood": "safe-technical-home"
+}
