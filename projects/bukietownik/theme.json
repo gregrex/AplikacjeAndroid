@@ -1,0 +1,22 @@
+{
+  "themeId": "flower-soft",
+  "brandName": "Flower Helper",
+  "targetAudience": "flowers",
+  "tone": "soft",
+  "primaryColor": "#16A34A",
+  "secondaryColor": "#F472B6",
+  "accentColor": "#FACC15",
+  "backgroundColor": "#F0FDF4",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#14532D",
+  "mutedTextColor": "#6B7280",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "light",
+  "cardStyle": "composition",
+  "buttonStyle": "soft",
+  "iconStyle": "line",
+  "illustrationStyle": "flat",
+  "resultScreenStyle": "card",
+  "onboardingStyle": "start",
+  "visualMood": "fresh"
+}
