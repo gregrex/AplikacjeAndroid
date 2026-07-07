@@ -1,0 +1,30 @@
+@page "/history"
+@inject HistoryService History
+
+<h1>Historia</h1>
+
+@if (_entries.Count == 0)
+{
+    <div class="card">Brak historii.</div>
+}
+else
+{
+    @foreach (var entry in _entries)
+    {
+        <div class="card">
+            <strong>@entry.ProjectId</strong>
+            <p>Kategoria: @entry.CategoryId</p>
+            <p>Wynik: @entry.ResultId</p>
+            <p class="muted">@entry.CreatedAt.ToLocalTime()</p>
+        </div>
+    }
+}
+
+@code {
+    private IReadOnlyList<HistoryEntry> _entries = Array.Empty<HistoryEntry>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _entries = await History.GetAllAsync();
+    }
+}
