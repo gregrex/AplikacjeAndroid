@@ -1,0 +1,22 @@
+{
+  "themeId": "appliance-clean",
+  "brandName": "Zmywarka Diagnosta",
+  "targetAudience": "home",
+  "tone": "calm",
+  "primaryColor": "#0284C7",
+  "secondaryColor": "#14B8A6",
+  "accentColor": "#F59E0B",
+  "backgroundColor": "#F0F9FF",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#0C4A6E",
+  "mutedTextColor": "#64748B",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "clean",
+  "cardStyle": "checklist",
+  "buttonStyle": "solid",
+  "iconStyle": "line",
+  "illustrationStyle": "flat",
+  "resultScreenStyle": "checklist",
+  "onboardingStyle": "simple",
+  "visualMood": "clean"
+}
