@@ -1,0 +1,23 @@
+@page "/"
+@inject ProjectDataService ProjectData
+
+<div class="card">
+    <h1>@_appName</h1>
+    <p class="muted">Lokalna aplikacja bez serwera. Dane są ładowane z paczki projektu.</p>
+    <a class="button" href="/categories">Start</a>
+</div>
+
+<div class="card">
+    <h3>Tryb MVP</h3>
+    <p>Na tym etapie używamy lokalnych reguł, bez trenowania AI i bez backendu.</p>
+</div>
+
+@code {
+    private string _appName = "AppFactory";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var config = await ProjectData.LoadAppConfigAsync("plama-ratownik");
+        _appName = config?.AppName ?? _appName;
+    }
+}
