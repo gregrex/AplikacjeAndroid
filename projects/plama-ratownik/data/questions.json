@@ -1,0 +1,37 @@
+[
+  {
+    "id": "material",
+    "type": "single",
+    "textKey": "question.material",
+    "required": true,
+    "options": [
+      { "value": "cotton", "labelKey": "material.cotton" },
+      { "value": "jeans", "labelKey": "material.jeans" },
+      { "value": "polyester", "labelKey": "material.polyester" },
+      { "value": "wool", "labelKey": "material.wool" },
+      { "value": "silk", "labelKey": "material.silk" },
+      { "value": "linen", "labelKey": "material.linen" }
+    ]
+  },
+  {
+    "id": "fresh",
+    "type": "single",
+    "textKey": "question.fresh",
+    "required": true,
+    "options": [
+      { "value": "yes", "labelKey": "common.yes" },
+      { "value": "no", "labelKey": "common.no" },
+      { "value": "unknown", "labelKey": "common.unknown" }
+    ]
+  },
+  {
+    "id": "washed",
+    "type": "single",
+    "textKey": "question.washed",
+    "required": false,
+    "options": [
+      { "value": "yes", "labelKey": "common.yes" },
+      { "value": "no", "labelKey": "common.no" }
+    ]
+  }
+]
