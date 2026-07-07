@@ -1,0 +1,118 @@
+@page "/result/{CategoryId}/{FreeResultId}/{PremiumResultId}"
+@inject ProjectDataService ProjectData
+@inject ResultService ResultService
+@inject MockAdService Ads
+@inject HistoryService History
+@inject FavoritesService Favorites
+
+<h1>Wynik</h1>
+
+@if (_freeResult is null)
+{
+    <div class="card">Nie znaleziono wyniku.</div>
+}
+else
+{
+    <div class="card">
+        <h2>@_freeResult.Title</h2>
+        <p>@_freeResult.Summary</p>
+        <ol>
+            @foreach (var step in _freeResult.Steps)
+            {
+                <li>@step</li>
+            }
+        </ol>
+        @if (_freeResult.Warnings.Count > 0)
+        {
+            <h4>Ostrzeżenia</h4>
+            <ul>
+                @foreach (var warning in _freeResult.Warnings)
+                {
+                    <li>@warning</li>
+                }
+            </ul>
+        }
+    </div>
+
+    @if (!_premiumUnlocked)
+    {
+        <button class="button secondary" @onclick="UnlockPremium">Odblokuj pełną instrukcję</button>
+    }
+    else if (_premiumResult is not null)
+    {
+        <div class="card">
+            <h2>@_premiumResult.Title</h2>
+            <p>@_premiumResult.Summary</p>
+            <ol>
+                @foreach (var step in _premiumResult.Steps)
+                {
+                    <li>@step</li>
+                }
+            </ol>
+
+            @if (_premiumResult.Needed.Count > 0)
+            {
+                <h4>Potrzebne rzeczy</h4>
+                <ul>
+                    @foreach (var item in _premiumResult.Needed)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            }
+
+            @if (_premiumResult.DontDo.Count > 0)
+            {
+                <h4>Czego nie robić</h4>
+                <ul>
+                    @foreach (var item in _premiumResult.DontDo)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            }
+        </div>
+    }
+
+    <p>
+        <button class="button" @onclick="AddFavorite">Dodaj do ulubionych</button>
+    </p>
+}
+
+@code {
+    [Parameter] public string CategoryId { get; set; } = string.Empty;
+    [Parameter] public string FreeResultId { get; set; } = string.Empty;
+    [Parameter] public string PremiumResultId { get; set; } = string.Empty;
+
+    private ResultDefinition? _freeResult;
+    private ResultDefinition? _premiumResult;
+    private bool _premiumUnlocked;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var results = await ProjectData.LoadResultsAsync("plama-ratownik", "pl");
+        _freeResult = ResultService.FindResult(results, FreeResultId);
+        _premiumResult = ResultService.FindResult(results, PremiumResultId);
+
+        await History.AddAsync(new HistoryEntry
+        {
+            ProjectId = "plama-ratownik",
+            CategoryId = CategoryId,
+            ResultId = FreeResultId
+        });
+    }
+
+    private async Task UnlockPremium()
+    {
+        _premiumUnlocked = await Ads.ShowRewardedAsync("result_full_instruction");
+    }
+
+    private async Task AddFavorite()
+    {
+        await Favorites.AddAsync(new FavoriteEntry
+        {
+            ProjectId = "plama-ratownik",
+            ResultId = _premiumUnlocked ? PremiumResultId : FreeResultId
+        });
+    }
+}
