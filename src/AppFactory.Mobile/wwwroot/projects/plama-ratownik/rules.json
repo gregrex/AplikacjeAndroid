@@ -8,12 +8,92 @@
     "premiumResultId": "coffee_cotton_fresh_premium"
   },
   {
+    "id": "coffee_any_old",
+    "categoryId": "coffee",
+    "when": { "fresh": "no" },
+    "score": 80,
+    "freeResultId": "coffee_old_free",
+    "premiumResultId": "coffee_old_premium"
+  },
+  {
+    "id": "tea_any",
+    "categoryId": "tea",
+    "when": {},
+    "score": 70,
+    "freeResultId": "tea_free",
+    "premiumResultId": "tea_premium"
+  },
+  {
+    "id": "grease_any",
+    "categoryId": "grease",
+    "when": {},
+    "score": 75,
+    "freeResultId": "grease_free",
+    "premiumResultId": "grease_premium"
+  },
+  {
+    "id": "red_wine_any",
+    "categoryId": "red_wine",
+    "when": {},
+    "score": 75,
+    "freeResultId": "red_wine_free",
+    "premiumResultId": "red_wine_premium"
+  },
+  {
     "id": "blood_any_fresh",
     "categoryId": "blood",
     "when": { "fresh": "yes" },
     "score": 90,
     "freeResultId": "blood_fresh_free",
     "premiumResultId": "blood_fresh_premium"
+  },
+  {
+    "id": "blood_any_old",
+    "categoryId": "blood",
+    "when": { "fresh": "no" },
+    "score": 80,
+    "freeResultId": "blood_old_free",
+    "premiumResultId": "blood_old_premium"
+  },
+  {
+    "id": "grass_any",
+    "categoryId": "grass",
+    "when": {},
+    "score": 70,
+    "freeResultId": "grass_free",
+    "premiumResultId": "grass_premium"
+  },
+  {
+    "id": "mud_any",
+    "categoryId": "mud",
+    "when": {},
+    "score": 70,
+    "freeResultId": "mud_free",
+    "premiumResultId": "mud_premium"
+  },
+  {
+    "id": "pen_any",
+    "categoryId": "pen",
+    "when": {},
+    "score": 70,
+    "freeResultId": "pen_free",
+    "premiumResultId": "pen_premium"
+  },
+  {
+    "id": "cosmetics_any",
+    "categoryId": "cosmetics",
+    "when": {},
+    "score": 70,
+    "freeResultId": "cosmetics_free",
+    "premiumResultId": "cosmetics_premium"
+  },
+  {
+    "id": "rust_any",
+    "categoryId": "rust",
+    "when": {},
+    "score": 70,
+    "freeResultId": "rust_free",
+    "premiumResultId": "rust_premium"
   },
   {
     "id": "default_any",
