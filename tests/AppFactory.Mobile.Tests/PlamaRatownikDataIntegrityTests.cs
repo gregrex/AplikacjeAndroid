@@ -1,5 +1,6 @@
 using System.Text.Json;
 using AppFactory.Mobile.Models;
+using AppFactory.Mobile.Services;
 
 namespace AppFactory.Mobile.Tests;
 
@@ -11,7 +12,7 @@ public sealed class PlamaRatownikDataIntegrityTests
     };
 
     [Fact]
-    public void DataPack_HasRequiredFiles_AndConsistentReferences()
+    public void DataPack_HasRequiredFiles_AndPassesSharedValidator()
     {
         var root = FindRepositoryRoot();
         var dataDir = Path.Combine(root, "src", "AppFactory.Mobile", "wwwroot", "projects", "plama-ratownik");
@@ -28,22 +29,10 @@ public sealed class PlamaRatownikDataIntegrityTests
         Assert.NotEmpty(rules);
         Assert.NotEmpty(results);
 
-        var categoryIds = categories.Select(x => x.Id).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        var questionIds = questions.Select(x => x.Id).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        var resultIds = results.Select(x => x.Id).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var validator = new DataPackValidationService();
+        var errors = validator.Validate(categories, questions, rules, results);
 
-        foreach (var rule in rules)
-        {
-            Assert.False(string.IsNullOrWhiteSpace(rule.Id));
-            Assert.True(rule.CategoryId == "*" || categoryIds.Contains(rule.CategoryId), $"Rule {rule.Id} references missing category {rule.CategoryId}");
-            Assert.True(resultIds.Contains(rule.FreeResultId), $"Rule {rule.Id} references missing free result {rule.FreeResultId}");
-            Assert.True(resultIds.Contains(rule.PremiumResultId), $"Rule {rule.Id} references missing premium result {rule.PremiumResultId}");
-
-            foreach (var condition in rule.When.Keys)
-            {
-                Assert.True(questionIds.Contains(condition), $"Rule {rule.Id} references missing question {condition}");
-            }
-        }
+        Assert.True(errors.Count == 0, string.Join(Environment.NewLine, errors));
     }
 
     private static T ReadJson<T>(string path)
