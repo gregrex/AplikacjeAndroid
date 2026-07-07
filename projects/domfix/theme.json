@@ -1,0 +1,22 @@
+{
+  "themeId": "home-repair",
+  "brandName": "DomFix",
+  "targetAudience": "home-repair-users",
+  "tone": "practical-careful",
+  "primaryColor": "#1E3A8A",
+  "secondaryColor": "#F97316",
+  "accentColor": "#22C55E",
+  "backgroundColor": "#EFF6FF",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#0F172A",
+  "mutedTextColor": "#64748B",
+  "dangerColor": "#B91C1C",
+  "backgroundStyle": "repair-light",
+  "cardStyle": "safety-card",
+  "buttonStyle": "strong-action",
+  "iconStyle": "tool-line",
+  "illustrationStyle": "flat-repair",
+  "resultScreenStyle": "safe-steps",
+  "onboardingStyle": "problem-first",
+  "visualMood": "safe-practical"
+}
