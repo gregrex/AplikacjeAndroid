@@ -1,0 +1,26 @@
+[
+  {
+    "id": "coffee_cotton_fresh",
+    "categoryId": "coffee",
+    "when": { "material": "cotton", "fresh": "yes" },
+    "score": 100,
+    "freeResultId": "coffee_cotton_fresh_free",
+    "premiumResultId": "coffee_cotton_fresh_premium"
+  },
+  {
+    "id": "blood_any_fresh",
+    "categoryId": "blood",
+    "when": { "fresh": "yes" },
+    "score": 90,
+    "freeResultId": "blood_fresh_free",
+    "premiumResultId": "blood_fresh_premium"
+  },
+  {
+    "id": "default_any",
+    "categoryId": "*",
+    "when": {},
+    "score": 1,
+    "freeResultId": "default_free",
+    "premiumResultId": "default_premium"
+  }
+]
