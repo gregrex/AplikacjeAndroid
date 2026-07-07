@@ -7,13 +7,18 @@
     <h3>Język</h3>
     <p>Aktywny język: <strong>@Language.CurrentLanguage</strong></p>
 
-    <p>
-        <button class="button" @onclick="SetPolish">Polski</button>
-        <button class="button" @onclick="SetEnglish">English</button>
-        <button class="button" @onclick="SetUkrainian">Українська</button>
-    </p>
+    <div>
+        @foreach (var language in Language.GetSupportedLanguages())
+        {
+            <p>
+                <button class="button" @onclick="() => SetLanguage(language.Code)">
+                    @language.NativeName (@language.Code)
+                </button>
+            </p>
+        }
+    </div>
 
-    <p class="muted">W MVP wybór języka wpływa na plik wyników: PL, EN albo UK.</p>
+    <p class="muted">Lista obejmuje języki krajów Unii Europejskiej oraz ukraiński. Jeżeli pełne tłumaczenie wyników nie istnieje, aplikacja użyje fallbacku do EN, a potem PL.</p>
 </div>
 
 <div class="card">
@@ -22,7 +27,8 @@
 </div>
 
 @code {
-    private void SetPolish() => Language.SetLanguage("pl");
-    private void SetEnglish() => Language.SetLanguage("en");
-    private void SetUkrainian() => Language.SetLanguage("uk");
+    private void SetLanguage(string language)
+    {
+        Language.SetLanguage(language);
+    }
 }
