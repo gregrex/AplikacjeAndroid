@@ -1,13 +1,29 @@
 @page "/settings"
+@inject LanguageService Language
 
 <h1>Ustawienia</h1>
 
 <div class="card">
     <h3>Język</h3>
-    <p>Na MVP aktywny jest język polski. Struktura projektu przewiduje PL, EN i UK.</p>
+    <p>Aktywny język: <strong>@Language.CurrentLanguage</strong></p>
+
+    <p>
+        <button class="button" @onclick="() => SetLanguage("pl")">Polski</button>
+        <button class="button" @onclick="() => SetLanguage("en")">English</button>
+        <button class="button" @onclick="() => SetLanguage("uk")">Українська</button>
+    </p>
+
+    <p class="muted">W MVP wybór języka wpływa na plik wyników: PL, EN albo UK.</p>
 </div>
 
 <div class="card">
     <h3>Prywatność</h3>
     <p>Aplikacja działa lokalnie bez własnego serwera. Dane użytkownika w MVP są przechowywane tylko lokalnie.</p>
 </div>
+
+@code {
+    private void SetLanguage(string language)
+    {
+        Language.SetLanguage(language);
+    }
+}
