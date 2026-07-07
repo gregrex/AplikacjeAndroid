@@ -1,0 +1,22 @@
+{
+  "themeId": "bread-warm",
+  "brandName": "Bread Coach",
+  "targetAudience": "baking",
+  "tone": "warm",
+  "primaryColor": "#92400E",
+  "secondaryColor": "#F59E0B",
+  "accentColor": "#84CC16",
+  "backgroundColor": "#FFFBEB",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#451A03",
+  "mutedTextColor": "#78716C",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "warm",
+  "cardStyle": "recipe",
+  "buttonStyle": "solid",
+  "iconStyle": "line",
+  "illustrationStyle": "flat",
+  "resultScreenStyle": "recipe-steps",
+  "onboardingStyle": "start",
+  "visualMood": "warm"
+}
