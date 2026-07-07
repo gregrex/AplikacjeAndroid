@@ -29,6 +29,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<MockAdService>();
         builder.Services.AddSingleton<HistoryService>();
         builder.Services.AddSingleton<FavoritesService>();
+        builder.Services.AddSingleton<LanguageService>();
 
         return builder.Build();
     }
