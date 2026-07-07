@@ -1,0 +1,22 @@
+{
+  "themeId": "craft-soft",
+  "brandName": "Craft Helper",
+  "targetAudience": "craft",
+  "tone": "calm",
+  "primaryColor": "#BE185D",
+  "secondaryColor": "#F9A8D4",
+  "accentColor": "#A78BFA",
+  "backgroundColor": "#FDF2F8",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#831843",
+  "mutedTextColor": "#6B7280",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "soft",
+  "cardStyle": "pattern",
+  "buttonStyle": "soft",
+  "iconStyle": "line",
+  "illustrationStyle": "flat",
+  "resultScreenStyle": "steps",
+  "onboardingStyle": "start",
+  "visualMood": "calm"
+}
