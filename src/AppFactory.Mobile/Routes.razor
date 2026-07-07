@@ -1,0 +1,13 @@
+<Router AppAssembly="typeof(Routes).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="typeof(Layout.MainLayout)">
+            <div class="card">
+                <h2>Nie znaleziono strony</h2>
+                <a class="button" href="/">Wróć</a>
+            </div>
+        </LayoutView>
+    </NotFound>
+</Router>
