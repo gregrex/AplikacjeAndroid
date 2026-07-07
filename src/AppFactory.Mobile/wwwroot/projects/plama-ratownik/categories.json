@@ -1,0 +1,12 @@
+[
+  { "id": "coffee", "nameKey": "stain.coffee", "icon": "coffee" },
+  { "id": "tea", "nameKey": "stain.tea", "icon": "tea" },
+  { "id": "grease", "nameKey": "stain.grease", "icon": "oil" },
+  { "id": "red_wine", "nameKey": "stain.redWine", "icon": "wine" },
+  { "id": "blood", "nameKey": "stain.blood", "icon": "drop" },
+  { "id": "grass", "nameKey": "stain.grass", "icon": "leaf" },
+  { "id": "mud", "nameKey": "stain.mud", "icon": "soil" },
+  { "id": "pen", "nameKey": "stain.pen", "icon": "pen" },
+  { "id": "cosmetics", "nameKey": "stain.cosmetics", "icon": "makeup" },
+  { "id": "rust", "nameKey": "stain.rust", "icon": "rust" }
+]
