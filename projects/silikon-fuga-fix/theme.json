@@ -1,0 +1,22 @@
+{
+  "themeId": "sealant-fix",
+  "brandName": "Seal Fix",
+  "targetAudience": "home-diy",
+  "tone": "technical",
+  "primaryColor": "#475569",
+  "secondaryColor": "#0EA5E9",
+  "accentColor": "#F97316",
+  "backgroundColor": "#F8FAFC",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#0F172A",
+  "mutedTextColor": "#64748B",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "clean",
+  "cardStyle": "repair",
+  "buttonStyle": "solid",
+  "iconStyle": "line",
+  "illustrationStyle": "flat",
+  "resultScreenStyle": "steps",
+  "onboardingStyle": "start",
+  "visualMood": "technical"
+}
