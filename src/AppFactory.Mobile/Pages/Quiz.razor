@@ -1,0 +1,68 @@
+@page "/quiz/{CategoryId}"
+@inject ProjectDataService ProjectData
+@inject RuleEngineService RuleEngine
+@inject NavigationManager Nav
+
+<h1>Quiz</h1>
+
+@if (_questions.Count == 0)
+{
+    <div class="card">Brak pytań.</div>
+}
+else if (_currentQuestion is not null)
+{
+    <div class="card">
+        <h3>@_currentQuestion.TextKey</h3>
+
+        @foreach (var option in _currentQuestion.Options)
+        {
+            <p>
+                <button class="button" @onclick="() => SelectAnswer(option.Value)">@option.LabelKey</button>
+            </p>
+        }
+    </div>
+}
+else
+{
+    <div class="card">
+        <h3>Gotowe</h3>
+        <p>Odpowiedzi zostały zebrane.</p>
+        <button class="button secondary" @onclick="ShowResult">Pokaż wynik</button>
+    </div>
+}
+
+@code {
+    [Parameter] public string CategoryId { get; set; } = string.Empty;
+
+    private readonly List<UserAnswer> _answers = new();
+    private List<QuestionDefinition> _questions = new();
+    private List<RuleDefinition> _rules = new();
+    private int _index;
+
+    private QuestionDefinition? _currentQuestion => _index < _questions.Count ? _questions[_index] : null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _questions = await ProjectData.LoadQuestionsAsync("plama-ratownik");
+        _rules = await ProjectData.LoadRulesAsync("plama-ratownik");
+    }
+
+    private void SelectAnswer(string value)
+    {
+        if (_currentQuestion is null)
+        {
+            return;
+        }
+
+        _answers.RemoveAll(x => x.QuestionId == _currentQuestion.Id);
+        _answers.Add(new UserAnswer { QuestionId = _currentQuestion.Id, Value = value });
+        _index++;
+    }
+
+    private void ShowResult()
+    {
+        var match = RuleEngine.Match(CategoryId, _answers, _rules);
+        var url = $"/result/{CategoryId}/{match.FreeResultId}/{match.PremiumResultId}";
+        Nav.NavigateTo(url);
+    }
+}
