@@ -1,0 +1,22 @@
+{
+  "themeId": "formal-classic",
+  "brandName": "Formal Coach",
+  "targetAudience": "formal-style",
+  "tone": "classic",
+  "primaryColor": "#111827",
+  "secondaryColor": "#B45309",
+  "accentColor": "#E5E7EB",
+  "backgroundColor": "#F9FAFB",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#111827",
+  "mutedTextColor": "#6B7280",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "classic",
+  "cardStyle": "formal",
+  "buttonStyle": "solid",
+  "iconStyle": "line",
+  "illustrationStyle": "minimal",
+  "resultScreenStyle": "checklist",
+  "onboardingStyle": "start",
+  "visualMood": "classic"
+}
