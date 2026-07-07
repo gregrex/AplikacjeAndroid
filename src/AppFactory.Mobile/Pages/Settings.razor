@@ -8,9 +8,9 @@
     <p>Aktywny język: <strong>@Language.CurrentLanguage</strong></p>
 
     <p>
-        <button class="button" @onclick="() => SetLanguage("pl")">Polski</button>
-        <button class="button" @onclick="() => SetLanguage("en")">English</button>
-        <button class="button" @onclick="() => SetLanguage("uk")">Українська</button>
+        <button class="button" @onclick="SetPolish">Polski</button>
+        <button class="button" @onclick="SetEnglish">English</button>
+        <button class="button" @onclick="SetUkrainian">Українська</button>
     </p>
 
     <p class="muted">W MVP wybór języka wpływa na plik wyników: PL, EN albo UK.</p>
@@ -22,8 +22,7 @@
 </div>
 
 @code {
-    private void SetLanguage(string language)
-    {
-        Language.SetLanguage(language);
-    }
+    private void SetPolish() => Language.SetLanguage("pl");
+    private void SetEnglish() => Language.SetLanguage("en");
+    private void SetUkrainian() => Language.SetLanguage("uk");
 }
