@@ -1,0 +1,29 @@
+@page "/categories"
+@inject ProjectDataService ProjectData
+
+<h1>Wybierz kategorię</h1>
+
+@if (_categories.Count == 0)
+{
+    <div class="card">Ładowanie kategorii...</div>
+}
+else
+{
+    @foreach (var category in _categories)
+    {
+        <div class="card">
+            <h3>@category.Id</h3>
+            <p class="muted">@category.NameKey</p>
+            <a class="button" href="/quiz/@category.Id">Wybierz</a>
+        </div>
+    }
+}
+
+@code {
+    private List<CategoryDefinition> _categories = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _categories = await ProjectData.LoadCategoriesAsync("plama-ratownik");
+    }
+}
