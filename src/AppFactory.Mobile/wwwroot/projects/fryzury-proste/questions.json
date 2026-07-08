@@ -1,0 +1,7 @@
+[
+  { "id": "hair_type", "type": "single", "textKey": "question.hairType", "required": true, "options": [ { "value": "straight", "labelKey": "hair.straight" }, { "value": "wavy", "labelKey": "hair.wavy" }, { "value": "curly", "labelKey": "hair.curly" }, { "value": "short", "labelKey": "hair.short" }, { "value": "long", "labelKey": "hair.long" } ] },
+  { "id": "time", "type": "single", "textKey": "question.time", "required": true, "options": [ { "value": "five", "labelKey": "time.five" }, { "value": "ten", "labelKey": "time.ten" }, { "value": "fifteen", "labelKey": "time.fifteen" } ] },
+  { "id": "occasion", "type": "single", "textKey": "question.occasion", "required": true, "options": [ { "value": "school", "labelKey": "occasion.school" }, { "value": "work", "labelKey": "occasion.work" }, { "value": "sport", "labelKey": "occasion.sport" }, { "value": "family", "labelKey": "occasion.family" }, { "value": "evening", "labelKey": "occasion.evening" } ] },
+  { "id": "accessories", "type": "single", "textKey": "question.accessories", "required": true, "options": [ { "value": "none", "labelKey": "accessories.none" }, { "value": "elastic", "labelKey": "accessories.elastic" }, { "value": "pins", "labelKey": "accessories.pins" }, { "value": "clip", "labelKey": "accessories.clip" } ] },
+  { "id": "finish", "type": "single", "textKey": "question.finish", "required": true, "options": [ { "value": "natural", "labelKey": "finish.natural" }, { "value": "neat", "labelKey": "finish.neat" }, { "value": "hold", "labelKey": "finish.hold" } ] }
+]
