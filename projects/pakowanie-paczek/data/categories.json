@@ -1,0 +1,10 @@
+[
+  { "id": "clothes", "nameKey": "item.clothes", "icon": "shirt" },
+  { "id": "books", "nameKey": "item.books", "icon": "book" },
+  { "id": "glass", "nameKey": "item.glass", "icon": "glass" },
+  { "id": "electronics", "nameKey": "item.electronics", "icon": "cpu" },
+  { "id": "toys", "nameKey": "item.toys", "icon": "toy" },
+  { "id": "cosmetics", "nameKey": "item.cosmetics", "icon": "bottle" },
+  { "id": "shoes", "nameKey": "item.shoes", "icon": "shoe" },
+  { "id": "small_appliance", "nameKey": "item.smallAppliance", "icon": "box" }
+]
