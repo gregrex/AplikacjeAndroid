@@ -1,0 +1,10 @@
+[
+  { "id": "interview_safe", "categoryId": "interview", "when": { "occasion": "interview" }, "score": 95, "freeResultId": "interview_safe_free", "premiumResultId": "interview_safe_premium" },
+  { "id": "business_classic", "categoryId": "business", "when": { "occasion": "business" }, "score": 92, "freeResultId": "business_classic_free", "premiumResultId": "business_classic_premium" },
+  { "id": "exam_simple", "categoryId": "exam", "when": { "occasion": "exam" }, "score": 88, "freeResultId": "exam_simple_free", "premiumResultId": "exam_simple_premium" },
+  { "id": "family_event_balanced", "categoryId": "family_event", "when": { "occasion": "family_event" }, "score": 84, "freeResultId": "family_event_balanced_free", "premiumResultId": "family_event_balanced_premium" },
+  { "id": "evening_elegant", "categoryId": "evening", "when": { "occasion": "evening" }, "score": 80, "freeResultId": "evening_elegant_free", "premiumResultId": "evening_elegant_premium" },
+  { "id": "black_suit_formal", "categoryId": "*", "when": { "suit_color": "black" }, "score": 70, "freeResultId": "black_suit_formal_free", "premiumResultId": "black_suit_formal_premium" },
+  { "id": "no_neckwear_check", "categoryId": "*", "when": { "neckwear": "none" }, "score": 60, "freeResultId": "no_neckwear_check_free", "premiumResultId": "no_neckwear_check_premium" },
+  { "id": "default_formal", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_formal_free", "premiumResultId": "default_formal_premium" }
+]
