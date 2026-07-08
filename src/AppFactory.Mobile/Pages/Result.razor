@@ -6,79 +6,30 @@
 @inject FavoritesService Favorites
 @inject LanguageService Language
 @inject ProjectContextService ProjectContext
+@inject ProjectUiProfileService UiProfiles
 
 <h1>Wynik</h1>
 <p class="muted">Projekt: @ProjectContext.CurrentProjectId | Język wybrany: @Language.CurrentLanguage | Język wyników: @_loadedResultLanguage</p>
 
 @if (_freeResult is null)
 {
-    <div class="card">Nie znaleziono wyniku.</div>
+    <div class="card">@_uiProfile.EmptyStateText</div>
 }
 else
 {
-    <div class="card">
-        <h2>@_freeResult.Title</h2>
-        <p>@_freeResult.Summary</p>
-        <ol>
-            @foreach (var step in _freeResult.Steps)
-            {
-                <li>@step</li>
-            }
-        </ol>
-        @if (_freeResult.Warnings.Count > 0)
-        {
-            <h4>Ostrzeżenia</h4>
-            <ul>
-                @foreach (var warning in _freeResult.Warnings)
-                {
-                    <li>@warning</li>
-                }
-            </ul>
-        }
-    </div>
+    <ProjectResultView ProjectId="@ProjectContext.CurrentProjectId" Result="@_freeResult" ShowPremiumBlocks="false" />
 
     @if (!_premiumUnlocked)
     {
-        <button class="button secondary" @onclick="UnlockPremium">Odblokuj pełną instrukcję</button>
+        <button class="button secondary" @onclick="UnlockPremium">@_uiProfile.PrimaryActionLabel</button>
     }
     else if (_premiumResult is not null)
     {
-        <div class="card">
-            <h2>@_premiumResult.Title</h2>
-            <p>@_premiumResult.Summary</p>
-            <ol>
-                @foreach (var step in _premiumResult.Steps)
-                {
-                    <li>@step</li>
-                }
-            </ol>
-
-            @if (_premiumResult.Needed.Count > 0)
-            {
-                <h4>Potrzebne rzeczy</h4>
-                <ul>
-                    @foreach (var item in _premiumResult.Needed)
-                    {
-                        <li>@item</li>
-                    }
-                </ul>
-            }
-
-            @if (_premiumResult.DontDo.Count > 0)
-            {
-                <h4>Czego nie robić</h4>
-                <ul>
-                    @foreach (var item in _premiumResult.DontDo)
-                    {
-                        <li>@item</li>
-                    }
-                </ul>
-            }
-        </div>
+        <ProjectResultView ProjectId="@ProjectContext.CurrentProjectId" Result="@_premiumResult" ShowPremiumBlocks="true" />
     }
 
     <p>
-        <button class="button" @onclick="AddFavorite">Dodaj do ulubionych</button>
+        <button class="button" @onclick="AddFavorite">@_uiProfile.SecondaryActionLabel</button>
     </p>
 }
 
@@ -91,9 +42,12 @@ else
     private ResultDefinition? _premiumResult;
     private bool _premiumUnlocked;
     private string _loadedResultLanguage = "pl";
+    private ProjectUiProfile _uiProfile = new();
 
     protected override async Task OnInitializedAsync()
     {
+        _uiProfile = UiProfiles.GetProfile(ProjectContext.CurrentProjectId);
+
         var availableResultLanguages = new[] { "pl", "en", "uk" };
         _loadedResultLanguage = Language.GetResultLanguageWithFallback(availableResultLanguages);
 
