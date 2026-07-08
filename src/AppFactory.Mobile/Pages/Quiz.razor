@@ -1,9 +1,11 @@
 @page "/quiz/{CategoryId}"
 @inject ProjectDataService ProjectData
 @inject RuleEngineService RuleEngine
+@inject ProjectContextService ProjectContext
 @inject NavigationManager Nav
 
 <h1>Quiz</h1>
+<p class="muted">Projekt: @ProjectContext.CurrentProjectId</p>
 
 @if (_questions.Count == 0)
 {
@@ -43,8 +45,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _questions = await ProjectData.LoadQuestionsAsync("plama-ratownik");
-        _rules = await ProjectData.LoadRulesAsync("plama-ratownik");
+        _questions = await ProjectData.LoadQuestionsAsync(ProjectContext.CurrentProjectId);
+        _rules = await ProjectData.LoadRulesAsync(ProjectContext.CurrentProjectId);
     }
 
     private void SelectAnswer(string value)
