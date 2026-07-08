@@ -1,0 +1,8 @@
+[
+  { "id": "bedtime_calm", "categoryId": "bedtime", "when": { "mood": "calm" }, "score": 90, "freeResultId": "bedtime_calm_free", "premiumResultId": "bedtime_calm_premium" },
+  { "id": "adventure_brave", "categoryId": "adventure", "when": { "mood": "brave" }, "score": 90, "freeResultId": "adventure_brave_free", "premiumResultId": "adventure_brave_premium" },
+  { "id": "friendship_animal", "categoryId": "friendship", "when": { "hero": "animal" }, "score": 85, "freeResultId": "friendship_animal_free", "premiumResultId": "friendship_animal_premium" },
+  { "id": "funny_robot", "categoryId": "funny", "when": { "hero": "robot" }, "score": 85, "freeResultId": "funny_robot_free", "premiumResultId": "funny_robot_premium" },
+  { "id": "dragon_castle", "categoryId": "brave", "when": { "hero": "dragon", "place": "castle" }, "score": 85, "freeResultId": "dragon_castle_free", "premiumResultId": "dragon_castle_premium" },
+  { "id": "default_any", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_free", "premiumResultId": "default_premium" }
+]
