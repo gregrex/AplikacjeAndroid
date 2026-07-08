@@ -18,7 +18,8 @@ public sealed class ProjectCatalogService
             new("fryzury-proste", "Fryzury Proste", "Neutralne instrukcje prostych uczesań"),
             new("rysunek-coach", "Rysunek Coach", "Proste lekcje rysowania krok po kroku"),
             new("bukietownik", "Bukietownik", "Proste kompozycje kwiatowe do okazji"),
-            new("pokoj-makeover", "Pokój Makeover", "Metamorfoza pokoju bez remontu")
+            new("pokoj-makeover", "Pokój Makeover", "Metamorfoza pokoju bez remontu"),
+            new("pakowanie-paczek", "Pakowanie Paczek", "Checklisty zabezpieczenia przedmiotów do wysyłki")
         };
     }
 }
