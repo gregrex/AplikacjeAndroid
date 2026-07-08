@@ -1,0 +1,6 @@
+[
+  { "id": "quick", "nameKey": "category.quick", "icon": "timer" },
+  { "id": "sport", "nameKey": "category.sport", "icon": "activity" },
+  { "id": "everyday", "nameKey": "category.everyday", "icon": "calendar" },
+  { "id": "elegant", "nameKey": "category.elegant", "icon": "sparkles" }
+]
