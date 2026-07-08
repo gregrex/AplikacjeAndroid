@@ -17,7 +17,8 @@ public sealed class ProjectCatalogService
             new("domfix", "DomFix", "Bezpieczne drobne naprawy domowe"),
             new("fryzury-proste", "Fryzury Proste", "Neutralne instrukcje prostych uczesań"),
             new("rysunek-coach", "Rysunek Coach", "Proste lekcje rysowania krok po kroku"),
-            new("bukietownik", "Bukietownik", "Proste kompozycje kwiatowe do okazji")
+            new("bukietownik", "Bukietownik", "Proste kompozycje kwiatowe do okazji"),
+            new("pokoj-makeover", "Pokój Makeover", "Metamorfoza pokoju bez remontu")
         };
     }
 }
