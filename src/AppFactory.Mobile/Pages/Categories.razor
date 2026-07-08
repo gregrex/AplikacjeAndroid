@@ -1,7 +1,9 @@
 @page "/categories"
 @inject ProjectDataService ProjectData
+@inject ProjectContextService ProjectContext
 
 <h1>Wybierz kategorię</h1>
+<p class="muted">Projekt: @ProjectContext.CurrentProjectId</p>
 
 @if (_categories.Count == 0)
 {
@@ -24,6 +26,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _categories = await ProjectData.LoadCategoriesAsync("plama-ratownik");
+        _categories = await ProjectData.LoadCategoriesAsync(ProjectContext.CurrentProjectId);
     }
 }
