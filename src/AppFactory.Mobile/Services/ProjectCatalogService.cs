@@ -11,7 +11,8 @@ public sealed class ProjectCatalogService
             new("pies-trener-7dni", "Pies Trener 7 Dni", "Prosty plan treningu psa"),
             new("bajka-z-rysunku", "Bajka z rysunku", "Spokojne bajki z lokalnych szablonów"),
             new("vinted-olx-opis", "Opis Sprzedażowy", "Szablony opisów do sprzedaży online"),
-            new("kot-bawi-sie", "Kot Bawi się", "Zabawy i aktywności dla kota domowego")
+            new("kot-bawi-sie", "Kot Bawi się", "Zabawy i aktywności dla kota domowego"),
+            new("barber-translator", "Barber Translator", "Instrukcja fryzury do pokazania barberowi")
         };
     }
 }
