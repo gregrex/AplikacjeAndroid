@@ -1,0 +1,10 @@
+[
+  { "id": "door", "nameKey": "problem.door", "icon": "door" },
+  { "id": "hinge", "nameKey": "problem.hinge", "icon": "wrench" },
+  { "id": "furniture", "nameKey": "problem.furniture", "icon": "table" },
+  { "id": "drain", "nameKey": "problem.drain", "icon": "droplet" },
+  { "id": "silicone", "nameKey": "problem.silicone", "icon": "sealant" },
+  { "id": "grout", "nameKey": "problem.grout", "icon": "tile" },
+  { "id": "zipper", "nameKey": "problem.zipper", "icon": "zip" },
+  { "id": "seal", "nameKey": "problem.seal", "icon": "shield" }
+]
