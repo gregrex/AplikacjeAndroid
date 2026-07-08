@@ -1,0 +1,10 @@
+[
+  { "id": "weak_signal_place", "categoryId": "weak_signal", "when": { "problem": "weak_signal" }, "score": 95, "freeResultId": "weak_signal_place_free", "premiumResultId": "weak_signal_place_premium" },
+  { "id": "slow_speed_test", "categoryId": "slow_speed", "when": { "problem": "slow_speed" }, "score": 90, "freeResultId": "slow_speed_test_free", "premiumResultId": "slow_speed_test_premium" },
+  { "id": "disconnects_stability", "categoryId": "disconnects", "when": { "problem": "disconnects" }, "score": 86, "freeResultId": "disconnects_stability_free", "premiumResultId": "disconnects_stability_premium" },
+  { "id": "one_room_mesh", "categoryId": "one_room", "when": { "problem": "one_room" }, "score": 82, "freeResultId": "one_room_mesh_free", "premiumResultId": "one_room_mesh_premium" },
+  { "id": "many_devices_split", "categoryId": "many_devices", "when": { "problem": "many_devices" }, "score": 78, "freeResultId": "many_devices_split_free", "premiumResultId": "many_devices_split_premium" },
+  { "id": "bad_router_place", "categoryId": "*", "when": { "router_place": "cabinet" }, "score": 70, "freeResultId": "bad_router_place_free", "premiumResultId": "bad_router_place_premium" },
+  { "id": "many_walls_mesh", "categoryId": "*", "when": { "walls": "many" }, "score": 65, "freeResultId": "many_walls_mesh_free", "premiumResultId": "many_walls_mesh_premium" },
+  { "id": "default_wifi", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_wifi_free", "premiumResultId": "default_wifi_premium" }
+]
