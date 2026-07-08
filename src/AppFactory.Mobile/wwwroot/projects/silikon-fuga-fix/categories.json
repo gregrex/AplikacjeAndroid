@@ -1,0 +1,8 @@
+[
+  { "id": "dirty_grout", "nameKey": "problem.dirtyGrout", "icon": "grid" },
+  { "id": "old_silicone", "nameKey": "problem.oldSilicone", "icon": "tool" },
+  { "id": "mold", "nameKey": "problem.mold", "icon": "alert" },
+  { "id": "crack", "nameKey": "problem.crack", "icon": "crack" },
+  { "id": "detached", "nameKey": "problem.detached", "icon": "gap" },
+  { "id": "suspected_leak", "nameKey": "problem.suspectedLeak", "icon": "warning" }
+]
