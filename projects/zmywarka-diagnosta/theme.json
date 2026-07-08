@@ -1,8 +1,8 @@
 {
-  "themeId": "appliance-clean",
+  "themeId": "dishwasher-clean-safe",
   "brandName": "Zmywarka Diagnosta",
-  "targetAudience": "home",
-  "tone": "calm",
+  "targetAudience": "home-appliance-users",
+  "tone": "calm-practical-safe",
   "primaryColor": "#0284C7",
   "secondaryColor": "#14B8A6",
   "accentColor": "#F59E0B",
@@ -11,12 +11,12 @@
   "textColor": "#0C4A6E",
   "mutedTextColor": "#64748B",
   "dangerColor": "#DC2626",
-  "backgroundStyle": "clean",
-  "cardStyle": "checklist",
-  "buttonStyle": "solid",
-  "iconStyle": "line",
-  "illustrationStyle": "flat",
-  "resultScreenStyle": "checklist",
-  "onboardingStyle": "simple",
-  "visualMood": "clean"
+  "backgroundStyle": "clean-water-gradient",
+  "cardStyle": "rounded-appliance-checklist",
+  "buttonStyle": "solid-safe-action",
+  "iconStyle": "appliance-line",
+  "illustrationStyle": "flat-home-appliance",
+  "resultScreenStyle": "safe-diagnostic-checklist",
+  "onboardingStyle": "symptom-safety-first-start",
+  "visualMood": "clean-calm-practical"
 }
