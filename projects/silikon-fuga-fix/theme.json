@@ -1,8 +1,8 @@
 {
-  "themeId": "sealant-fix",
-  "brandName": "Seal Fix",
-  "targetAudience": "home-diy",
-  "tone": "technical",
+  "themeId": "sealant-fix-slate-blue",
+  "brandName": "Silikon Fuga Fix",
+  "targetAudience": "home-diy-repair-users",
+  "tone": "safe-technical-practical",
   "primaryColor": "#475569",
   "secondaryColor": "#0EA5E9",
   "accentColor": "#F97316",
@@ -11,12 +11,12 @@
   "textColor": "#0F172A",
   "mutedTextColor": "#64748B",
   "dangerColor": "#DC2626",
-  "backgroundStyle": "clean",
-  "cardStyle": "repair",
-  "buttonStyle": "solid",
-  "iconStyle": "line",
-  "illustrationStyle": "flat",
-  "resultScreenStyle": "steps",
-  "onboardingStyle": "start",
-  "visualMood": "technical"
+  "backgroundStyle": "clean-bathroom-utility",
+  "cardStyle": "rounded-repair-card",
+  "buttonStyle": "solid-safe-action",
+  "iconStyle": "sealant-line",
+  "illustrationStyle": "flat-diy-repair",
+  "resultScreenStyle": "safety-checklist-steps",
+  "onboardingStyle": "problem-risk-first-start",
+  "visualMood": "technical-calm-safe"
 }
