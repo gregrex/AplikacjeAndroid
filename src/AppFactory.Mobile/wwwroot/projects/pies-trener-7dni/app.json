@@ -1,0 +1,7 @@
+{
+  "appId": "pies-trener-7dni",
+  "appName": "Pies Trener 7 Dni",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl", "en", "uk"],
+  "features": { "history": true, "favorites": true, "photoOptional": false, "exportText": true }
+}
