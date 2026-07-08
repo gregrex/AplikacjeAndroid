@@ -31,6 +31,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<FavoritesService>();
         builder.Services.AddSingleton<LanguageService>();
         builder.Services.AddSingleton<ProjectThemeService>();
+        builder.Services.AddSingleton<ProjectCatalogService>();
+        builder.Services.AddSingleton<ProjectContextService>();
 
         return builder.Build();
     }
