@@ -1,25 +1,32 @@
 @page "/"
 @inject ProjectCatalogService Catalog
 @inject ProjectContextService ProjectContext
+@inject ProjectUiProfileService UiProfiles
 @inject NavigationManager Nav
 
-<div class="card">
+<section class="hero-card">
+    <p class="result-kicker">AppFactory MVP</p>
     <h1>Aplikacje Android</h1>
-    <p class="muted">Wybierz projekt MVP. Każdy projekt korzysta ze wspólnego silnika, ale ma własne dane i własny styl.</p>
-</div>
+    <p>Wybierz mikroaplikację. Każda korzysta ze wspólnego silnika, ale ma własny styl, własny typ wyniku i własne akcje.</p>
+</section>
 
-@foreach (var project in _projects)
-{
-    <div class="card">
-        <h2>@project.Name</h2>
-        <p>@project.Description</p>
-        <button class="button" @onclick="() => SelectProject(project.Id)">Otwórz</button>
-    </div>
-}
+<div class="project-grid">
+    @foreach (var project in _projects)
+    {
+        var profile = UiProfiles.GetProfile(project.Id);
+        <article class="project-card">
+            <p class="result-kicker">@GetExperienceLabel(profile.ResultViewType)</p>
+            <h2>@project.Name</h2>
+            <p>@project.Description</p>
+            <p class="muted">Widok: @profile.ResultViewType</p>
+            <button class="button" @onclick="() => SelectProject(project.Id)">Otwórz aplikację</button>
+        </article>
+    }
+</div>
 
 <div class="card">
     <h3>Tryb MVP</h3>
-    <p>Na tym etapie używamy lokalnych reguł, lokalnych danych i mockowanych reklam.</p>
+    <p>Na tym etapie używamy lokalnych reguł, lokalnych danych, indywidualnych profili UI i mockowanych reklam.</p>
 </div>
 
 @code {
@@ -34,5 +41,18 @@
     {
         ProjectContext.SelectProject(projectId);
         Nav.NavigateTo("/categories");
+    }
+
+    private static string GetExperienceLabel(string resultViewType)
+    {
+        return resultViewType switch
+        {
+            "instruction-checklist" => "Instrukcja",
+            "technical-safety-checklist" => "Techniczna checklista",
+            "seven-day-plan" => "Plan 7 dni",
+            "story-page" => "Bajka",
+            "sales-copy-card" => "Opis do skopiowania",
+            _ => "Aplikacja"
+        };
     }
 }
