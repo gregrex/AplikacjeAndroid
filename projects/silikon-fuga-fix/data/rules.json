@@ -1,0 +1,10 @@
+[
+  { "id": "leak_stop", "categoryId": "suspected_leak", "when": { "problem": "suspected_leak" }, "score": 100, "freeResultId": "leak_stop_free", "premiumResultId": "leak_stop_premium" },
+  { "id": "high_risk_stop", "categoryId": "*", "when": { "risk": "high" }, "score": 99, "freeResultId": "high_risk_stop_free", "premiumResultId": "high_risk_stop_premium" },
+  { "id": "dirty_grout_clean", "categoryId": "dirty_grout", "when": { "problem": "dirty_grout" }, "score": 90, "freeResultId": "dirty_grout_clean_free", "premiumResultId": "dirty_grout_clean_premium" },
+  { "id": "old_silicone_replace", "categoryId": "old_silicone", "when": { "problem": "old_silicone" }, "score": 86, "freeResultId": "old_silicone_replace_free", "premiumResultId": "old_silicone_replace_premium" },
+  { "id": "mold_silicone", "categoryId": "mold", "when": { "problem": "mold" }, "score": 82, "freeResultId": "mold_silicone_free", "premiumResultId": "mold_silicone_premium" },
+  { "id": "crack_repair", "categoryId": "crack", "when": { "problem": "crack" }, "score": 78, "freeResultId": "crack_repair_free", "premiumResultId": "crack_repair_premium" },
+  { "id": "detached_replace", "categoryId": "detached", "when": { "problem": "detached" }, "score": 74, "freeResultId": "detached_replace_free", "premiumResultId": "detached_replace_premium" },
+  { "id": "default_joint", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_joint_free", "premiumResultId": "default_joint_premium" }
+]
