@@ -1,0 +1,22 @@
+{
+  "themeId": "training-green",
+  "brandName": "Pies Trener 7 Dni",
+  "targetAudience": "owners",
+  "tone": "friendly-active",
+  "primaryColor": "#16A34A",
+  "secondaryColor": "#F97316",
+  "accentColor": "#FACC15",
+  "backgroundColor": "#F0FDF4",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#14532D",
+  "mutedTextColor": "#4B5563",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "warm-active",
+  "cardStyle": "friendly-rounded",
+  "buttonStyle": "playful-solid",
+  "iconStyle": "outline-training",
+  "illustrationStyle": "flat-training",
+  "resultScreenStyle": "daily-plan-card",
+  "onboardingStyle": "seven-day-plan",
+  "visualMood": "friendly-active"
+}
