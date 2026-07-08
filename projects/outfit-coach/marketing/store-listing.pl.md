@@ -6,24 +6,24 @@ Prosty doradca stroju do okazji, pogody i stylu — bez oceniania ciała ani oso
 
 ## Pełny opis
 
-Outfit Coach pomaga szybko dobrać zestaw ubrań do sytuacji. Użytkownik wybiera okazję, pogodę, styl oraz podstawowe elementy garderoby, a aplikacja przygotowuje krótką propozycję stroju, listę rzeczy do sprawdzenia przed wyjściem i informacje, czego lepiej unikać.
+Outfit Coach pomaga szybko dobrać zestaw ubrań do sytuacji: szkoły, uczelni, spotkania, rozmowy, imprezy, spaceru albo uroczystości rodzinnej. Aplikacja prowadzi przez kilka pytań o okazję, pogodę, styl i elementy garderoby, a potem pokazuje gotową propozycję stroju oraz listę kontrolną przed wyjściem.
 
-Aplikacja działa praktycznie: nie ocenia wyglądu użytkownika, wagi, sylwetki ani atrakcyjności. Ocenia wyłącznie dopasowanie ubrań do okazji, pogody i wygody.
+Wyniki skupiają się na praktyczności: pogodzie, wygodzie, czystości, warstwach i dopasowaniu formalności do okazji. Aplikacja nie ocenia wyglądu użytkownika, sylwetki, wagi ani atrakcyjności.
 
 ## Najważniejsze funkcje
 
-- dobór zestawu do szkoły, uczelni, spotkania, rozmowy, imprezy, spaceru i uroczystości rodzinnej,
-- uwzględnienie pogody: ciepło, chłód, deszcz i warstwy,
-- wariant darmowy oraz pełniejszy wariant po reklamie,
-- lista kontrolna przed wyjściem,
-- wskazówki, czego unikać,
+- dobór stroju do okazji i pogody,
+- warianty: szkoła, spotkanie, rozmowa, impreza, spacer, uroczystość rodzinna,
+- prosta propozycja darmowa,
+- pełniejszy wariant po reklamie,
+- checklista przed wyjściem,
 - historia i ulubione,
-- gotowość pod eksport tekstu i listę zakupów.
+- obsługa PL/EN/UK.
 
 ## Słowa kluczowe
 
-outfit, stylizacja, ubiór, moda, strój do pracy, strój na uczelnię, strój na rozmowę, smart casual, pogoda, garderoba
+outfit, stylizacja, ubrania, moda, strój, okazja, pogoda, smart casual, rozmowa, uczelnia, impreza, spacer
 
 ## Zastrzeżenie
 
-Outfit Coach nie ocenia ciała, wagi, atrakcyjności ani osoby. Aplikacja pomaga wyłącznie uporządkować wybór ubrań pod okazję, pogodę i wygodę.
+Aplikacja ocenia wyłącznie dopasowanie stroju do okazji, pogody i wygody. Nie ocenia ciała, osoby, atrakcyjności ani wartości użytkownika.
