@@ -1,0 +1,8 @@
+{
+  "appId": "pakowanie-paczek",
+  "appName": "Pakowanie Paczek",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl", "en", "uk"],
+  "theme": { "primaryColor": "#92400E", "secondaryColor": "#F59E0B" },
+  "features": { "history": true, "favorites": true, "photoOptional": false, "exportText": true }
+}
