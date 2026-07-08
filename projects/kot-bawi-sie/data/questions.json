@@ -1,0 +1,6 @@
+[
+  { "id": "age", "type": "single", "textKey": "question.age", "required": true, "options": [ { "value": "kitten", "labelKey": "age.kitten" }, { "value": "adult", "labelKey": "age.adult" }, { "value": "senior", "labelKey": "age.senior" } ] },
+  { "id": "energy", "type": "single", "textKey": "question.energy", "required": true, "options": [ { "value": "low", "labelKey": "energy.low" }, { "value": "medium", "labelKey": "energy.medium" }, { "value": "high", "labelKey": "energy.high" } ] },
+  { "id": "time", "type": "single", "textKey": "question.time", "required": true, "options": [ { "value": "5", "labelKey": "time.5" }, { "value": "10", "labelKey": "time.10" }, { "value": "20", "labelKey": "time.20" } ] },
+  { "id": "toy", "type": "single", "textKey": "question.toy", "required": true, "options": [ { "value": "fishing_rod", "labelKey": "toy.fishingRod" }, { "value": "cardboard", "labelKey": "toy.cardboard" }, { "value": "food", "labelKey": "toy.food" }, { "value": "no_toys", "labelKey": "toy.noToys" } ] }
+]
