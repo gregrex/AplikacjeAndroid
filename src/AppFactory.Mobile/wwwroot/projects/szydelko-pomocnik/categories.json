@@ -1,0 +1,9 @@
+[
+  { "id": "scarf", "nameKey": "project.scarf", "icon": "thread" },
+  { "id": "hat", "nameKey": "project.hat", "icon": "thread" },
+  { "id": "coaster", "nameKey": "project.coaster", "icon": "thread" },
+  { "id": "amigurumi", "nameKey": "project.amigurumi", "icon": "thread" },
+  { "id": "blanket", "nameKey": "project.blanket", "icon": "thread" },
+  { "id": "stitches", "nameKey": "project.stitches", "icon": "thread" },
+  { "id": "abbreviations", "nameKey": "project.abbreviations", "icon": "thread" }
+]
