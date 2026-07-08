@@ -1,0 +1,12 @@
+[
+  { "id": "high_risk_stop", "categoryId": "*", "when": { "risk": "high" }, "score": 100, "freeResultId": "high_risk_stop_free", "premiumResultId": "high_risk_stop_premium" },
+  { "id": "squeaky_door", "categoryId": "door", "when": { "problem": "squeaky_door" }, "score": 95, "freeResultId": "squeaky_door_free", "premiumResultId": "squeaky_door_premium" },
+  { "id": "loose_hinge", "categoryId": "hinge", "when": { "problem": "loose_hinge" }, "score": 90, "freeResultId": "loose_hinge_free", "premiumResultId": "loose_hinge_premium" },
+  { "id": "scratch_furniture", "categoryId": "furniture", "when": { "problem": "scratch" }, "score": 85, "freeResultId": "scratch_furniture_free", "premiumResultId": "scratch_furniture_premium" },
+  { "id": "clogged_drain", "categoryId": "drain", "when": { "problem": "clogged_drain" }, "score": 82, "freeResultId": "clogged_drain_free", "premiumResultId": "clogged_drain_premium" },
+  { "id": "silicone_replace", "categoryId": "silicone", "when": { "problem": "silicone" }, "score": 78, "freeResultId": "silicone_replace_free", "premiumResultId": "silicone_replace_premium" },
+  { "id": "grout_refresh", "categoryId": "grout", "when": { "problem": "grout" }, "score": 74, "freeResultId": "grout_refresh_free", "premiumResultId": "grout_refresh_premium" },
+  { "id": "zipper_fix", "categoryId": "zipper", "when": { "problem": "zipper" }, "score": 70, "freeResultId": "zipper_fix_free", "premiumResultId": "zipper_fix_premium" },
+  { "id": "small_seal", "categoryId": "seal", "when": { "problem": "seal" }, "score": 66, "freeResultId": "small_seal_free", "premiumResultId": "small_seal_premium" },
+  { "id": "default_safe", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_safe_free", "premiumResultId": "default_safe_premium" }
+]
