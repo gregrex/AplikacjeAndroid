@@ -1,0 +1,7 @@
+[
+  { "id": "interview", "nameKey": "occasion.interview", "icon": "tie" },
+  { "id": "family_event", "nameKey": "occasion.familyEvent", "icon": "tie" },
+  { "id": "exam", "nameKey": "occasion.exam", "icon": "tie" },
+  { "id": "business", "nameKey": "occasion.business", "icon": "tie" },
+  { "id": "evening", "nameKey": "occasion.evening", "icon": "tie" }
+]
