@@ -1,0 +1,8 @@
+[
+  { "id": "kitten", "nameKey": "cat.kitten", "icon": "paw" },
+  { "id": "indoor", "nameKey": "cat.indoor", "icon": "home" },
+  { "id": "high_energy", "nameKey": "cat.highEnergy", "icon": "bolt" },
+  { "id": "senior", "nameKey": "cat.senior", "icon": "heart" },
+  { "id": "diy", "nameKey": "cat.diy", "icon": "box" },
+  { "id": "calm", "nameKey": "cat.calm", "icon": "moon" }
+]
