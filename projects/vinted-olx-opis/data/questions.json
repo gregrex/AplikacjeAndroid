@@ -1,0 +1,5 @@
+[
+  { "id": "condition", "type": "single", "textKey": "question.condition", "required": true, "options": [ { "value": "new", "labelKey": "condition.new" }, { "value": "very_good", "labelKey": "condition.veryGood" }, { "value": "good", "labelKey": "condition.good" }, { "value": "used", "labelKey": "condition.used" } ] },
+  { "id": "tone", "type": "single", "textKey": "question.tone", "required": true, "options": [ { "value": "short", "labelKey": "tone.short" }, { "value": "friendly", "labelKey": "tone.friendly" }, { "value": "detailed", "labelKey": "tone.detailed" } ] },
+  { "id": "shipping", "type": "single", "textKey": "question.shipping", "required": true, "options": [ { "value": "yes", "labelKey": "shipping.yes" }, { "value": "pickup", "labelKey": "shipping.pickup" }, { "value": "both", "labelKey": "shipping.both" } ] }
+]
