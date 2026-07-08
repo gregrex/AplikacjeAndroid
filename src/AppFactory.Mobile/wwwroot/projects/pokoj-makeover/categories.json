@@ -1,0 +1,8 @@
+[
+  { "id": "minimal", "nameKey": "style.minimal", "icon": "minus" },
+  { "id": "cozy", "nameKey": "style.cozy", "icon": "sofa" },
+  { "id": "colorful", "nameKey": "style.colorful", "icon": "palette" },
+  { "id": "gaming", "nameKey": "style.gaming", "icon": "gamepad" },
+  { "id": "study_work", "nameKey": "style.studyWork", "icon": "desk" },
+  { "id": "small_room", "nameKey": "style.smallRoom", "icon": "maximize" }
+]
