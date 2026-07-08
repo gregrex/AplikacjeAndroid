@@ -1,0 +1,8 @@
+{
+  "appId": "bukietownik",
+  "appName": "Bukietownik",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl", "en", "uk"],
+  "theme": { "primaryColor": "#DB2777", "secondaryColor": "#16A34A" },
+  "features": { "history": true, "favorites": true, "photoOptional": false, "exportText": true }
+}
