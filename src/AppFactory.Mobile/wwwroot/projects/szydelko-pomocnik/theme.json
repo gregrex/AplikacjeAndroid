@@ -1,0 +1,22 @@
+{
+  "themeId": "crochet-soft-craft",
+  "brandName": "Szydełko Pomocnik",
+  "targetAudience": "beginner-and-hobby-crochet-users",
+  "tone": "calm-practical-craft",
+  "primaryColor": "#BE185D",
+  "secondaryColor": "#F9A8D4",
+  "accentColor": "#A78BFA",
+  "backgroundColor": "#FDF2F8",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#831843",
+  "mutedTextColor": "#6B7280",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "soft-yarn-gradient",
+  "cardStyle": "rounded-craft-card",
+  "buttonStyle": "soft-craft-action",
+  "iconStyle": "yarn-line",
+  "illustrationStyle": "flat-crochet-craft",
+  "resultScreenStyle": "project-notes-card",
+  "onboardingStyle": "project-counter-first-start",
+  "visualMood": "calm-handmade-practical"
+}
