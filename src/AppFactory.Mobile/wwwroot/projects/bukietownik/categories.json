@@ -1,0 +1,7 @@
+[
+  { "id": "birthday", "nameKey": "occasion.birthday", "icon": "gift" },
+  { "id": "thanks", "nameKey": "occasion.thanks", "icon": "heart" },
+  { "id": "family", "nameKey": "occasion.family", "icon": "home" },
+  { "id": "home_decor", "nameKey": "occasion.homeDecor", "icon": "vase" },
+  { "id": "just_because", "nameKey": "occasion.justBecause", "icon": "flower" }
+]
