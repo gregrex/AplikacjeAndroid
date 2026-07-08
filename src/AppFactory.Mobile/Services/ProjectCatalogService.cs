@@ -13,7 +13,8 @@ public sealed class ProjectCatalogService
             new("vinted-olx-opis", "Opis Sprzedażowy", "Szablony opisów do sprzedaży online"),
             new("kot-bawi-sie", "Kot Bawi się", "Zabawy i aktywności dla kota domowego"),
             new("barber-translator", "Barber Translator", "Instrukcja fryzury do pokazania barberowi"),
-            new("outfit-coach", "Outfit Coach", "Dobór stroju do okazji, pogody i stylu")
+            new("outfit-coach", "Outfit Coach", "Dobór stroju do okazji, pogody i stylu"),
+            new("domfix", "DomFix", "Bezpieczne drobne naprawy domowe")
         };
     }
 }
