@@ -1,0 +1,8 @@
+[
+  { "id": "sit", "nameKey": "training.sit", "icon": "dog-sit" },
+  { "id": "stay", "nameKey": "training.stay", "icon": "hand" },
+  { "id": "come", "nameKey": "training.come", "icon": "whistle" },
+  { "id": "leash", "nameKey": "training.leash", "icon": "leash" },
+  { "id": "jumping", "nameKey": "training.jumping", "icon": "jump" },
+  { "id": "leave", "nameKey": "training.leave", "icon": "stop" }
+]
