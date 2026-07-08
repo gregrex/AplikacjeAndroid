@@ -1,0 +1,8 @@
+[
+  { "id": "bedtime", "nameKey": "story.bedtime", "icon": "moon" },
+  { "id": "adventure", "nameKey": "story.adventure", "icon": "map" },
+  { "id": "friendship", "nameKey": "story.friendship", "icon": "heart" },
+  { "id": "brave", "nameKey": "story.brave", "icon": "star" },
+  { "id": "funny", "nameKey": "story.funny", "icon": "smile" },
+  { "id": "calm", "nameKey": "story.calm", "icon": "cloud" }
+]
