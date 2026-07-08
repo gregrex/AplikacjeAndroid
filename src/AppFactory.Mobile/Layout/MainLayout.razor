@@ -1,8 +1,36 @@
 @inherits LayoutComponentBase
+@inject ProjectThemeService ThemeService
 
-<div class="app-shell">
-    <div class="topbar">AppFactory Mobile</div>
+<div class="app-shell" style="@_themeStyle">
+    <div class="topbar">@_brandName</div>
     <main class="content">
         @Body
     </main>
 </div>
+
+@code {
+    private string _brandName = "AppFactory Mobile";
+    private string _themeStyle = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var theme = await ThemeService.LoadThemeAsync("plama-ratownik");
+        _brandName = string.IsNullOrWhiteSpace(theme.BrandName) ? _brandName : theme.BrandName;
+        _themeStyle = BuildStyle(theme);
+    }
+
+    private static string BuildStyle(ThemeDefinition theme)
+    {
+        return string.Join(" ", new[]
+        {
+            $"--primary:{theme.PrimaryColor};",
+            $"--secondary:{theme.SecondaryColor};",
+            $"--accent:{theme.AccentColor};",
+            $"--bg:{theme.BackgroundColor};",
+            $"--card:{theme.SurfaceColor};",
+            $"--text:{theme.TextColor};",
+            $"--muted:{theme.MutedTextColor};",
+            $"--danger:{theme.DangerColor};"
+        });
+    }
+}
