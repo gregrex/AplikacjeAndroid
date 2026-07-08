@@ -1,0 +1,5 @@
+[
+  { "id": "age", "type": "single", "textKey": "question.age", "required": true, "options": [ { "value": "puppy", "labelKey": "age.puppy" }, { "value": "adult", "labelKey": "age.adult" }, { "value": "senior", "labelKey": "age.senior" } ] },
+  { "id": "energy", "type": "single", "textKey": "question.energy", "required": true, "options": [ { "value": "low", "labelKey": "energy.low" }, { "value": "medium", "labelKey": "energy.medium" }, { "value": "high", "labelKey": "energy.high" } ] },
+  { "id": "level", "type": "single", "textKey": "question.level", "required": true, "options": [ { "value": "easy", "labelKey": "level.easy" }, { "value": "normal", "labelKey": "level.normal" }, { "value": "hard", "labelKey": "level.hard" } ] }
+]
