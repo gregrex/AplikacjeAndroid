@@ -19,7 +19,8 @@ public sealed class ProjectCatalogService
             new("rysunek-coach", "Rysunek Coach", "Proste lekcje rysowania krok po kroku"),
             new("bukietownik", "Bukietownik", "Proste kompozycje kwiatowe do okazji"),
             new("pokoj-makeover", "Pokój Makeover", "Metamorfoza pokoju bez remontu"),
-            new("pakowanie-paczek", "Pakowanie Paczek", "Checklisty zabezpieczenia przedmiotów do wysyłki")
+            new("pakowanie-paczek", "Pakowanie Paczek", "Checklisty zabezpieczenia przedmiotów do wysyłki"),
+            new("silikon-fuga-fix", "Silikon Fuga Fix", "Bezpieczne czyszczenie, ocena i wymiana silikonu lub fug")
         };
     }
 }
