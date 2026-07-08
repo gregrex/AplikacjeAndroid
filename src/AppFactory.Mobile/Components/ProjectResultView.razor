@@ -1,0 +1,163 @@
+@inject ProjectUiProfileService UiProfiles
+@inject ClipboardExportService ClipboardExport
+
+@if (Result is null)
+{
+    <div class="card">@_profile.EmptyStateText</div>
+}
+else
+{
+    <section class="result-view @CssClass">
+        @if (_profile.ResultViewType == "story-page")
+        {
+            <div class="story-page-card">
+                <p class="result-kicker">Bajka</p>
+                <h2>@Result.Title</h2>
+                <p class="story-summary">@Result.Summary</p>
+                @RenderStepsAsParagraphs(Result)
+            </div>
+        }
+        else if (_profile.ResultViewType == "seven-day-plan")
+        {
+            <div class="plan-card">
+                <p class="result-kicker">Plan treningowy</p>
+                <h2>@Result.Title</h2>
+                <p>@Result.Summary</p>
+                <div class="day-plan">
+                    @foreach (var step in Result.Steps)
+                    {
+                        <div class="day-row">@step</div>
+                    }
+                </div>
+            </div>
+        }
+        else if (_profile.ResultViewType == "sales-copy-card")
+        {
+            <div class="copy-card">
+                <p class="result-kicker">Opis do skopiowania</p>
+                <h2>@Result.Title</h2>
+                <p>@Result.Summary</p>
+                <textarea class="copy-text" readonly>@BuildCopyText(Result)</textarea>
+                <button class="button" @onclick="CopyResult">Kopiuj opis</button>
+                @if (!string.IsNullOrWhiteSpace(_copyStatus))
+                {
+                    <p class="muted">@_copyStatus</p>
+                }
+            </div>
+        }
+        else if (_profile.ResultViewType == "technical-safety-checklist")
+        {
+            <div class="technical-card">
+                <p class="result-kicker">Checklista techniczna</p>
+                <h2>@Result.Title</h2>
+                <p>@Result.Summary</p>
+                <ol class="checklist technical-list">
+                    @foreach (var step in Result.Steps)
+                    {
+                        <li>@step</li>
+                    }
+                </ol>
+            </div>
+        }
+        else
+        {
+            <div class="instruction-card">
+                <p class="result-kicker">Instrukcja</p>
+                <h2>@Result.Title</h2>
+                <p>@Result.Summary</p>
+                <ol class="checklist">
+                    @foreach (var step in Result.Steps)
+                    {
+                        <li>@step</li>
+                    }
+                </ol>
+            </div>
+        }
+
+        @if (_profile.ShowSafetyBlock && Result.Warnings.Count > 0)
+        {
+            <div class="safety-card">
+                <h4>Ostrzeżenia</h4>
+                <ul>
+                    @foreach (var warning in Result.Warnings)
+                    {
+                        <li>@warning</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @if (ShowPremiumBlocks)
+        {
+            @if (_profile.ShowNeededBlock && Result.Needed.Count > 0)
+            {
+                <div class="support-card">
+                    <h4>Potrzebne rzeczy</h4>
+                    <ul>
+                        @foreach (var item in Result.Needed)
+                        {
+                            <li>@item</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            @if (_profile.ShowDontDoBlock && Result.DontDo.Count > 0)
+            {
+                <div class="danger-card">
+                    <h4>Czego nie robić</h4>
+                    <ul>
+                        @foreach (var item in Result.DontDo)
+                        {
+                            <li>@item</li>
+                        }
+                    </ul>
+                </div>
+            }
+        }
+    </section>
+}
+
+@code {
+    [Parameter] public string ProjectId { get; set; } = string.Empty;
+    [Parameter] public ResultDefinition? Result { get; set; }
+    [Parameter] public bool ShowPremiumBlocks { get; set; }
+
+    private ProjectUiProfile _profile = new();
+    private string _copyStatus = string.Empty;
+
+    private string CssClass => _profile.ResultViewType.Replace("-", "_");
+
+    protected override void OnParametersSet()
+    {
+        _profile = UiProfiles.GetProfile(ProjectId);
+    }
+
+    private async Task CopyResult()
+    {
+        if (Result is null)
+        {
+            return;
+        }
+
+        await ClipboardExport.CopyResultAsync(Result);
+        _copyStatus = "Opis skopiowany do schowka.";
+    }
+
+    private static string BuildCopyText(ResultDefinition result)
+    {
+        return string.Join(Environment.NewLine, result.Steps);
+    }
+
+    private static RenderFragment RenderStepsAsParagraphs(ResultDefinition result) => builder =>
+    {
+        var sequence = 0;
+        foreach (var step in result.Steps)
+        {
+            builder.OpenElement(sequence++, "p");
+            builder.AddAttribute(sequence++, "class", "story-line");
+            builder.AddContent(sequence++, step);
+            builder.CloseElement();
+        }
+    };
+}
