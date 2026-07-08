@@ -15,7 +15,8 @@ public sealed class ProjectCatalogService
             new("barber-translator", "Barber Translator", "Instrukcja fryzury do pokazania barberowi"),
             new("outfit-coach", "Outfit Coach", "Dobór stroju do okazji, pogody i stylu"),
             new("domfix", "DomFix", "Bezpieczne drobne naprawy domowe"),
-            new("fryzury-proste", "Fryzury Proste", "Neutralne instrukcje prostych uczesań")
+            new("fryzury-proste", "Fryzury Proste", "Neutralne instrukcje prostych uczesań"),
+            new("rysunek-coach", "Rysunek Coach", "Proste lekcje rysowania krok po kroku")
         };
     }
 }
