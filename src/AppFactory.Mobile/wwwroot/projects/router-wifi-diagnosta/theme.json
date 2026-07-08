@@ -1,0 +1,22 @@
+{
+  "themeId": "wifi-blue-diagnostic",
+  "brandName": "Router WiFi Diagnosta",
+  "targetAudience": "home-wifi-users",
+  "tone": "clear-practical-technical",
+  "primaryColor": "#2563EB",
+  "secondaryColor": "#06B6D4",
+  "accentColor": "#F59E0B",
+  "backgroundColor": "#EFF6FF",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#172554",
+  "mutedTextColor": "#64748B",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "clean-network-gradient",
+  "cardStyle": "rounded-wifi-diagnostic-card",
+  "buttonStyle": "solid-network-action",
+  "iconStyle": "wifi-line",
+  "illustrationStyle": "flat-home-network",
+  "resultScreenStyle": "wifi-test-checklist",
+  "onboardingStyle": "problem-location-first-start",
+  "visualMood": "technical-calm-helpful"
+}
