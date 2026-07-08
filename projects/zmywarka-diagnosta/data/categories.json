@@ -1,0 +1,10 @@
+[
+  { "id": "not_cleaning", "nameKey": "symptom.notCleaning", "icon": "dishwasher" },
+  { "id": "residue", "nameKey": "symptom.residue", "icon": "dishwasher" },
+  { "id": "bad_smell", "nameKey": "symptom.badSmell", "icon": "dishwasher" },
+  { "id": "tablet_not_dissolved", "nameKey": "symptom.tabletNotDissolved", "icon": "dishwasher" },
+  { "id": "wet_dishes", "nameKey": "symptom.wetDishes", "icon": "dishwasher" },
+  { "id": "not_draining", "nameKey": "symptom.notDraining", "icon": "dishwasher" },
+  { "id": "error_code", "nameKey": "symptom.errorCode", "icon": "warning" },
+  { "id": "safety_stop", "nameKey": "symptom.safetyStop", "icon": "warning" }
+]
