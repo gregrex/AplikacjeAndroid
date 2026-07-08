@@ -1,0 +1,8 @@
+{
+  "appId": "krawat-garnitur-coach",
+  "appName": "Krawat Garnitur Coach",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl", "en", "uk"],
+  "theme": { "primaryColor": "#111827", "secondaryColor": "#B45309" },
+  "features": { "history": true, "favorites": true, "photoOptional": false, "exportText": true }
+}
