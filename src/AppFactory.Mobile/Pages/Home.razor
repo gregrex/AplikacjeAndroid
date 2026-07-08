@@ -1,23 +1,38 @@
 @page "/"
-@inject ProjectDataService ProjectData
+@inject ProjectCatalogService Catalog
+@inject ProjectContextService ProjectContext
+@inject NavigationManager Nav
 
 <div class="card">
-    <h1>@_appName</h1>
-    <p class="muted">Lokalna aplikacja bez serwera. Dane są ładowane z paczki projektu.</p>
-    <a class="button" href="/categories">Start</a>
+    <h1>Aplikacje Android</h1>
+    <p class="muted">Wybierz projekt MVP. Każdy projekt korzysta ze wspólnego silnika, ale ma własne dane i własny styl.</p>
 </div>
+
+@foreach (var project in _projects)
+{
+    <div class="card">
+        <h2>@project.Name</h2>
+        <p>@project.Description</p>
+        <button class="button" @onclick="() => SelectProject(project.Id)">Otwórz</button>
+    </div>
+}
 
 <div class="card">
     <h3>Tryb MVP</h3>
-    <p>Na tym etapie używamy lokalnych reguł, bez trenowania AI i bez backendu.</p>
+    <p>Na tym etapie używamy lokalnych reguł, lokalnych danych i mockowanych reklam.</p>
 </div>
 
 @code {
-    private string _appName = "AppFactory";
+    private IReadOnlyList<ProjectCatalogItem> _projects = Array.Empty<ProjectCatalogItem>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        var config = await ProjectData.LoadAppConfigAsync("plama-ratownik");
-        _appName = config?.AppName ?? _appName;
+        _projects = Catalog.GetProjects();
+    }
+
+    private void SelectProject(string projectId)
+    {
+        ProjectContext.SelectProject(projectId);
+        Nav.NavigateTo("/categories");
     }
 }
