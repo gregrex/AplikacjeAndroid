@@ -1,10 +1,12 @@
 :root {
     --primary: #2563eb;
     --secondary: #f97316;
+    --accent: #22c55e;
     --bg: #f8fafc;
     --card: #ffffff;
     --text: #0f172a;
     --muted: #64748b;
+    --danger: #dc2626;
 }
 
 html, body {
@@ -19,13 +21,15 @@ html, body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: var(--bg);
 }
 
 .topbar {
     padding: 16px;
     color: white;
-    background: var(--primary);
-    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    font-weight: 800;
+    letter-spacing: 0.01em;
 }
 
 .content {
@@ -33,9 +37,17 @@ html, body {
     flex: 1;
 }
 
-.card {
+.card,
+.instruction-card,
+.technical-card,
+.plan-card,
+.story-page-card,
+.copy-card,
+.safety-card,
+.support-card,
+.danger-card {
     background: var(--card);
-    border-radius: 16px;
+    border-radius: 18px;
     padding: 16px;
     margin-bottom: 12px;
     box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
@@ -58,4 +70,95 @@ html, body {
 
 .muted {
     color: var(--muted);
+}
+
+.result-view {
+    margin-bottom: 16px;
+}
+
+.result-kicker {
+    margin: 0 0 8px 0;
+    color: var(--secondary);
+    font-weight: 800;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.checklist {
+    padding-left: 20px;
+}
+
+.checklist li,
+.technical-list li {
+    margin-bottom: 10px;
+    line-height: 1.45;
+}
+
+.technical-card {
+    border-left: 5px solid var(--secondary);
+}
+
+.plan-card {
+    border-top: 5px solid var(--primary);
+}
+
+.day-plan {
+    display: grid;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.day-row {
+    padding: 12px;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--primary) 9%, white);
+    font-weight: 650;
+}
+
+.story-page-card {
+    background: linear-gradient(180deg, var(--card), color-mix(in srgb, var(--secondary) 10%, white));
+    border: 1px solid color-mix(in srgb, var(--primary) 16%, white);
+}
+
+.story-summary {
+    font-size: 1.05rem;
+    line-height: 1.55;
+}
+
+.story-line {
+    font-size: 1.08rem;
+    line-height: 1.7;
+    margin: 14px 0;
+}
+
+.copy-card {
+    border: 1px solid color-mix(in srgb, var(--primary) 20%, white);
+}
+
+.copy-text {
+    width: 100%;
+    min-height: 180px;
+    box-sizing: border-box;
+    border: 1px solid color-mix(in srgb, var(--muted) 35%, white);
+    border-radius: 14px;
+    padding: 12px;
+    margin: 12px 0;
+    background: #ffffff;
+    color: var(--text);
+    font: inherit;
+    resize: vertical;
+}
+
+.safety-card {
+    border-left: 5px solid var(--danger);
+    background: color-mix(in srgb, var(--danger) 7%, white);
+}
+
+.support-card {
+    border-left: 5px solid var(--accent);
+}
+
+.danger-card {
+    border-left: 5px solid var(--danger);
 }
