@@ -1,0 +1,8 @@
+{
+  "appId": "rysunek-coach",
+  "appName": "Rysunek Coach",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl", "en", "uk"],
+  "theme": { "primaryColor": "#2563EB", "secondaryColor": "#F59E0B" },
+  "features": { "history": true, "favorites": true, "photoOptional": false, "exportText": true }
+}
