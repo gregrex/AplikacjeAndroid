@@ -1,0 +1,9 @@
+[
+  { "id": "starter_not_rising", "nameKey": "problem.starterNotRising", "icon": "bread" },
+  { "id": "dough_not_rising", "nameKey": "problem.doughNotRising", "icon": "bread" },
+  { "id": "dense_crumb", "nameKey": "problem.denseCrumb", "icon": "bread" },
+  { "id": "pale_crust", "nameKey": "problem.paleCrust", "icon": "bread" },
+  { "id": "cracking", "nameKey": "problem.cracking", "icon": "bread" },
+  { "id": "odd_smell", "nameKey": "problem.oddSmell", "icon": "warning" },
+  { "id": "feeding_schedule", "nameKey": "problem.feedingSchedule", "icon": "calendar" }
+]
