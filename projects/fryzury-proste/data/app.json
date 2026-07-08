@@ -1,0 +1,8 @@
+{
+  "appId": "fryzury-proste",
+  "appName": "Fryzury Proste",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl", "en", "uk"],
+  "theme": { "primaryColor": "#7C3AED", "secondaryColor": "#F472B6" },
+  "features": { "history": true, "favorites": true, "photoOptional": false, "exportText": true }
+}
