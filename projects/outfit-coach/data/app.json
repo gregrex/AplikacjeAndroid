@@ -1,0 +1,8 @@
+{
+  "appId": "outfit-coach",
+  "appName": "Outfit Coach",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl", "en", "uk"],
+  "theme": { "primaryColor": "#2563EB", "secondaryColor": "#EC4899" },
+  "features": { "history": true, "favorites": true, "photoOptional": false, "exportText": true }
+}
