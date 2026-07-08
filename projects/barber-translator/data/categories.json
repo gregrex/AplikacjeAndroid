@@ -1,0 +1,8 @@
+[
+  { "id": "short", "nameKey": "hair.short", "icon": "scissors" },
+  { "id": "medium", "nameKey": "hair.medium", "icon": "comb" },
+  { "id": "curly", "nameKey": "hair.curly", "icon": "waves" },
+  { "id": "fade", "nameKey": "hair.fade", "icon": "gradient" },
+  { "id": "formal", "nameKey": "hair.formal", "icon": "briefcase" },
+  { "id": "natural", "nameKey": "hair.natural", "icon": "leaf" }
+]
