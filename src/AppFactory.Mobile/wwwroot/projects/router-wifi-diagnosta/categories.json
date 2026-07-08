@@ -1,0 +1,7 @@
+[
+  { "id": "weak_signal", "nameKey": "problem.weakSignal", "icon": "wifi" },
+  { "id": "slow_speed", "nameKey": "problem.slowSpeed", "icon": "wifi" },
+  { "id": "disconnects", "nameKey": "problem.disconnects", "icon": "wifi" },
+  { "id": "one_room", "nameKey": "problem.oneRoom", "icon": "wifi" },
+  { "id": "many_devices", "nameKey": "problem.manyDevices", "icon": "wifi" }
+]
