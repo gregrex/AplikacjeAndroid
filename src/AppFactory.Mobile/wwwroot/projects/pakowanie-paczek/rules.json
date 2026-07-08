@@ -1,0 +1,9 @@
+[
+  { "id": "glass_fragile", "categoryId": "glass", "when": { "item_type": "glass" }, "score": 98, "freeResultId": "glass_fragile_free", "premiumResultId": "glass_fragile_premium" },
+  { "id": "electronics_safe", "categoryId": "electronics", "when": { "item_type": "electronics" }, "score": 95, "freeResultId": "electronics_safe_free", "premiumResultId": "electronics_safe_premium" },
+  { "id": "books_corners", "categoryId": "books", "when": { "item_type": "books" }, "score": 86, "freeResultId": "books_corners_free", "premiumResultId": "books_corners_premium" },
+  { "id": "clothes_soft", "categoryId": "clothes", "when": { "item_type": "clothes" }, "score": 82, "freeResultId": "clothes_soft_free", "premiumResultId": "clothes_soft_premium" },
+  { "id": "shoes_shape", "categoryId": "shoes", "when": { "item_type": "shoes" }, "score": 78, "freeResultId": "shoes_shape_free", "premiumResultId": "shoes_shape_premium" },
+  { "id": "small_appliance_buffer", "categoryId": "small_appliance", "when": { "item_type": "small_appliance" }, "score": 70, "freeResultId": "small_appliance_buffer_free", "premiumResultId": "small_appliance_buffer_premium" },
+  { "id": "default_pack", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_pack_free", "premiumResultId": "default_pack_premium" }
+]
