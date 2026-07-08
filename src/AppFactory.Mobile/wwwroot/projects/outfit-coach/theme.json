@@ -1,0 +1,22 @@
+{
+  "themeId": "outfit-soft-blue",
+  "brandName": "Outfit Coach",
+  "targetAudience": "people-planning-daily-outfits",
+  "tone": "supportive-practical",
+  "primaryColor": "#2563EB",
+  "secondaryColor": "#EC4899",
+  "accentColor": "#F59E0B",
+  "backgroundColor": "#EFF6FF",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#111827",
+  "mutedTextColor": "#6B7280",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "soft-wardrobe-gradient",
+  "cardStyle": "rounded-outfit-card",
+  "buttonStyle": "solid-friendly",
+  "iconStyle": "wardrobe-line",
+  "illustrationStyle": "clean-fashion-flat",
+  "resultScreenStyle": "outfit-checklist-card",
+  "onboardingStyle": "quick-style-start",
+  "visualMood": "fresh-practical-friendly"
+}
