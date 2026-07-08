@@ -1,0 +1,8 @@
+[
+  { "id": "picture", "nameKey": "mount.picture", "icon": "image" },
+  { "id": "shelf", "nameKey": "mount.shelf", "icon": "shelf" },
+  { "id": "mirror", "nameKey": "mount.mirror", "icon": "mirror" },
+  { "id": "curtain", "nameKey": "mount.curtain", "icon": "curtain" },
+  { "id": "hook", "nameKey": "mount.hook", "icon": "hook" },
+  { "id": "small_cabinet", "nameKey": "mount.smallCabinet", "icon": "cabinet" }
+]
