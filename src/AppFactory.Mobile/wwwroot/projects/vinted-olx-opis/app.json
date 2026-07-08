@@ -1,0 +1,7 @@
+{
+  "appId": "vinted-olx-opis",
+  "appName": "Opis Sprzedażowy",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl", "en", "uk"],
+  "features": { "history": true, "favorites": true, "photoOptional": false, "exportText": true }
+}
