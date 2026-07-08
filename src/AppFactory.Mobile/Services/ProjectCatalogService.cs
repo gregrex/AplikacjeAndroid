@@ -16,7 +16,8 @@ public sealed class ProjectCatalogService
             new("outfit-coach", "Outfit Coach", "Dobór stroju do okazji, pogody i stylu"),
             new("domfix", "DomFix", "Bezpieczne drobne naprawy domowe"),
             new("fryzury-proste", "Fryzury Proste", "Neutralne instrukcje prostych uczesań"),
-            new("rysunek-coach", "Rysunek Coach", "Proste lekcje rysowania krok po kroku")
+            new("rysunek-coach", "Rysunek Coach", "Proste lekcje rysowania krok po kroku"),
+            new("bukietownik", "Bukietownik", "Proste kompozycje kwiatowe do okazji")
         };
     }
 }
