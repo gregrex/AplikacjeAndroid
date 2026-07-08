@@ -1,0 +1,22 @@
+{
+  "themeId": "hair-simple-violet",
+  "brandName": "Fryzury Proste",
+  "targetAudience": "people-needing-simple-hairstyles",
+  "tone": "neutral-practical",
+  "primaryColor": "#7C3AED",
+  "secondaryColor": "#F472B6",
+  "accentColor": "#F59E0B",
+  "backgroundColor": "#FAF5FF",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#111827",
+  "mutedTextColor": "#6B7280",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "soft-violet-gradient",
+  "cardStyle": "rounded-hairstyle-card",
+  "buttonStyle": "solid-violet-action",
+  "iconStyle": "hair-line",
+  "illustrationStyle": "clean-beauty-neutral",
+  "resultScreenStyle": "step-by-step-hairstyle-card",
+  "onboardingStyle": "time-first-start",
+  "visualMood": "calm-neutral-friendly"
+}
