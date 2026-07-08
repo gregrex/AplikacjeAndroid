@@ -1,0 +1,10 @@
+[
+  { "id": "minimal_declutter", "categoryId": "minimal", "when": { "style": "minimal" }, "score": 95, "freeResultId": "minimal_declutter_free", "premiumResultId": "minimal_declutter_premium" },
+  { "id": "cozy_light", "categoryId": "cozy", "when": { "style": "cozy" }, "score": 90, "freeResultId": "cozy_light_free", "premiumResultId": "cozy_light_premium" },
+  { "id": "colorful_refresh", "categoryId": "colorful", "when": { "style": "colorful" }, "score": 85, "freeResultId": "colorful_refresh_free", "premiumResultId": "colorful_refresh_premium" },
+  { "id": "gaming_zone", "categoryId": "gaming", "when": { "style": "gaming" }, "score": 82, "freeResultId": "gaming_zone_free", "premiumResultId": "gaming_zone_premium" },
+  { "id": "study_work_desk", "categoryId": "study_work", "when": { "style": "study_work" }, "score": 78, "freeResultId": "study_work_desk_free", "premiumResultId": "study_work_desk_premium" },
+  { "id": "small_room_storage", "categoryId": "small_room", "when": { "style": "small_room" }, "score": 74, "freeResultId": "small_room_storage_free", "premiumResultId": "small_room_storage_premium" },
+  { "id": "zero_budget", "categoryId": "*", "when": { "budget": "zero" }, "score": 70, "freeResultId": "zero_budget_free", "premiumResultId": "zero_budget_premium" },
+  { "id": "default_makeover", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_makeover_free", "premiumResultId": "default_makeover_premium" }
+]
