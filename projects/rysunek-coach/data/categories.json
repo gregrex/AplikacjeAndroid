@@ -1,0 +1,9 @@
+[
+  { "id": "animals", "nameKey": "category.animals", "icon": "paw" },
+  { "id": "vehicles", "nameKey": "category.vehicles", "icon": "car" },
+  { "id": "plants", "nameKey": "category.plants", "icon": "leaf" },
+  { "id": "simple_people", "nameKey": "category.simplePeople", "icon": "person" },
+  { "id": "robots", "nameKey": "category.robots", "icon": "bot" },
+  { "id": "houses", "nameKey": "category.houses", "icon": "home" },
+  { "id": "monsters", "nameKey": "category.monsters", "icon": "smile" }
+]
