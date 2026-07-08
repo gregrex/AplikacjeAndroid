@@ -1,9 +1,13 @@
 @inherits LayoutComponentBase
+@implements IDisposable
 @inject ProjectThemeService ThemeService
 @inject ProjectContextService ProjectContext
 
 <div class="app-shell" style="@_themeStyle">
-    <div class="topbar">@_brandName</div>
+    <div class="topbar">
+        <div>@_brandName</div>
+        <small>@ProjectContext.CurrentProjectId</small>
+    </div>
     <main class="content">
         @Body
     </main>
@@ -15,8 +19,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var theme = await ThemeService.LoadThemeAsync(ProjectContext.CurrentProjectId);
-        _brandName = string.IsNullOrWhiteSpace(theme.BrandName) ? _brandName : theme.BrandName;
+        ProjectContext.ProjectChanged += OnProjectChanged;
+        await LoadThemeAsync(ProjectContext.CurrentProjectId);
+    }
+
+    private async void OnProjectChanged(string projectId)
+    {
+        await LoadThemeAsync(projectId);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task LoadThemeAsync(string projectId)
+    {
+        var theme = await ThemeService.LoadThemeAsync(projectId);
+        _brandName = string.IsNullOrWhiteSpace(theme.BrandName) ? "AppFactory Mobile" : theme.BrandName;
         _themeStyle = BuildStyle(theme);
     }
 
@@ -33,5 +49,10 @@
             $"--muted:{theme.MutedTextColor};",
             $"--danger:{theme.DangerColor};"
         });
+    }
+
+    public void Dispose()
+    {
+        ProjectContext.ProjectChanged -= OnProjectChanged;
     }
 }
