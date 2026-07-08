@@ -1,0 +1,107 @@
+[
+  {
+    "id": "concrete_light_free",
+    "title": "Concrete, light item — quick recommendation",
+    "summary": "For a light item in concrete, a standard expansion plug and a concrete drill bit are usually enough.",
+    "steps": ["Mark the mounting point.", "Use a concrete drill bit and a plug matching the screw size."],
+    "warnings": ["Check for hidden cables or pipes before drilling."]
+  },
+  {
+    "id": "concrete_light_premium",
+    "title": "Concrete, light item — full guide",
+    "summary": "Use the right hole diameter, remove dust and tighten carefully.",
+    "steps": ["Mark the point with a pencil.", "Match the drill bit to the plug diameter.", "Drill perpendicular to the wall.", "Remove dust from the hole.", "Insert the plug fully.", "Tighten the screw without excessive force."],
+    "needed": ["drill", "concrete bit", "expansion plug", "screw", "level"],
+    "dontDo": ["do not drill without checking installations", "do not use an oversized drill bit"]
+  },
+  {
+    "id": "concrete_medium_free",
+    "title": "Concrete, medium weight — quick recommendation",
+    "summary": "For medium weight in concrete, use a stronger plug and keep a safety margin.",
+    "steps": ["Check the real weight.", "Choose a plug with spare load capacity."],
+    "warnings": ["Do not mount heavy items overhead without certainty."]
+  },
+  {
+    "id": "concrete_medium_premium",
+    "title": "Concrete, medium weight — full guide",
+    "summary": "Use multiple points, proper plugs and careful drilling.",
+    "steps": ["Check the object weight and mounting points.", "Choose plugs with spare capacity.", "Mark points with a level.", "Drill perpendicular holes.", "Remove dust.", "Insert plugs and tighten gradually."],
+    "needed": ["drill", "concrete bit", "strong plugs", "level", "dust remover"],
+    "dontDo": ["do not use random plugs", "do not mount if concrete crumbles"]
+  },
+  {
+    "id": "brick_free",
+    "title": "Brick — quick recommendation",
+    "summary": "Brick can crumble, so choose the plug for the exact wall type.",
+    "steps": ["Drill without hammer mode if the brick crumbles.", "Use a plug for solid or hollow brick."],
+    "warnings": ["Not every brick wall has the same load capacity."]
+  },
+  {
+    "id": "brick_premium",
+    "title": "Brick — full guide",
+    "summary": "First decide if the brick is solid, hollow or block type.",
+    "steps": ["Check the brick type.", "Choose a plug for solid or hollow masonry.", "Drill slowly and straight.", "Reduce hammer mode if the wall crumbles.", "Remove dust.", "Insert the plug and tighten carefully."],
+    "needed": ["drill", "masonry bit", "brick plug", "level"],
+    "dontDo": ["do not drill too close to an edge", "do not ignore crumbling material"]
+  },
+  {
+    "id": "drywall_light_free",
+    "title": "Drywall, light item — quick recommendation",
+    "summary": "For light items on drywall, use a plug made for plasterboard.",
+    "steps": ["Confirm the item is light.", "Use a drywall plug."],
+    "warnings": ["Drywall has limited load capacity."]
+  },
+  {
+    "id": "drywall_light_premium",
+    "title": "Drywall, light item — full guide",
+    "summary": "Use the correct drywall plug and avoid point overload.",
+    "steps": ["Confirm the item is light.", "Check if there is a stud nearby.", "Choose a drywall plug.", "Drill gently.", "Install the plug as instructed.", "Tighten with care."],
+    "needed": ["drywall plug", "driver", "drill bit", "level"],
+    "dontDo": ["do not hang heavy items on board only", "do not overtighten and damage the board"]
+  },
+  {
+    "id": "wood_free",
+    "title": "Wood — quick recommendation",
+    "summary": "In wood, use a proper wood screw, often without a plug.",
+    "steps": ["Choose screw length for the thickness.", "Make a pilot hole if needed."],
+    "warnings": ["Avoid splitting thin wood."]
+  },
+  {
+    "id": "wood_premium",
+    "title": "Wood — full guide",
+    "summary": "Choose screw length, diameter and drilling direction carefully.",
+    "steps": ["Choose a wood screw.", "Mark the point.", "Make a pilot hole in thin wood.", "Drive the screw straight.", "Do not strip the thread.", "Check stability."],
+    "needed": ["wood screw", "driver", "pilot drill bit optional"],
+    "dontDo": ["do not use a screw that is too short", "do not screw too close to the edge"]
+  },
+  {
+    "id": "risk_free",
+    "title": "Heavy or risky mounting — be careful",
+    "summary": "Do not guess with heavy items. You need certainty about wall and fixing capacity.",
+    "steps": ["Do not start without checking the wall.", "Consider asking a professional."],
+    "warnings": ["Heavy items can fall and cause damage or injury."]
+  },
+  {
+    "id": "risk_premium",
+    "title": "Heavy or risky mounting — full checklist",
+    "summary": "For heavy items, the app should not replace a professional assessment.",
+    "steps": ["Find the real object weight.", "Check wall material.", "Check number of fixing points.", "Do not mount above beds, sofas or walkways without certainty.", "Use a fixing system with spare capacity.", "Ask a professional if unsure."],
+    "needed": ["object weight", "wall information", "fixing with spare capacity"],
+    "dontDo": ["do not guess wall type", "do not use random plugs for heavy items"]
+  },
+  {
+    "id": "default_free",
+    "title": "Fixing selection — quick help",
+    "summary": "Start by identifying the wall type and object weight.",
+    "steps": ["Identify the wall type.", "Check the object weight."],
+    "warnings": ["Do not mount heavy items without certainty."]
+  },
+  {
+    "id": "default_premium",
+    "title": "Fixing selection — general checklist",
+    "summary": "Safe mounting starts with wall type, weight, fixing points and proper hardware.",
+    "steps": ["Identify the wall type.", "Check the object weight.", "Decide the number of fixing points.", "Choose plug or screw for the material.", "Drill straight.", "Remove dust and tighten carefully."],
+    "needed": ["drill", "bit", "plug or screw", "level"],
+    "dontDo": ["do not use random hardware", "do not ignore crumbling wall"]
+  }
+]
