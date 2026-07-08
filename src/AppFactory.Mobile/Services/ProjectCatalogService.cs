@@ -14,7 +14,8 @@ public sealed class ProjectCatalogService
             new("kot-bawi-sie", "Kot Bawi się", "Zabawy i aktywności dla kota domowego"),
             new("barber-translator", "Barber Translator", "Instrukcja fryzury do pokazania barberowi"),
             new("outfit-coach", "Outfit Coach", "Dobór stroju do okazji, pogody i stylu"),
-            new("domfix", "DomFix", "Bezpieczne drobne naprawy domowe")
+            new("domfix", "DomFix", "Bezpieczne drobne naprawy domowe"),
+            new("fryzury-proste", "Fryzury Proste", "Neutralne instrukcje prostych uczesań")
         };
     }
 }
