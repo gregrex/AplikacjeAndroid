@@ -1,0 +1,8 @@
+{
+  "appId": "szydelko-pomocnik",
+  "appName": "Szydełko Pomocnik",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl", "en", "uk"],
+  "theme": { "primaryColor": "#BE185D", "secondaryColor": "#F9A8D4" },
+  "features": { "history": true, "favorites": true, "photoOptional": false, "exportText": true }
+}
