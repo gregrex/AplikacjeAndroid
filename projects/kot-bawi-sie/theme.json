@@ -1,0 +1,22 @@
+{
+  "themeId": "cat-play-purple",
+  "brandName": "Kot Bawi się",
+  "targetAudience": "cat-owners",
+  "tone": "warm-practical",
+  "primaryColor": "#7C3AED",
+  "secondaryColor": "#F97316",
+  "accentColor": "#22C55E",
+  "backgroundColor": "#FAF5FF",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#2E1065",
+  "mutedTextColor": "#6B7280",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "soft-paw-gradient",
+  "cardStyle": "rounded-play-card",
+  "buttonStyle": "solid-rounded-warm",
+  "iconStyle": "cat-line",
+  "illustrationStyle": "soft-pet-flat",
+  "resultScreenStyle": "daily-play-card",
+  "onboardingStyle": "quick-owner-start",
+  "visualMood": "calm-playful-home"
+}
