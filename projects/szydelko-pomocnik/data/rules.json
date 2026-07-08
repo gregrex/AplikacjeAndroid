@@ -1,0 +1,11 @@
+[
+  { "id": "row_counter", "categoryId": "*", "when": { "need": "row_counter" }, "score": 100, "freeResultId": "row_counter_free", "premiumResultId": "row_counter_premium" },
+  { "id": "abbrev_dictionary", "categoryId": "abbreviations", "when": { "need": "abbrev" }, "score": 96, "freeResultId": "abbrev_dictionary_free", "premiumResultId": "abbrev_dictionary_premium" },
+  { "id": "stitch_help", "categoryId": "stitches", "when": { "need": "stitch_help" }, "score": 94, "freeResultId": "stitch_help_free", "premiumResultId": "stitch_help_premium" },
+  { "id": "scarf_beginner", "categoryId": "scarf", "when": { "project_type": "scarf" }, "score": 90, "freeResultId": "scarf_beginner_free", "premiumResultId": "scarf_beginner_premium" },
+  { "id": "hat_easy", "categoryId": "hat", "when": { "project_type": "hat" }, "score": 86, "freeResultId": "hat_easy_free", "premiumResultId": "hat_easy_premium" },
+  { "id": "coaster_simple", "categoryId": "coaster", "when": { "project_type": "coaster" }, "score": 82, "freeResultId": "coaster_simple_free", "premiumResultId": "coaster_simple_premium" },
+  { "id": "amigurumi_start", "categoryId": "amigurumi", "when": { "project_type": "amigurumi" }, "score": 78, "freeResultId": "amigurumi_start_free", "premiumResultId": "amigurumi_start_premium" },
+  { "id": "blanket_granny", "categoryId": "blanket", "when": { "project_type": "blanket" }, "score": 74, "freeResultId": "blanket_granny_free", "premiumResultId": "blanket_granny_premium" },
+  { "id": "default_crochet", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_crochet_free", "premiumResultId": "default_crochet_premium" }
+]
