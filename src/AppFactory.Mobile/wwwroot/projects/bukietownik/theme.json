@@ -1,0 +1,22 @@
+{
+  "themeId": "bouquet-pink-green",
+  "brandName": "Bukietownik",
+  "targetAudience": "people-arranging-simple-bouquets",
+  "tone": "warm-practical",
+  "primaryColor": "#DB2777",
+  "secondaryColor": "#16A34A",
+  "accentColor": "#F59E0B",
+  "backgroundColor": "#FDF2F8",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#111827",
+  "mutedTextColor": "#6B7280",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "soft-flower-gradient",
+  "cardStyle": "rounded-bouquet-card",
+  "buttonStyle": "solid-flower-action",
+  "iconStyle": "flower-line",
+  "illustrationStyle": "simple-bouquet-flat",
+  "resultScreenStyle": "bouquet-arrangement-card",
+  "onboardingStyle": "occasion-first-start",
+  "visualMood": "fresh-warm-natural"
+}
