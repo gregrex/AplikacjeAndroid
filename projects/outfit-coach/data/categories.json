@@ -1,0 +1,8 @@
+[
+  { "id": "school", "nameKey": "occasion.school", "icon": "backpack" },
+  { "id": "meeting", "nameKey": "occasion.meeting", "icon": "calendar" },
+  { "id": "interview", "nameKey": "occasion.interview", "icon": "briefcase" },
+  { "id": "party", "nameKey": "occasion.party", "icon": "sparkles" },
+  { "id": "walk", "nameKey": "occasion.walk", "icon": "shoe" },
+  { "id": "family", "nameKey": "occasion.family", "icon": "heart" }
+]
