@@ -1,0 +1,11 @@
+[
+  { "id": "discard_mold", "categoryId": "odd_smell", "when": { "smell": "mold" }, "score": 100, "freeResultId": "discard_mold_free", "premiumResultId": "discard_mold_premium" },
+  { "id": "discard_rotten", "categoryId": "odd_smell", "when": { "smell": "rotten" }, "score": 99, "freeResultId": "discard_rotten_free", "premiumResultId": "discard_rotten_premium" },
+  { "id": "starter_not_rising", "categoryId": "starter_not_rising", "when": { "problem": "starter_not_rising" }, "score": 92, "freeResultId": "starter_not_rising_free", "premiumResultId": "starter_not_rising_premium" },
+  { "id": "dough_not_rising", "categoryId": "dough_not_rising", "when": { "problem": "dough_not_rising" }, "score": 88, "freeResultId": "dough_not_rising_free", "premiumResultId": "dough_not_rising_premium" },
+  { "id": "dense_crumb", "categoryId": "dense_crumb", "when": { "problem": "dense_crumb" }, "score": 84, "freeResultId": "dense_crumb_free", "premiumResultId": "dense_crumb_premium" },
+  { "id": "pale_crust", "categoryId": "pale_crust", "when": { "problem": "pale_crust" }, "score": 80, "freeResultId": "pale_crust_free", "premiumResultId": "pale_crust_premium" },
+  { "id": "cracking", "categoryId": "cracking", "when": { "problem": "cracking" }, "score": 76, "freeResultId": "cracking_free", "premiumResultId": "cracking_premium" },
+  { "id": "feeding_schedule", "categoryId": "feeding_schedule", "when": { "problem": "feeding_schedule" }, "score": 72, "freeResultId": "feeding_schedule_free", "premiumResultId": "feeding_schedule_premium" },
+  { "id": "default_sourdough", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_sourdough_free", "premiumResultId": "default_sourdough_premium" }
+]
