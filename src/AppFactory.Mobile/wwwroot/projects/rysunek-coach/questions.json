@@ -1,0 +1,7 @@
+[
+  { "id": "topic", "type": "single", "textKey": "question.topic", "required": true, "options": [ { "value": "animal", "labelKey": "topic.animal" }, { "value": "vehicle", "labelKey": "topic.vehicle" }, { "value": "plant", "labelKey": "topic.plant" }, { "value": "person", "labelKey": "topic.person" }, { "value": "robot", "labelKey": "topic.robot" }, { "value": "house", "labelKey": "topic.house" }, { "value": "monster", "labelKey": "topic.monster" } ] },
+  { "id": "difficulty", "type": "single", "textKey": "question.difficulty", "required": true, "options": [ { "value": "easy", "labelKey": "difficulty.easy" }, { "value": "medium", "labelKey": "difficulty.medium" }, { "value": "harder", "labelKey": "difficulty.harder" } ] },
+  { "id": "time", "type": "single", "textKey": "question.time", "required": true, "options": [ { "value": "short", "labelKey": "time.short" }, { "value": "normal", "labelKey": "time.normal" }, { "value": "practice", "labelKey": "time.practice" } ] },
+  { "id": "tool", "type": "single", "textKey": "question.tool", "required": true, "options": [ { "value": "pencil", "labelKey": "tool.pencil" }, { "value": "pen", "labelKey": "tool.pen" }, { "value": "crayon", "labelKey": "tool.crayon" } ] },
+  { "id": "style", "type": "single", "textKey": "question.style", "required": true, "options": [ { "value": "simple", "labelKey": "style.simple" }, { "value": "cute", "labelKey": "style.cute" }, { "value": "geometric", "labelKey": "style.geometric" } ] }
+]
