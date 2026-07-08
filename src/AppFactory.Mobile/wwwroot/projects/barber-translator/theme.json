@@ -1,0 +1,22 @@
+{
+  "themeId": "barber-dark",
+  "brandName": "Barber Translator",
+  "targetAudience": "barber-clients",
+  "tone": "clear-premium",
+  "primaryColor": "#111827",
+  "secondaryColor": "#D97706",
+  "accentColor": "#F5F5F4",
+  "backgroundColor": "#0F172A",
+  "surfaceColor": "#1F2937",
+  "textColor": "#F9FAFB",
+  "mutedTextColor": "#D1D5DB",
+  "dangerColor": "#EF4444",
+  "backgroundStyle": "dark-premium",
+  "cardStyle": "sharp-premium",
+  "buttonStyle": "contrast-solid",
+  "iconStyle": "barber-line",
+  "illustrationStyle": "minimal-barber",
+  "resultScreenStyle": "show-to-barber-card",
+  "onboardingStyle": "style-brief",
+  "visualMood": "premium-contrast"
+}
