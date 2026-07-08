@@ -1,0 +1,8 @@
+[
+  { "id": "clothes", "nameKey": "item.clothes", "icon": "shirt" },
+  { "id": "shoes", "nameKey": "item.shoes", "icon": "shoe" },
+  { "id": "electronics", "nameKey": "item.electronics", "icon": "phone" },
+  { "id": "home", "nameKey": "item.home", "icon": "home" },
+  { "id": "kids", "nameKey": "item.kids", "icon": "toy" },
+  { "id": "other", "nameKey": "item.other", "icon": "box" }
+]
