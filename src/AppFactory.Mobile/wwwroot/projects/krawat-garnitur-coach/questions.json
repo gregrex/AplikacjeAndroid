@@ -1,0 +1,7 @@
+[
+  { "id": "occasion", "type": "single", "textKey": "question.occasion", "required": true, "options": [ { "value": "interview", "labelKey": "occasion.interview" }, { "value": "family_event", "labelKey": "occasion.familyEvent" }, { "value": "exam", "labelKey": "occasion.exam" }, { "value": "business", "labelKey": "occasion.business" }, { "value": "evening", "labelKey": "occasion.evening" } ] },
+  { "id": "suit_color", "type": "single", "textKey": "question.suitColor", "required": true, "options": [ { "value": "navy", "labelKey": "suit.navy" }, { "value": "charcoal", "labelKey": "suit.charcoal" }, { "value": "black", "labelKey": "suit.black" }, { "value": "grey", "labelKey": "suit.grey" }, { "value": "brown", "labelKey": "suit.brown" } ] },
+  { "id": "shirt_color", "type": "single", "textKey": "question.shirtColor", "required": true, "options": [ { "value": "white", "labelKey": "shirt.white" }, { "value": "light_blue", "labelKey": "shirt.lightBlue" }, { "value": "pink", "labelKey": "shirt.pink" }, { "value": "pattern", "labelKey": "shirt.pattern" } ] },
+  { "id": "neckwear", "type": "single", "textKey": "question.neckwear", "required": true, "options": [ { "value": "tie", "labelKey": "neckwear.tie" }, { "value": "bowtie", "labelKey": "neckwear.bowtie" }, { "value": "none", "labelKey": "neckwear.none" } ] },
+  { "id": "shoes", "type": "single", "textKey": "question.shoes", "required": true, "options": [ { "value": "black", "labelKey": "shoes.black" }, { "value": "brown", "labelKey": "shoes.brown" }, { "value": "other", "labelKey": "shoes.other" } ] }
+]
