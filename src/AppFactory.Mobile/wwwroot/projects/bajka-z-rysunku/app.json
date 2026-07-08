@@ -1,0 +1,7 @@
+{
+  "appId": "bajka-z-rysunku",
+  "appName": "Bajka z rysunku",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl", "en", "uk"],
+  "features": { "history": true, "favorites": true, "photoOptional": true, "exportText": true }
+}
