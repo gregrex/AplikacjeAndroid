@@ -1,0 +1,22 @@
+{
+  "themeId": "market-quick",
+  "brandName": "Opis Sprzedażowy",
+  "targetAudience": "sellers",
+  "tone": "fast-clear",
+  "primaryColor": "#0F766E",
+  "secondaryColor": "#F59E0B",
+  "accentColor": "#06B6D4",
+  "backgroundColor": "#F0FDFA",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#134E4A",
+  "mutedTextColor": "#64748B",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "market-light",
+  "cardStyle": "listing-card",
+  "buttonStyle": "copy-button",
+  "iconStyle": "market-line",
+  "illustrationStyle": "product-flat",
+  "resultScreenStyle": "copy-ready",
+  "onboardingStyle": "fast-start",
+  "visualMood": "quick-selling"
+}
