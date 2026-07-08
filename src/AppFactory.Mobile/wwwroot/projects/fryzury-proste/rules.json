@@ -1,0 +1,9 @@
+[
+  { "id": "quick_five", "categoryId": "quick", "when": { "time": "five" }, "score": 95, "freeResultId": "quick_five_free", "premiumResultId": "quick_five_premium" },
+  { "id": "sport_hold", "categoryId": "sport", "when": { "occasion": "sport" }, "score": 90, "freeResultId": "sport_hold_free", "premiumResultId": "sport_hold_premium" },
+  { "id": "everyday_low", "categoryId": "everyday", "when": { "finish": "natural" }, "score": 85, "freeResultId": "everyday_low_free", "premiumResultId": "everyday_low_premium" },
+  { "id": "elegant_neat", "categoryId": "elegant", "when": { "finish": "neat" }, "score": 82, "freeResultId": "elegant_neat_free", "premiumResultId": "elegant_neat_premium" },
+  { "id": "curly_soft", "categoryId": "*", "when": { "hair_type": "curly" }, "score": 78, "freeResultId": "curly_soft_free", "premiumResultId": "curly_soft_premium" },
+  { "id": "clip_simple", "categoryId": "*", "when": { "accessories": "clip" }, "score": 70, "freeResultId": "clip_simple_free", "premiumResultId": "clip_simple_premium" },
+  { "id": "default_hair", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_hair_free", "premiumResultId": "default_hair_premium" }
+]
