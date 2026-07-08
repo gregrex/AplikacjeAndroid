@@ -1,0 +1,13 @@
+[
+  { "id": "safety_leak_stop", "categoryId": "safety_stop", "when": { "safety": "leak" }, "score": 100, "freeResultId": "safety_leak_stop_free", "premiumResultId": "safety_leak_stop_premium" },
+  { "id": "safety_burning_stop", "categoryId": "safety_stop", "when": { "safety": "burning_smell" }, "score": 99, "freeResultId": "safety_burning_stop_free", "premiumResultId": "safety_burning_stop_premium" },
+  { "id": "safety_electric_stop", "categoryId": "safety_stop", "when": { "safety": "electric_risk" }, "score": 98, "freeResultId": "safety_electric_stop_free", "premiumResultId": "safety_electric_stop_premium" },
+  { "id": "not_cleaning_filter", "categoryId": "not_cleaning", "when": { "symptom": "not_cleaning" }, "score": 90, "freeResultId": "not_cleaning_filter_free", "premiumResultId": "not_cleaning_filter_premium" },
+  { "id": "residue_salt_rinse", "categoryId": "residue", "when": { "symptom": "residue" }, "score": 86, "freeResultId": "residue_salt_rinse_free", "premiumResultId": "residue_salt_rinse_premium" },
+  { "id": "bad_smell_clean", "categoryId": "bad_smell", "when": { "symptom": "bad_smell" }, "score": 82, "freeResultId": "bad_smell_clean_free", "premiumResultId": "bad_smell_clean_premium" },
+  { "id": "tablet_not_dissolved_spray", "categoryId": "tablet_not_dissolved", "when": { "symptom": "tablet_not_dissolved" }, "score": 78, "freeResultId": "tablet_not_dissolved_spray_free", "premiumResultId": "tablet_not_dissolved_spray_premium" },
+  { "id": "wet_dishes_drying", "categoryId": "wet_dishes", "when": { "symptom": "wet_dishes" }, "score": 74, "freeResultId": "wet_dishes_drying_free", "premiumResultId": "wet_dishes_drying_premium" },
+  { "id": "not_draining_filter", "categoryId": "not_draining", "when": { "symptom": "not_draining" }, "score": 70, "freeResultId": "not_draining_filter_free", "premiumResultId": "not_draining_filter_premium" },
+  { "id": "error_code_manual", "categoryId": "error_code", "when": { "symptom": "error_code" }, "score": 66, "freeResultId": "error_code_manual_free", "premiumResultId": "error_code_manual_premium" },
+  { "id": "default_dishwasher", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_dishwasher_free", "premiumResultId": "default_dishwasher_premium" }
+]
