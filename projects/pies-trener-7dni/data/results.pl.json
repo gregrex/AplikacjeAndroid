@@ -1,0 +1,92 @@
+[
+  {
+    "id": "puppy_easy_free",
+    "title": "Szczeniak — łatwy start",
+    "summary": "Zacznij od bardzo krótkich sesji i prostych nagród.",
+    "steps": ["Ćwicz 2–3 minuty.", "Nagradzaj spokojne skupienie."],
+    "warnings": ["Nie karz psa za brak zrozumienia ćwiczenia."]
+  },
+  {
+    "id": "puppy_easy_premium",
+    "title": "Szczeniak — plan 7 dni",
+    "summary": "Plan opiera się na krótkich sesjach, powtarzalności i spokojnej nagrodzie.",
+    "steps": ["Dzień 1: imię i kontakt wzrokowy.", "Dzień 2: siad z naprowadzeniem smakołykiem.", "Dzień 3: krótka komenda zostań.", "Dzień 4: przywołanie w domu.", "Dzień 5: spokojne czekanie przed miską.", "Dzień 6: powtórka w innym pokoju.", "Dzień 7: lekki test i zabawa."],
+    "needed": ["małe smakołyki", "spokojne miejsce", "krótkie sesje"],
+    "dontDo": ["nie przeciążaj szczeniaka", "nie ćwicz, gdy pies jest zmęczony lub zestresowany"]
+  },
+  {
+    "id": "adult_normal_free",
+    "title": "Dorosły pies — normalny plan",
+    "summary": "Dorosły pies może pracować dłużej, ale nadal lepiej robić krótkie sesje.",
+    "steps": ["Zacznij od jednej komendy.", "Kończ sesję sukcesem."],
+    "warnings": ["Nie zwiększaj trudności zbyt szybko."]
+  },
+  {
+    "id": "adult_normal_premium",
+    "title": "Dorosły pies — plan 7 dni",
+    "summary": "Plan wzmacnia podstawowe komendy i przenosi je do codziennych sytuacji.",
+    "steps": ["Dzień 1: skupienie na opiekunie.", "Dzień 2: siad i nagroda.", "Dzień 3: zostań na 3 sekundy.", "Dzień 4: przywołanie z małej odległości.", "Dzień 5: ćwiczenie przy rozproszeniu.", "Dzień 6: powtórka na spacerze.", "Dzień 7: spokojna sesja utrwalająca."],
+    "needed": ["smakołyki", "smycz", "spokojne miejsce"],
+    "dontDo": ["nie ćwicz w zbyt trudnym otoczeniu", "nie krzycz przy błędzie"]
+  },
+  {
+    "id": "high_energy_free",
+    "title": "Dużo energii — szybka pomoc",
+    "summary": "Najpierw obniż pobudzenie, potem ćwicz komendę.",
+    "steps": ["Zrób krótką zabawę węchową.", "Dopiero potem zacznij ćwiczenie."],
+    "warnings": ["Pobudzony pies gorzej się uczy."]
+  },
+  {
+    "id": "high_energy_premium",
+    "title": "Dużo energii — plan 7 dni",
+    "summary": "Plan łączy spokojne ćwiczenia, węszenie i krótkie zadania.",
+    "steps": ["Dzień 1: mata węchowa lub rozsypane smakołyki.", "Dzień 2: siad po wyciszeniu.", "Dzień 3: zostań przez 2 sekundy.", "Dzień 4: przywołanie po krótkiej zabawie.", "Dzień 5: ćwiczenie rezygnacji.", "Dzień 6: spokojny spacer treningowy.", "Dzień 7: powtórka i odpoczynek."],
+    "needed": ["smakołyki", "zabawka", "spokojne miejsce"],
+    "dontDo": ["nie zaczynaj od trudnych komend", "nie przedłużaj sesji na siłę"]
+  },
+  {
+    "id": "senior_low_free",
+    "title": "Senior — spokojny trening",
+    "summary": "U starszego psa ćwiczenia powinny być lekkie i komfortowe.",
+    "steps": ["Ćwicz krótko.", "Obserwuj zmęczenie i dyskomfort."],
+    "warnings": ["Przy bólu lub nagłej zmianie zachowania skonsultuj weterynarza."]
+  },
+  {
+    "id": "senior_low_premium",
+    "title": "Senior — plan 7 dni",
+    "summary": "Plan jest spokojny, krótki i nastawiony na komfort psa.",
+    "steps": ["Dzień 1: kontakt i spokojna nagroda.", "Dzień 2: proste siad, jeśli pies robi to komfortowo.", "Dzień 3: przywołanie w domu.", "Dzień 4: krótka zabawa węchowa.", "Dzień 5: powtórka znanych komend.", "Dzień 6: spokojny spacer.", "Dzień 7: utrwalenie bez presji."],
+    "needed": ["miękkie smakołyki", "spokojne miejsce", "cierpliwość"],
+    "dontDo": ["nie wymagaj ruchów powodujących ból", "nie ćwicz długo"]
+  },
+  {
+    "id": "hard_level_free",
+    "title": "Trudniejszy cel — ostrożnie",
+    "summary": "Przy trudniejszych zachowaniach zacznij od prostszego kroku.",
+    "steps": ["Rozbij cel na małe etapy.", "Nagradzaj każdy spokojny postęp."],
+    "warnings": ["Agresja, lęk i nagłe zmiany zachowania wymagają specjalisty."]
+  },
+  {
+    "id": "hard_level_premium",
+    "title": "Trudniejszy cel — plan 7 dni",
+    "summary": "Plan nie rozwiązuje poważnych problemów behawioralnych, ale pomaga uporządkować łagodne ćwiczenia.",
+    "steps": ["Dzień 1: obserwuj sytuacje trudne.", "Dzień 2: wybierz najłatwiejszy etap.", "Dzień 3: ćwicz w spokojnym miejscu.", "Dzień 4: dodaj małe rozproszenie.", "Dzień 5: wróć do łatwiejszej wersji.", "Dzień 6: utrwal spokojne reakcje.", "Dzień 7: oceń postęp bez presji."],
+    "needed": ["smakołyki", "notatki", "spokojne otoczenie"],
+    "dontDo": ["nie pracuj samodzielnie z agresją", "nie karz psa za strach"]
+  },
+  {
+    "id": "default_free",
+    "title": "Plan treningu — start",
+    "summary": "Zacznij od krótkiej, spokojnej sesji i jednej prostej komendy.",
+    "steps": ["Wybierz jedną komendę.", "Ćwicz krótko i kończ sukcesem."],
+    "warnings": ["Aplikacja nie zastępuje behawiorysty ani weterynarza."]
+  },
+  {
+    "id": "default_premium",
+    "title": "Plan treningu — 7 dni",
+    "summary": "Uniwersalny plan dla prostych ćwiczeń domowych.",
+    "steps": ["Dzień 1: skupienie.", "Dzień 2: siad.", "Dzień 3: zostań.", "Dzień 4: przywołanie.", "Dzień 5: ćwiczenie przy rozproszeniu.", "Dzień 6: powtórka.", "Dzień 7: utrwalenie i zabawa."],
+    "needed": ["smakołyki", "spokojne miejsce", "krótkie sesje"],
+    "dontDo": ["nie krzycz", "nie ćwicz, gdy pies jest chory lub zestresowany"]
+  }
+]
