@@ -23,7 +23,8 @@ public sealed class ProjectCatalogService
             new("silikon-fuga-fix", "Silikon Fuga Fix", "Bezpieczne czyszczenie, ocena i wymiana silikonu lub fug"),
             new("szydelko-pomocnik", "Szydełko Pomocnik", "Offline licznik rzędów, notatki i proste wzory szydełkowe"),
             new("chleb-zakwas-coach", "Chleb Zakwas Coach", "Prowadzenie zakwasu i korekta podstawowych problemów z chlebem"),
-            new("zmywarka-diagnosta", "Zmywarka Diagnosta", "Bezpieczna checklista typowych problemów ze zmywarką")
+            new("zmywarka-diagnosta", "Zmywarka Diagnosta", "Bezpieczna checklista typowych problemów ze zmywarką"),
+            new("krawat-garnitur-coach", "Krawat Garnitur Coach", "Dobór formalnego zestawu do okazji bez oceniania osoby")
         };
     }
 }
