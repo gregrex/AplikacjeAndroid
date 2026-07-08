@@ -24,7 +24,8 @@ public sealed class ProjectCatalogService
             new("szydelko-pomocnik", "Szydełko Pomocnik", "Offline licznik rzędów, notatki i proste wzory szydełkowe"),
             new("chleb-zakwas-coach", "Chleb Zakwas Coach", "Prowadzenie zakwasu i korekta podstawowych problemów z chlebem"),
             new("zmywarka-diagnosta", "Zmywarka Diagnosta", "Bezpieczna checklista typowych problemów ze zmywarką"),
-            new("krawat-garnitur-coach", "Krawat Garnitur Coach", "Dobór formalnego zestawu do okazji bez oceniania osoby")
+            new("krawat-garnitur-coach", "Krawat Garnitur Coach", "Dobór formalnego zestawu do okazji bez oceniania osoby"),
+            new("router-wifi-diagnosta", "Router WiFi Diagnosta", "Checklisty poprawy zasięgu i stabilności domowego WiFi")
         };
     }
 }
