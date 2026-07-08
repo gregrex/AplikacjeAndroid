@@ -1,0 +1,22 @@
+{
+  "themeId": "soft-story",
+  "brandName": "Bajka z rysunku",
+  "targetAudience": "family-creative",
+  "tone": "warm-imaginative",
+  "primaryColor": "#8B5CF6",
+  "secondaryColor": "#F472B6",
+  "accentColor": "#38BDF8",
+  "backgroundColor": "#FAF5FF",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#312E81",
+  "mutedTextColor": "#6B7280",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "soft-gradient",
+  "cardStyle": "story-cards",
+  "buttonStyle": "soft-rounded",
+  "iconStyle": "simple-magic",
+  "illustrationStyle": "storybook-flat",
+  "resultScreenStyle": "story-page",
+  "onboardingStyle": "creative-short",
+  "visualMood": "warm-creative"
+}
