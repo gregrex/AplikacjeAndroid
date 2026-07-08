@@ -7,7 +7,8 @@ public sealed class ProjectCatalogService
         return new List<ProjectCatalogItem>
         {
             new("plama-ratownik", "Plama Ratownik", "Szybka pomoc przy plamach"),
-            new("kolek-dobieracz", "Kołek Dobieracz", "Dobór mocowania do ściany")
+            new("kolek-dobieracz", "Kołek Dobieracz", "Dobór mocowania do ściany"),
+            new("pies-trener-7dni", "Pies Trener 7 Dni", "Prosty plan treningu psa")
         };
     }
 }
