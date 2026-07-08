@@ -1,0 +1,22 @@
+{
+  "themeId": "sourdough-warm-bread",
+  "brandName": "Chleb Zakwas Coach",
+  "targetAudience": "home-sourdough-bakers",
+  "tone": "warm-practical-safe",
+  "primaryColor": "#92400E",
+  "secondaryColor": "#F59E0B",
+  "accentColor": "#84CC16",
+  "backgroundColor": "#FFFBEB",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#451A03",
+  "mutedTextColor": "#78716C",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "warm-bakery-gradient",
+  "cardStyle": "rounded-recipe-card",
+  "buttonStyle": "solid-bread-action",
+  "iconStyle": "bread-line",
+  "illustrationStyle": "flat-sourdough-bakery",
+  "resultScreenStyle": "recipe-rescue-plan",
+  "onboardingStyle": "problem-stage-first-start",
+  "visualMood": "warm-calm-practical"
+}
