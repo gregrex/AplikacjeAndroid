@@ -1,0 +1,22 @@
+{
+  "themeId": "formal-classic-coach",
+  "brandName": "Krawat Garnitur Coach",
+  "targetAudience": "formal-style-users",
+  "tone": "classic-neutral-practical",
+  "primaryColor": "#111827",
+  "secondaryColor": "#B45309",
+  "accentColor": "#E5E7EB",
+  "backgroundColor": "#F9FAFB",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#111827",
+  "mutedTextColor": "#6B7280",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "classic-formal-light",
+  "cardStyle": "formal-checklist-card",
+  "buttonStyle": "solid-formal-action",
+  "iconStyle": "tie-line",
+  "illustrationStyle": "minimal-formal-outfit",
+  "resultScreenStyle": "formal-outfit-checklist",
+  "onboardingStyle": "occasion-first-start",
+  "visualMood": "classic-calm-neutral"
+}
