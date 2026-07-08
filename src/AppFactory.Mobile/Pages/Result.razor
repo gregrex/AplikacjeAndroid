@@ -5,9 +5,10 @@
 @inject HistoryService History
 @inject FavoritesService Favorites
 @inject LanguageService Language
+@inject ProjectContextService ProjectContext
 
 <h1>Wynik</h1>
-<p class="muted">Język wybrany: @Language.CurrentLanguage | Język wyników: @_loadedResultLanguage</p>
+<p class="muted">Projekt: @ProjectContext.CurrentProjectId | Język wybrany: @Language.CurrentLanguage | Język wyników: @_loadedResultLanguage</p>
 
 @if (_freeResult is null)
 {
@@ -96,13 +97,13 @@ else
         var availableResultLanguages = new[] { "pl", "en", "uk" };
         _loadedResultLanguage = Language.GetResultLanguageWithFallback(availableResultLanguages);
 
-        var results = await ProjectData.LoadResultsAsync("plama-ratownik", _loadedResultLanguage);
+        var results = await ProjectData.LoadResultsAsync(ProjectContext.CurrentProjectId, _loadedResultLanguage);
         _freeResult = ResultService.FindResult(results, FreeResultId);
         _premiumResult = ResultService.FindResult(results, PremiumResultId);
 
         await History.AddAsync(new HistoryEntry
         {
-            ProjectId = "plama-ratownik",
+            ProjectId = ProjectContext.CurrentProjectId,
             CategoryId = CategoryId,
             ResultId = FreeResultId
         });
@@ -117,7 +118,7 @@ else
     {
         await Favorites.AddAsync(new FavoriteEntry
         {
-            ProjectId = "plama-ratownik",
+            ProjectId = ProjectContext.CurrentProjectId,
             ResultId = _premiumUnlocked ? PremiumResultId : FreeResultId
         });
     }
