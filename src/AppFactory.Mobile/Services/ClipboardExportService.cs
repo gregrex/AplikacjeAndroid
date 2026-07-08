@@ -1,3 +1,4 @@
+using AppFactory.Mobile.Models;
 using Microsoft.Maui.ApplicationModel.DataTransfer;
 
 namespace AppFactory.Mobile.Services;
