@@ -1,0 +1,10 @@
+[
+  { "id": "kitten_high", "categoryId": "kitten", "when": { "age": "kitten", "energy": "high" }, "score": 95, "freeResultId": "kitten_high_free", "premiumResultId": "kitten_high_premium" },
+  { "id": "senior_calm", "categoryId": "senior", "when": { "age": "senior" }, "score": 90, "freeResultId": "senior_calm_free", "premiumResultId": "senior_calm_premium" },
+  { "id": "active_hunt", "categoryId": "high_energy", "when": { "energy": "high" }, "score": 85, "freeResultId": "active_hunt_free", "premiumResultId": "active_hunt_premium" },
+  { "id": "cardboard_diy", "categoryId": "diy", "when": { "toy": "cardboard" }, "score": 80, "freeResultId": "cardboard_diy_free", "premiumResultId": "cardboard_diy_premium" },
+  { "id": "food_puzzle", "categoryId": "indoor", "when": { "toy": "food" }, "score": 78, "freeResultId": "food_puzzle_free", "premiumResultId": "food_puzzle_premium" },
+  { "id": "micro_session", "categoryId": "*", "when": { "time": "5" }, "score": 70, "freeResultId": "micro_session_free", "premiumResultId": "micro_session_premium" },
+  { "id": "calm_low", "categoryId": "calm", "when": { "energy": "low" }, "score": 65, "freeResultId": "calm_low_free", "premiumResultId": "calm_low_premium" },
+  { "id": "default_indoor", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_indoor_free", "premiumResultId": "default_indoor_premium" }
+]
