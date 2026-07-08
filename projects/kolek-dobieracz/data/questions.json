@@ -1,0 +1,26 @@
+[
+  {
+    "id": "wall",
+    "type": "single",
+    "textKey": "question.wall",
+    "required": true,
+    "options": [
+      { "value": "concrete", "labelKey": "wall.concrete" },
+      { "value": "brick", "labelKey": "wall.brick" },
+      { "value": "drywall", "labelKey": "wall.drywall" },
+      { "value": "wood", "labelKey": "wall.wood" },
+      { "value": "unknown", "labelKey": "wall.unknown" }
+    ]
+  },
+  {
+    "id": "weight",
+    "type": "single",
+    "textKey": "question.weight",
+    "required": true,
+    "options": [
+      { "value": "light", "labelKey": "weight.light" },
+      { "value": "medium", "labelKey": "weight.medium" },
+      { "value": "heavy", "labelKey": "weight.heavy" }
+    ]
+  }
+]
