@@ -1,0 +1,8 @@
+{
+  "appId": "bajka-z-rysunku",
+  "appName": "Bajka z rysunku",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl", "en", "uk"],
+  "theme": { "primaryColor": "#8B5CF6", "secondaryColor": "#F472B6" },
+  "features": { "history": true, "favorites": true, "photoOptional": true, "exportText": true }
+}
