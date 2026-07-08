@@ -1,0 +1,22 @@
+{
+  "themeId": "parcel-safe",
+  "brandName": "Pakowanie Paczek",
+  "targetAudience": "shipping-users",
+  "tone": "practical-safe",
+  "primaryColor": "#92400E",
+  "secondaryColor": "#F59E0B",
+  "accentColor": "#3B82F6",
+  "backgroundColor": "#FFFBEB",
+  "surfaceColor": "#FFFFFF",
+  "textColor": "#451A03",
+  "mutedTextColor": "#78716C",
+  "dangerColor": "#DC2626",
+  "backgroundStyle": "warm-utility",
+  "cardStyle": "checklist-card",
+  "buttonStyle": "solid-action",
+  "iconStyle": "parcel-line",
+  "illustrationStyle": "flat-packaging",
+  "resultScreenStyle": "packing-checklist",
+  "onboardingStyle": "quick-ship",
+  "visualMood": "safe-practical"
+}
