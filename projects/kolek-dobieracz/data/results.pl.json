@@ -1,0 +1,107 @@
+[
+  {
+    "id": "concrete_light_free",
+    "title": "Beton, lekki przedmiot — szybka rekomendacja",
+    "summary": "Do lekkiego elementu w betonie zwykle wystarczy standardowy kołek rozporowy i odpowiednie wiertło do betonu.",
+    "steps": ["Zaznacz punkt montażu.", "Użyj wiertła do betonu i kołka dobranego do średnicy wkręta."],
+    "warnings": ["Sprawdź, czy w miejscu wiercenia nie ma przewodów."]
+  },
+  {
+    "id": "concrete_light_premium",
+    "title": "Beton, lekki przedmiot — pełna instrukcja",
+    "summary": "Najważniejsze są właściwa średnica otworu, odpylenie i spokojne dokręcenie bez przekręcania kołka.",
+    "steps": ["Zaznacz miejsce ołówkiem.", "Dobierz wiertło do średnicy kołka.", "Wierć prostopadle do ściany.", "Odpyl otwór.", "Włóż kołek do oporu.", "Wkręć wkręt bez nadmiernej siły."],
+    "needed": ["wiertarka", "wiertło do betonu", "kołek rozporowy", "wkręt", "poziomica"],
+    "dontDo": ["nie wierć bez sprawdzenia instalacji", "nie używaj zbyt dużego wiertła"]
+  },
+  {
+    "id": "concrete_medium_free",
+    "title": "Beton, średni ciężar — szybka rekomendacja",
+    "summary": "Dla średniego ciężaru w betonie wybierz mocniejszy kołek i zachowaj większy margines bezpieczeństwa.",
+    "steps": ["Sprawdź wagę przedmiotu.", "Wybierz kołek o zapasie nośności."],
+    "warnings": ["Nie montuj ciężkich elementów nad głową bez pewności nośności."]
+  },
+  {
+    "id": "concrete_medium_premium",
+    "title": "Beton, średni ciężar — pełna instrukcja",
+    "summary": "Przy średnim ciężarze ważny jest zapas nośności i poprawne osadzenie kołka.",
+    "steps": ["Sprawdź masę przedmiotu i liczbę punktów montażu.", "Dobierz kołek z zapasem nośności.", "Zaznacz punkty z poziomicą.", "Wywierć otwory prostopadle.", "Odpyl otwory.", "Osadź kołki i dokręcaj stopniowo."],
+    "needed": ["wiertarka", "wiertło do betonu", "mocniejsze kołki", "poziomica", "odkurzacz lub gruszka do odpylenia"],
+    "dontDo": ["nie używaj przypadkowych kołków", "nie montuj, jeśli beton się kruszy"]
+  },
+  {
+    "id": "brick_free",
+    "title": "Cegła — szybka rekomendacja",
+    "summary": "W cegle trzeba uważać na kruszenie i dobrać kołek do rodzaju cegły.",
+    "steps": ["Wierć bez udaru, jeśli cegła się kruszy.", "Dobierz kołek do muru pełnego albo pustaka."],
+    "warnings": ["Nie każdy mur z cegły ma taką samą nośność."]
+  },
+  {
+    "id": "brick_premium",
+    "title": "Cegła — pełna instrukcja",
+    "summary": "Najpierw oceń, czy to cegła pełna, dziurawka czy pustak. Od tego zależy typ kołka.",
+    "steps": ["Sprawdź typ cegły.", "Dobierz kołek do muru pełnego albo pustego.", "Wierć spokojnie i prostopadle.", "Przy kruszeniu ogranicz udar.", "Odpyl otwór.", "Osadź kołek i dokręć bez zrywania materiału."],
+    "needed": ["wiertarka", "wiertło do muru", "kołek do cegły", "poziomica"],
+    "dontDo": ["nie wierć zbyt blisko krawędzi", "nie ignoruj kruszenia ściany"]
+  },
+  {
+    "id": "drywall_light_free",
+    "title": "Karton-gips, lekki przedmiot — szybka rekomendacja",
+    "summary": "Do lekkich elementów w płycie g-k użyj kołka przeznaczonego do karton-gipsu.",
+    "steps": ["Sprawdź, czy element jest lekki.", "Użyj kołka do płyt g-k."],
+    "warnings": ["Płyta g-k ma ograniczoną nośność."]
+  },
+  {
+    "id": "drywall_light_premium",
+    "title": "Karton-gips, lekki przedmiot — pełna instrukcja",
+    "summary": "Dla płyt g-k ważny jest właściwy typ kołka i brak przeciążenia punktowego.",
+    "steps": ["Potwierdź, że przedmiot jest lekki.", "Sprawdź, czy w pobliżu jest profil konstrukcyjny.", "Dobierz kołek do płyt g-k.", "Wierć delikatnie bez rozrywania płyty.", "Osadź kołek zgodnie z instrukcją.", "Dokręć z wyczuciem."],
+    "needed": ["kołek do g-k", "wkrętarka", "wiertło", "poziomica"],
+    "dontDo": ["nie wieszaj ciężkich elementów na samej płycie", "nie dokręcaj do zerwania płyty"]
+  },
+  {
+    "id": "wood_free",
+    "title": "Drewno — szybka rekomendacja",
+    "summary": "W drewnie zwykle używa się odpowiedniego wkręta do drewna, często bez kołka.",
+    "steps": ["Dobierz długość wkręta do grubości elementu.", "W razie potrzeby wykonaj mały otwór prowadzący."],
+    "warnings": ["Uważaj, aby nie rozłupać cienkiego drewna."]
+  },
+  {
+    "id": "wood_premium",
+    "title": "Drewno — pełna instrukcja",
+    "summary": "Dla drewna liczy się długość wkręta, średnica i kierunek włókien.",
+    "steps": ["Dobierz wkręt do drewna.", "Zaznacz punkt montażu.", "W cienkim drewnie wykonaj otwór prowadzący.", "Wkręcaj prosto i stopniowo.", "Nie przekręcaj gwintu.", "Sprawdź stabilność."],
+    "needed": ["wkręt do drewna", "wkrętarka", "wiertło prowadzące opcjonalnie"],
+    "dontDo": ["nie używaj zbyt krótkiego wkręta", "nie wkręcaj zbyt blisko krawędzi"]
+  },
+  {
+    "id": "risk_free",
+    "title": "Ciężki lub ryzykowny montaż — ostrożnie",
+    "summary": "Przy ciężkich elementach nie zgaduj. Potrzebna jest pewność nośności ściany i mocowania.",
+    "steps": ["Nie zaczynaj montażu bez sprawdzenia ściany.", "Rozważ konsultację z fachowcem."],
+    "warnings": ["Ciężkie elementy mogą spaść i spowodować szkody lub uraz."]
+  },
+  {
+    "id": "risk_premium",
+    "title": "Ciężki lub ryzykowny montaż — pełna checklista",
+    "summary": "Dla ciężkich elementów aplikacja nie powinna zastępować oceny fachowca.",
+    "steps": ["Ustal rzeczywistą wagę elementu.", "Sprawdź materiał ściany.", "Sprawdź liczbę punktów mocowania.", "Nie montuj nad łóżkiem, kanapą ani przejściem bez pewności.", "Dobierz system mocowania z zapasem nośności.", "Przy wątpliwościach wezwij fachowca."],
+    "needed": ["informacja o wadze", "informacja o ścianie", "mocowanie z zapasem nośności"],
+    "dontDo": ["nie zgaduj typu ściany", "nie montuj ciężkich rzeczy na przypadkowych kołkach"]
+  },
+  {
+    "id": "default_free",
+    "title": "Dobór mocowania — szybka pomoc",
+    "summary": "Jeśli nie masz pewności, zacznij od ustalenia typu ściany i wagi przedmiotu.",
+    "steps": ["Ustal typ ściany.", "Sprawdź wagę przedmiotu."],
+    "warnings": ["Nie montuj ciężkich elementów bez pewności nośności."]
+  },
+  {
+    "id": "default_premium",
+    "title": "Dobór mocowania — ogólna checklista",
+    "summary": "Bezpieczny montaż zaczyna się od ściany, wagi, liczby punktów i właściwego systemu mocowania.",
+    "steps": ["Ustal typ ściany.", "Sprawdź wagę przedmiotu.", "Określ liczbę punktów montażu.", "Dobierz kołek lub wkręt do materiału.", "Wierć prostopadle.", "Odpyl otwór i dokręć z wyczuciem."],
+    "needed": ["wiertarka", "wiertło", "kołek lub wkręt", "poziomica"],
+    "dontDo": ["nie używaj przypadkowego mocowania", "nie ignoruj kruszenia ściany"]
+  }
+]
