@@ -20,7 +20,8 @@ public sealed class ProjectCatalogService
             new("bukietownik", "Bukietownik", "Proste kompozycje kwiatowe do okazji"),
             new("pokoj-makeover", "Pokój Makeover", "Metamorfoza pokoju bez remontu"),
             new("pakowanie-paczek", "Pakowanie Paczek", "Checklisty zabezpieczenia przedmiotów do wysyłki"),
-            new("silikon-fuga-fix", "Silikon Fuga Fix", "Bezpieczne czyszczenie, ocena i wymiana silikonu lub fug")
+            new("silikon-fuga-fix", "Silikon Fuga Fix", "Bezpieczne czyszczenie, ocena i wymiana silikonu lub fug"),
+            new("szydelko-pomocnik", "Szydełko Pomocnik", "Offline licznik rzędów, notatki i proste wzory szydełkowe")
         };
     }
 }
