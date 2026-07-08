@@ -1,0 +1,8 @@
+{
+  "appId": "router-wifi-diagnosta",
+  "appName": "Router WiFi Diagnosta",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl", "en", "uk"],
+  "theme": { "primaryColor": "#2563EB", "secondaryColor": "#06B6D4" },
+  "features": { "history": true, "favorites": true, "photoOptional": false, "exportText": true }
+}
