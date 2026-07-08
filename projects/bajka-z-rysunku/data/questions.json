@@ -1,0 +1,6 @@
+[
+  { "id": "hero", "type": "single", "textKey": "question.hero", "required": true, "options": [ { "value": "animal", "labelKey": "hero.animal" }, { "value": "child", "labelKey": "hero.child" }, { "value": "robot", "labelKey": "hero.robot" }, { "value": "dragon", "labelKey": "hero.dragon" } ] },
+  { "id": "place", "type": "single", "textKey": "question.place", "required": true, "options": [ { "value": "forest", "labelKey": "place.forest" }, { "value": "space", "labelKey": "place.space" }, { "value": "home", "labelKey": "place.home" }, { "value": "castle", "labelKey": "place.castle" } ] },
+  { "id": "mood", "type": "single", "textKey": "question.mood", "required": true, "options": [ { "value": "calm", "labelKey": "mood.calm" }, { "value": "funny", "labelKey": "mood.funny" }, { "value": "brave", "labelKey": "mood.brave" } ] },
+  { "id": "length", "type": "single", "textKey": "question.length", "required": true, "options": [ { "value": "short", "labelKey": "length.short" }, { "value": "normal", "labelKey": "length.normal" } ] }
+]
