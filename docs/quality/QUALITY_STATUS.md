@@ -144,7 +144,10 @@ Dodano `reason` w źródle i runtime dla:
 - `outfit-coach`,
 - `fryzury-proste`,
 - `rysunek-coach`,
-- `bukietownik`.
+- `bukietownik`,
+- `pokoj-makeover`,
+- `kot-bawi-sie`,
+- `barber-translator`.
 
 ## Definicja MVP-ready po dopracowaniu
 
@@ -163,7 +166,7 @@ Projekt jest uznawany za MVP-ready, jeśli ma:
 
 1. Uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport`.
 2. Naprawić ewentualne błędy danych ujawnione przez globalny test.
-3. Dodać `reason` do kolejnych projektów.
+3. Dodać `reason` do pozostałych projektów.
 4. Rozważyć przeniesienie pełnego stanu dopasowania z query string do wspólnego serwisu stanu nawigacji.
 5. Dodać osobny test dla logiki wyboru alternatywy, gdy UI zostanie przeniesiony do komponentu.
 
