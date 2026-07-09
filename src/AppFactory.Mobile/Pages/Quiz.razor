@@ -2,6 +2,7 @@
 @inject ProjectDataService ProjectData
 @inject RuleEngineService RuleEngine
 @inject ProjectContextService ProjectContext
+@inject ResultNavigationStateService ResultNavigationState
 @inject NavigationManager Nav
 
 <h1>Quiz</h1>
@@ -14,13 +15,20 @@
 else if (_currentQuestion is not null)
 {
     <div class="card">
+        <p class="result-kicker">Pytanie @_displayQuestionNumber z @_questions.Count</p>
         <h3>@_currentQuestion.TextKey</h3>
+        <progress value="@_index" max="@_questions.Count"></progress>
 
         @foreach (var option in _currentQuestion.Options)
         {
             <p>
                 <button class="button" @onclick="() => SelectAnswer(option.Value)">@option.LabelKey</button>
             </p>
+        }
+
+        @if (_index > 0)
+        {
+            <button class="button secondary" @onclick="GoBack">Wróć do poprzedniego pytania</button>
         }
     </div>
 }
@@ -30,6 +38,7 @@ else
         <h3>Gotowe</h3>
         <p>Odpowiedzi zostały zebrane.</p>
         <button class="button secondary" @onclick="ShowResult">Pokaż wynik</button>
+        <button class="button" @onclick="ResetQuiz">Zacznij od nowa</button>
     </div>
 }
 
@@ -40,6 +49,7 @@ else
     private List<QuestionDefinition> _questions = new();
     private List<RuleDefinition> _rules = new();
     private int _index;
+    private int _displayQuestionNumber => Math.Min(_index + 1, _questions.Count);
 
     private QuestionDefinition? _currentQuestion => _index < _questions.Count ? _questions[_index] : null;
 
@@ -61,34 +71,30 @@ else
         _index++;
     }
 
-    private void ShowResult()
+    private void GoBack()
     {
-        var match = RuleEngine.Match(CategoryId, _answers, _rules);
-        var query = BuildMatchQuery(match);
-        var url = $"/result/{CategoryId}/{match.FreeResultId}/{match.PremiumResultId}{query}";
-        Nav.NavigateTo(url);
-    }
-
-    private static string BuildMatchQuery(RuleMatch match)
-    {
-        var parts = new List<string>();
-
-        AddQueryPart(parts, "ruleId", match.RuleId);
-        AddQueryPart(parts, "score", match.Score.ToString());
-        AddQueryPart(parts, "reason", match.Reason);
-        AddQueryPart(parts, "matched", string.Join("|", match.MatchedConditions));
-        AddQueryPart(parts, "alternatives", string.Join("|", match.AlternativePremiumResultIds));
-
-        return parts.Count == 0 ? string.Empty : $"?{string.Join("&", parts)}";
-    }
-
-    private static void AddQueryPart(List<string> parts, string name, string value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
+        if (_index <= 0)
         {
             return;
         }
 
-        parts.Add($"{Uri.EscapeDataString(name)}={Uri.EscapeDataString(value)}");
+        _index--;
+        if (_currentQuestion is not null)
+        {
+            _answers.RemoveAll(x => x.QuestionId == _currentQuestion.Id);
+        }
+    }
+
+    private void ResetQuiz()
+    {
+        _answers.Clear();
+        _index = 0;
+    }
+
+    private void ShowResult()
+    {
+        var match = RuleEngine.Match(CategoryId, _answers, _rules);
+        ResultNavigationState.Store(ProjectContext.CurrentProjectId, CategoryId, match.FreeResultId, match.PremiumResultId, match);
+        Nav.NavigateTo($"/result/{CategoryId}/{match.FreeResultId}/{match.PremiumResultId}");
     }
 }
