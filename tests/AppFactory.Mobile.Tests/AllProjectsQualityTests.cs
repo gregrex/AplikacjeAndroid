@@ -105,19 +105,29 @@ public sealed class AllProjectsQualityTests
 
         foreach (var project in catalogProjects)
         {
-            var dataDir = Path.Combine(root, "projects", project.Id, "data");
+            var sourceDir = Path.Combine(root, "projects", project.Id);
+            var dataDir = Path.Combine(sourceDir, "data");
             if (!Directory.Exists(dataDir))
             {
                 errors.Add($"{project.Id}: missing data directory");
                 continue;
             }
 
+            var appConfig = ReadJson<AppConfig>(Path.Combine(dataDir, "app.json"));
             var categories = ReadJson<List<CategoryDefinition>>(Path.Combine(dataDir, "categories.json"));
             var questions = ReadJson<List<QuestionDefinition>>(Path.Combine(dataDir, "questions.json"));
             var rules = ReadJson<List<RuleDefinition>>(Path.Combine(dataDir, "rules.json"));
             var results = ReadJson<List<ResultDefinition>>(Path.Combine(dataDir, "results.pl.json"));
 
+            errors.AddRange(validator.ValidateAppConfig(appConfig, project.Id).Select(error => $"{project.Id}: {error}"));
             errors.AddRange(validator.Validate(categories, questions, rules, results).Select(error => $"{project.Id}: {error}"));
+
+            var themePath = Path.Combine(sourceDir, "theme.json");
+            if (File.Exists(themePath))
+            {
+                using var themeJson = JsonDocument.Parse(File.ReadAllText(themePath));
+                errors.AddRange(validator.ValidateTheme(themeJson.RootElement, project.Id).Select(error => $"{project.Id}: {error}"));
+            }
         }
 
         Assert.True(errors.Count == 0, string.Join(Environment.NewLine, errors));
