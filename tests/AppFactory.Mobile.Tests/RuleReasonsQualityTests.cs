@@ -15,7 +15,8 @@ public sealed class RuleReasonsQualityTests
         "router-wifi-diagnosta",
         "zmywarka-diagnosta",
         "krawat-garnitur-coach",
-        "pakowanie-paczek"
+        "pakowanie-paczek",
+        "silikon-fuga-fix"
     };
 
     [Fact]
