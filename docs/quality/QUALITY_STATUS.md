@@ -36,7 +36,8 @@ Katalog aplikacji obejmuje 20 projektów:
 Dodano:
 
 - `docs/quality/PLAN_DOPRACOWANIA_PROJEKTOW.md`,
-- `docs/quality/QUALITY_STATUS.md`.
+- `docs/quality/QUALITY_STATUS.md`,
+- `tools/quality/README.md`.
 
 ### Testy globalne
 
@@ -52,8 +53,41 @@ Test globalny sprawdza:
 - obecność listingów marketingowych,
 - obecność testów manualnych,
 - przejście przez wspólny `DataPackValidationService`,
+- walidację `app.json`,
+- walidację `theme.json`,
 - parytet językowy PL/EN/UK,
 - zgodność strukturalną runtime względem źródła.
+
+### Walidator
+
+Rozszerzono:
+
+- `src/AppFactory.Core/Services/DataPackValidationService.cs`.
+
+Walidator sprawdza teraz:
+
+- puste `appId`, `appName`, `defaultLanguage`, `supportedLanguages`,
+- zgodność `appId` z katalogiem projektu,
+- podstawowe pola `theme.json`,
+- puste ID kategorii, pytań, reguł i wyników,
+- puste `nameKey`, `textKey`, `icon`, `labelKey`,
+- duplikaty opcji pytań,
+- reguły wskazujące brakujące pytania,
+- reguły używające wartości spoza opcji pytania,
+- reguły wskazujące brakujące wyniki.
+
+### Narzędzia
+
+Dodano:
+
+- `tools/quality/sync-runtime-packs.ps1`,
+- `tools/quality/run-quality-checks.ps1`.
+
+Skrypty pozwalają lokalnie:
+
+- zsynchronizować runtime z `projects`,
+- uruchomić testy jakości,
+- uruchomić testy po synchronizacji runtime.
 
 ## Definicja MVP-ready po dopracowaniu
 
@@ -70,12 +104,12 @@ Projekt jest uznawany za MVP-ready, jeśli ma:
 
 ## Następne kroki techniczne
 
-1. Dodać skrypt synchronizacji runtime.
-2. Dodać skrypt raportujący brakujące pliki.
-3. Rozszerzyć `DataPackValidationService` o walidację `app.json` i `theme.json`.
-4. Dodać raport generatora do `docs/quality`.
-5. Po lokalnym uruchomieniu `dotnet test` naprawić wszystkie realne błędy kompilacji lub danych.
+1. Uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1`.
+2. Naprawić ewentualne błędy danych ujawnione przez globalny test.
+3. Dodać generator raportu brakujących plików do markdown.
+4. Rozważyć zastąpienie wielu per-projektowych testów jednym testem parametrycznym.
+5. Rozszerzyć silnik reguł o `reason`, alternatywne wyniki i wyjaśnienie dopasowania.
 
 ## Uwagi
 
-Testy globalne zostały dodane w repo, ale nie były uruchamiane lokalnie w tym trybie pracy. Weryfikacja kompilacji wymaga lokalnego `dotnet test` albo CI.
+Testy globalne, walidator i skrypty zostały dodane w repo. Nie były uruchamiane lokalnie w tym trybie pracy. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo CI.
