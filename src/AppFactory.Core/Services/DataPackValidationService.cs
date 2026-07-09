@@ -106,7 +106,10 @@ public sealed class DataPackValidationService
         RequireUnique(results.Select(x => x.Id), "result", errors);
 
         var categoryIds = categories.Select(x => x.Id).Where(x => !string.IsNullOrWhiteSpace(x)).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        var questionsById = questions.Where(x => !string.IsNullOrWhiteSpace(x.Id)).ToDictionary(x => x.Id, StringComparer.OrdinalIgnoreCase);
+        var questionsById = questions
+            .Where(x => !string.IsNullOrWhiteSpace(x.Id))
+            .GroupBy(x => x.Id, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(x => x.Key, x => x.First(), StringComparer.OrdinalIgnoreCase);
         var resultIds = results.Select(x => x.Id).Where(x => !string.IsNullOrWhiteSpace(x)).ToHashSet(StringComparer.OrdinalIgnoreCase);
 
         foreach (var category in categories)
