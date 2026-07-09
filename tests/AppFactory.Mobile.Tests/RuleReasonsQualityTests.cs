@@ -18,7 +18,8 @@ public sealed class RuleReasonsQualityTests
         "pakowanie-paczek",
         "silikon-fuga-fix",
         "chleb-zakwas-coach",
-        "domfix"
+        "domfix",
+        "outfit-coach"
     };
 
     [Fact]
