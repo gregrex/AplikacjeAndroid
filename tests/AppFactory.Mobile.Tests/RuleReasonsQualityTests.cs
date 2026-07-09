@@ -24,7 +24,8 @@ public sealed class RuleReasonsQualityTests
         "rysunek-coach",
         "bukietownik",
         "pokoj-makeover",
-        "kot-bawi-sie"
+        "kot-bawi-sie",
+        "barber-translator"
     };
 
     [Fact]
