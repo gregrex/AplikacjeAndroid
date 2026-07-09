@@ -36,6 +36,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ProjectUiProfileService>();
         builder.Services.AddSingleton<ClipboardExportService>();
         builder.Services.AddSingleton<ResultNavigationStateService>();
+        builder.Services.AddSingleton<BuildProfileService>();
 
         return builder.Build();
     }
