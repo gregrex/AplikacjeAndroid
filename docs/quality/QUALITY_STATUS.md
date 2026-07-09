@@ -138,7 +138,9 @@ Dodano `reason` w źródle i runtime dla:
 - `zmywarka-diagnosta`,
 - `krawat-garnitur-coach`,
 - `pakowanie-paczek`,
-- `silikon-fuga-fix`.
+- `silikon-fuga-fix`,
+- `chleb-zakwas-coach`,
+- `domfix`.
 
 ## Definicja MVP-ready po dopracowaniu
 
