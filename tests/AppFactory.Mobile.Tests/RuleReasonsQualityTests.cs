@@ -21,7 +21,8 @@ public sealed class RuleReasonsQualityTests
         "domfix",
         "outfit-coach",
         "fryzury-proste",
-        "rysunek-coach"
+        "rysunek-coach",
+        "bukietownik"
     };
 
     [Fact]
