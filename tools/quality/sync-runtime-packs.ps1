@@ -42,7 +42,7 @@ foreach ($project in $projects) {
     $runtimeDir = Join-Path $runtimeRoot $projectId
 
     if (-not (Test-Path $sourceDataDir)) {
-        $errors.Add("$projectId: missing data directory")
+        $errors.Add("${projectId}: missing data directory")
         continue
     }
 
@@ -60,7 +60,7 @@ foreach ($project in $projects) {
         $targetFile = Join-Path $runtimeDir $file
 
         if (-not (Test-Path $sourceFile)) {
-            $errors.Add("$projectId: missing source data file $file")
+            $errors.Add("${projectId}: missing source data file $file")
             continue
         }
 
@@ -73,7 +73,7 @@ foreach ($project in $projects) {
     }
 
     if (-not (Test-Path $sourceTheme)) {
-        $errors.Add("$projectId: missing theme.json")
+        $errors.Add("${projectId}: missing theme.json")
         continue
     }
 
