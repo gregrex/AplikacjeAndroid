@@ -46,6 +46,7 @@ Dodano:
 - `docs/quality/RULE_ENGINE_V2.md`,
 - `docs/quality/PRODUCTION_CHECKLIST.md`,
 - `docs/quality/PRODUCTION_EXECUTION_REPORT.md`,
+- `docs/quality/BUILD_PROFILES.md`,
 - `tools/quality/README.md`.
 
 ### CI
@@ -66,7 +67,9 @@ Dodano:
 
 - `tests/AppFactory.Mobile.Tests/AllProjectsQualityTests.cs`,
 - `tests/AppFactory.Mobile.Tests/RuleReasonsQualityTests.cs`,
-- `tests/AppFactory.Mobile.Tests/ProductionReadinessTests.cs`.
+- `tests/AppFactory.Mobile.Tests/ProductionReadinessTests.cs`,
+- `tests/AppFactory.Mobile.Tests/ResultNavigationStateServiceTests.cs`,
+- `tests/AppFactory.Mobile.Tests/BuildProfileServiceTests.cs`.
 
 Testy sprawdzają:
 
@@ -82,7 +85,9 @@ Testy sprawdzają:
 - zgodność strukturalną runtime względem źródła,
 - `reason` dla każdej reguły w source i runtime,
 - istnienie infrastruktury produkcyjnej,
-- brak blokujących markerów ryzyka w statusie jakości.
+- brak blokujących markerów ryzyka w statusie jakości,
+- serwis stanu nawigacji wyniku,
+- profile buildów katalogu i osobnych aplikacji.
 
 ### Walidator
 
@@ -108,14 +113,60 @@ Dodano:
 
 - `tools/quality/sync-runtime-packs.ps1`,
 - `tools/quality/write-project-quality-report.ps1`,
-- `tools/quality/run-quality-checks.ps1`.
+- `tools/quality/run-quality-checks.ps1`,
+- `tools/quality/write-build-profiles.ps1`.
 
 Skrypty pozwalają lokalnie:
 
 - zsynchronizować runtime z `projects`,
 - wygenerować markdownowy raport jakości,
+- wygenerować raport profili buildów,
 - uruchomić testy jakości,
 - uruchomić testy po synchronizacji runtime i wygenerowaniu raportu.
+
+### Build profile per aplikacja
+
+Dodano:
+
+- `src/AppFactory.Core/Models/BuildProfile.cs`,
+- `src/AppFactory.Mobile/Models/BuildProfile.cs`,
+- `src/AppFactory.Core/Services/BuildProfileService.cs`,
+- `src/AppFactory.Mobile/Services/BuildProfileService.cs`,
+- `docs/quality/BUILD_PROFILES.md`,
+- `tools/quality/write-build-profiles.ps1`.
+
+Każdy projekt ma stabilny `ApplicationId` w formacie:
+
+```text
+pl.gbcom.appfactory.<projectIdBezMyślników>
+```
+
+### UX katalogu i quizu
+
+Rozszerzono:
+
+- `src/AppFactory.Mobile/Pages/Home.razor`,
+- `src/AppFactory.Mobile/Pages/Quiz.razor`,
+- `src/AppFactory.Mobile/Pages/Result.razor`.
+
+Dodano:
+
+- wyszukiwarkę aplikacji w katalogu,
+- filtr typu doświadczenia,
+- licznik widocznych projektów,
+- postęp quizu,
+- powrót do poprzedniego pytania,
+- reset quizu,
+- powrót z wyniku do quizu.
+
+### Result navigation state
+
+Dodano:
+
+- `src/AppFactory.Core/Services/ResultNavigationStateService.cs`,
+- `src/AppFactory.Mobile/Services/ResultNavigationStateService.cs`.
+
+Quiz zapisuje metadane dopasowania w serwisie stanu, a ekran wyniku odczytuje je z serwisu. Query string parser został jako fallback dla linków bez stanu w pamięci.
 
 ### Rule Engine v2 i ekran wyniku
 
@@ -129,8 +180,6 @@ Rozszerzono:
 - `src/AppFactory.Mobile/Models/MatchInfo.cs`,
 - `src/AppFactory.Core/Services/MatchInfoParser.cs`,
 - `src/AppFactory.Mobile/Services/MatchInfoParser.cs`,
-- `src/AppFactory.Mobile/Pages/Quiz.razor`,
-- `src/AppFactory.Mobile/Pages/Result.razor`,
 - `tests/AppFactory.Mobile.Tests/RuleEngineServiceTests.cs`,
 - `tests/AppFactory.Mobile.Tests/MatchInfoParserTests.cs`.
 
@@ -156,28 +205,7 @@ Poprawiono też fallback: reguła domyślna musi mieć `categoryId = *` oraz pus
 
 ### Projekty z pełnymi uzasadnieniami reguł
 
-Dodano `reason` w źródle i runtime dla wszystkich 20 projektów:
-
-- `plama-ratownik`,
-- `kolek-dobieracz`,
-- `pies-trener-7dni`,
-- `bajka-z-rysunku`,
-- `vinted-olx-opis`,
-- `kot-bawi-sie`,
-- `barber-translator`,
-- `outfit-coach`,
-- `domfix`,
-- `fryzury-proste`,
-- `rysunek-coach`,
-- `bukietownik`,
-- `pokoj-makeover`,
-- `pakowanie-paczek`,
-- `silikon-fuga-fix`,
-- `szydelko-pomocnik`,
-- `chleb-zakwas-coach`,
-- `zmywarka-diagnosta`,
-- `krawat-garnitur-coach`,
-- `router-wifi-diagnosta`.
+Dodano `reason` w źródle i runtime dla wszystkich 20 projektów.
 
 ### Wyrównanie `plama-ratownik`
 
@@ -210,9 +238,9 @@ Projekt jest uznawany za MVP-ready, jeśli ma:
 1. Poczekać na wynik GitHub Actions `Quality Checks` albo uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport`.
 2. Naprawić ewentualne błędy danych ujawnione przez globalny test.
 3. Po zielonym CI zmienić status z `production-ready candidate` na `production-ready`.
-4. Rozważyć przeniesienie pełnego stanu dopasowania z query string do wspólnego serwisu stanu nawigacji.
-5. Przygotować profile buildów osobnych aplikacji.
+4. Rozwinąć profile buildów o rzeczywiste flavor/pipeline per aplikacja.
+5. Dodać testy UI/snapshoty dla `Home`, `Quiz` i `Result`.
 
 ## Uwagi
 
-Testy globalne, walidator, skrypty, Rule Engine v2, parser metadanych wyniku, ekran wyjaśnień, wybór alternatywnych rekomendacji, CI, checklist produkcyjny i raport wykonania checklisty zostały dodane w repo. Nie uruchamiałem lokalnie `dotnet test`, bo pracuję przez GitHub connector. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo przejścia workflow CI.
+Testy globalne, walidator, skrypty, Rule Engine v2, parser metadanych wyniku, ekran wyjaśnień, wybór alternatywnych rekomendacji, CI, checklist produkcyjny, raport wykonania checklisty, profile buildów, UX katalogu/quizu i serwis stanu wyniku zostały dodane w repo. Nie uruchamiałem lokalnie `dotnet test`, bo pracuję przez GitHub connector. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo przejścia workflow CI.
