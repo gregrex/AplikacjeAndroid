@@ -140,7 +140,11 @@ Dodano `reason` w źródle i runtime dla:
 - `pakowanie-paczek`,
 - `silikon-fuga-fix`,
 - `chleb-zakwas-coach`,
-- `domfix`.
+- `domfix`,
+- `outfit-coach`,
+- `fryzury-proste`,
+- `rysunek-coach`,
+- `bukietownik`.
 
 ## Definicja MVP-ready po dopracowaniu
 
