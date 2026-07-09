@@ -23,7 +23,8 @@ public sealed class RuleReasonsQualityTests
         "fryzury-proste",
         "rysunek-coach",
         "bukietownik",
-        "pokoj-makeover"
+        "pokoj-makeover",
+        "kot-bawi-sie"
     };
 
     [Fact]
