@@ -14,7 +14,8 @@ public sealed class RuleReasonsQualityTests
     {
         "router-wifi-diagnosta",
         "zmywarka-diagnosta",
-        "krawat-garnitur-coach"
+        "krawat-garnitur-coach",
+        "pakowanie-paczek"
     };
 
     [Fact]
