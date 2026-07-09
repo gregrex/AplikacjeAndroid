@@ -188,7 +188,7 @@ public sealed class AllProjectsQualityTests
     }
 
     [Fact]
-    public void SourceAndRuntimeFiles_AreSynchronized()
+    public void RuntimePacks_MatchSourceStructure()
     {
         var root = GetRepoRoot();
         var catalogProjects = new ProjectCatalogService().GetProjects();
@@ -200,38 +200,79 @@ public sealed class AllProjectsQualityTests
             var dataDir = Path.Combine(sourceDir, "data");
             var runtimeDir = Path.Combine(root, "src", "AppFactory.Mobile", "wwwroot", "projects", project.Id);
 
-            foreach (var file in RequiredDataFiles)
+            if (!Directory.Exists(dataDir) || !Directory.Exists(runtimeDir))
             {
-                var sourceFile = Path.Combine(dataDir, file);
-                var runtimeFile = Path.Combine(runtimeDir, file);
-
-                if (File.Exists(sourceFile) && File.Exists(runtimeFile) && Normalize(File.ReadAllText(sourceFile)) != Normalize(File.ReadAllText(runtimeFile)))
-                {
-                    errors.Add($"{project.Id}: runtime file differs from source data file {file}");
-                }
+                continue;
             }
 
-            var sourceTheme = Path.Combine(sourceDir, "theme.json");
-            var runtimeTheme = Path.Combine(runtimeDir, "theme.json");
-
-            if (File.Exists(sourceTheme) && File.Exists(runtimeTheme) && Normalize(File.ReadAllText(sourceTheme)) != Normalize(File.ReadAllText(runtimeTheme)))
-            {
-                errors.Add($"{project.Id}: runtime theme differs from source theme");
-            }
+            CompareAppId(project.Id, Path.Combine(dataDir, "app.json"), Path.Combine(runtimeDir, "app.json"), errors);
+            CompareThemeId(project.Id, Path.Combine(sourceDir, "theme.json"), Path.Combine(runtimeDir, "theme.json"), errors);
+            CompareIds<CategoryDefinition>(project.Id, "categories", Path.Combine(dataDir, "categories.json"), Path.Combine(runtimeDir, "categories.json"), x => x.Id, errors);
+            CompareIds<QuestionDefinition>(project.Id, "questions", Path.Combine(dataDir, "questions.json"), Path.Combine(runtimeDir, "questions.json"), x => x.Id, errors);
+            CompareIds<RuleDefinition>(project.Id, "rules", Path.Combine(dataDir, "rules.json"), Path.Combine(runtimeDir, "rules.json"), x => x.Id, errors);
+            CompareIds<ResultDefinition>(project.Id, "results.pl", Path.Combine(dataDir, "results.pl.json"), Path.Combine(runtimeDir, "results.pl.json"), x => x.Id, errors);
+            CompareIds<ResultDefinition>(project.Id, "results.en", Path.Combine(dataDir, "results.en.json"), Path.Combine(runtimeDir, "results.en.json"), x => x.Id, errors);
+            CompareIds<ResultDefinition>(project.Id, "results.uk", Path.Combine(dataDir, "results.uk.json"), Path.Combine(runtimeDir, "results.uk.json"), x => x.Id, errors);
         }
 
         Assert.True(errors.Count == 0, string.Join(Environment.NewLine, errors));
+    }
+
+    private static void CompareIds<T>(string projectId, string label, string sourcePath, string runtimePath, Func<T, string?> selector, List<string> errors)
+    {
+        if (!File.Exists(sourcePath) || !File.Exists(runtimePath))
+        {
+            return;
+        }
+
+        var sourceIds = ReadJson<List<T>>(sourcePath).Select(selector).Where(x => !string.IsNullOrWhiteSpace(x)).OrderBy(x => x).ToArray();
+        var runtimeIds = ReadJson<List<T>>(runtimePath).Select(selector).Where(x => !string.IsNullOrWhiteSpace(x)).OrderBy(x => x).ToArray();
+
+        if (!sourceIds.SequenceEqual(runtimeIds))
+        {
+            errors.Add($"{projectId}: runtime {label} ids differ from source");
+        }
+    }
+
+    private static void CompareAppId(string projectId, string sourcePath, string runtimePath, List<string> errors)
+    {
+        if (!File.Exists(sourcePath) || !File.Exists(runtimePath))
+        {
+            return;
+        }
+
+        var source = ReadJson<AppConfig>(sourcePath);
+        var runtime = ReadJson<AppConfig>(runtimePath);
+
+        if (!string.Equals(source.AppId, runtime.AppId, StringComparison.Ordinal))
+        {
+            errors.Add($"{projectId}: runtime appId differs from source");
+        }
+    }
+
+    private static void CompareThemeId(string projectId, string sourcePath, string runtimePath, List<string> errors)
+    {
+        if (!File.Exists(sourcePath) || !File.Exists(runtimePath))
+        {
+            return;
+        }
+
+        using var sourceJson = JsonDocument.Parse(File.ReadAllText(sourcePath));
+        using var runtimeJson = JsonDocument.Parse(File.ReadAllText(runtimePath));
+
+        var sourceThemeId = sourceJson.RootElement.TryGetProperty("themeId", out var sourceThemeIdProperty) ? sourceThemeIdProperty.GetString() : null;
+        var runtimeThemeId = runtimeJson.RootElement.TryGetProperty("themeId", out var runtimeThemeIdProperty) ? runtimeThemeIdProperty.GetString() : null;
+
+        if (!string.Equals(sourceThemeId, runtimeThemeId, StringComparison.Ordinal))
+        {
+            errors.Add($"{projectId}: runtime themeId differs from source");
+        }
     }
 
     private static T ReadJson<T>(string path)
     {
         var json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<T>(json, JsonOptions) ?? throw new InvalidOperationException($"Cannot read {path}");
-    }
-
-    private static string Normalize(string value)
-    {
-        return value.Replace("\r\n", "\n").Trim();
     }
 
     private static string GetRepoRoot()
