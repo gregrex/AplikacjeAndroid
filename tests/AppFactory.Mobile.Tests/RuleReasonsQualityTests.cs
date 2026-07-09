@@ -22,7 +22,8 @@ public sealed class RuleReasonsQualityTests
         "outfit-coach",
         "fryzury-proste",
         "rysunek-coach",
-        "bukietownik"
+        "bukietownik",
+        "pokoj-makeover"
     };
 
     [Fact]
