@@ -36,6 +36,7 @@ public sealed class RuleDefinition
     public int Score { get; set; }
     public string FreeResultId { get; set; } = string.Empty;
     public string PremiumResultId { get; set; } = string.Empty;
+    public string Reason { get; set; } = string.Empty;
 }
 
 public sealed class RuleMatch
@@ -43,4 +44,9 @@ public sealed class RuleMatch
     public string FreeResultId { get; set; } = string.Empty;
     public string PremiumResultId { get; set; } = string.Empty;
     public string RuleId { get; set; } = string.Empty;
+    public int Score { get; set; }
+    public string Reason { get; set; } = string.Empty;
+    public List<string> MatchedConditions { get; set; } = new();
+    public List<string> AlternativeRuleIds { get; set; } = new();
+    public List<string> AlternativePremiumResultIds { get; set; } = new();
 }
