@@ -31,6 +31,19 @@ public sealed class MatchInfoParserTests
     }
 
     [Fact]
+    public void Parse_ReadsRelativeResultUri()
+    {
+        var uri = "/result/wifi/free/premium?ruleId=relative_rule&score=44&matched=problem%3Dslow_speed";
+
+        var info = MatchInfoParser.Parse(uri);
+
+        Assert.True(info.HasAnyInfo);
+        Assert.Equal("relative_rule", info.RuleId);
+        Assert.Equal(44, info.Score);
+        Assert.Equal(new[] { "problem=slow_speed" }, info.MatchedConditions);
+    }
+
+    [Fact]
     public void ParseQuery_ReadsQueryWithoutQuestionMark()
     {
         var info = MatchInfoParser.ParseQuery("ruleId=default_wifi&score=1&matched=&alternatives=");
