@@ -61,13 +61,21 @@ else
         {
             <section class="card">
                 <h3>Alternatywne rekomendacje</h3>
-                <p class="muted">Inne wyniki, które również pasowały do części odpowiedzi.</p>
+                <p class="muted">Inne wyniki, które również pasowały do części odpowiedzi. Możesz przełączyć pełną rekomendację bez ponownego przechodzenia quizu.</p>
                 <ul>
                     @foreach (var alternative in _alternativeResults)
                     {
                         <li>
                             <strong>@alternative.Title</strong><br />
-                            <span>@alternative.Summary</span>
+                            <span>@alternative.Summary</span><br />
+                            @if (_premiumResult.Id == alternative.Id)
+                            {
+                                <span class="muted">Aktualnie wybrana rekomendacja</span>
+                            }
+                            else
+                            {
+                                <button class="button secondary" @onclick="() => SelectAlternative(alternative.Id)">Pokaż tę alternatywę</button>
+                            }
                         </li>
                     }
                 </ul>
@@ -127,12 +135,21 @@ else
         _premiumUnlocked = await Ads.ShowRewardedAsync("result_full_instruction");
     }
 
+    private void SelectAlternative(string resultId)
+    {
+        var alternative = _alternativeResults.FirstOrDefault(x => x.Id == resultId);
+        if (alternative is not null)
+        {
+            _premiumResult = alternative;
+        }
+    }
+
     private async Task AddFavorite()
     {
         await Favorites.AddAsync(new FavoriteEntry
         {
             ProjectId = ProjectContext.CurrentProjectId,
-            ResultId = _premiumUnlocked ? PremiumResultId : FreeResultId
+            ResultId = _premiumUnlocked ? _premiumResult?.Id ?? PremiumResultId : FreeResultId
         });
     }
 }
