@@ -11,12 +11,13 @@ public static class MatchInfoParser
             return new MatchInfo();
         }
 
-        if (!Uri.TryCreate(uri, UriKind.Absolute, out var parsedUri))
+        if (Uri.TryCreate(uri, UriKind.Absolute, out var parsedUri))
         {
-            return ParseQuery(uri);
+            return ParseQuery(parsedUri.Query);
         }
 
-        return ParseQuery(parsedUri.Query);
+        var queryStart = uri.IndexOf('?');
+        return ParseQuery(queryStart >= 0 ? uri[queryStart..] : uri);
     }
 
     public static MatchInfo ParseQuery(string query)
