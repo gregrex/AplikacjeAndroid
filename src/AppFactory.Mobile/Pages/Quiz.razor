@@ -64,7 +64,31 @@ else
     private void ShowResult()
     {
         var match = RuleEngine.Match(CategoryId, _answers, _rules);
-        var url = $"/result/{CategoryId}/{match.FreeResultId}/{match.PremiumResultId}";
+        var query = BuildMatchQuery(match);
+        var url = $"/result/{CategoryId}/{match.FreeResultId}/{match.PremiumResultId}{query}";
         Nav.NavigateTo(url);
+    }
+
+    private static string BuildMatchQuery(RuleMatch match)
+    {
+        var parts = new List<string>();
+
+        AddQueryPart(parts, "ruleId", match.RuleId);
+        AddQueryPart(parts, "score", match.Score.ToString());
+        AddQueryPart(parts, "reason", match.Reason);
+        AddQueryPart(parts, "matched", string.Join("|", match.MatchedConditions));
+        AddQueryPart(parts, "alternatives", string.Join("|", match.AlternativePremiumResultIds));
+
+        return parts.Count == 0 ? string.Empty : $"?{string.Join("&", parts)}";
+    }
+
+    private static void AddQueryPart(List<string> parts, string name, string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return;
+        }
+
+        parts.Add($"{Uri.EscapeDataString(name)}={Uri.EscapeDataString(value)}");
     }
 }
