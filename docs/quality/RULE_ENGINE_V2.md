@@ -21,7 +21,7 @@ public string Reason { get; set; } = string.Empty;
 
 Pole jest opcjonalne. Obecne pliki JSON nie muszą go mieć.
 
-Docelowe użycie w `rules.json`:
+Przykład użycia w `rules.json`:
 
 ```json
 {
@@ -70,9 +70,11 @@ when = {}
 
 czyli prawdziwą regułę domyślną.
 
-## Co można podpiąć w UI
+## Status wdrożenia UI
 
-Na ekranie wyniku można dodać sekcję:
+Wdrożono przekazanie metadanych z `Quiz.razor` do `Result.razor` przez query string.
+
+Ekran wyniku pokazuje teraz sekcję:
 
 ### Dlaczego taki wynik?
 
@@ -82,15 +84,29 @@ Na ekranie wyniku można dodać sekcję:
 - `RuleMatch.Score`,
 - `RuleMatch.MatchedConditions`.
 
-### Zobacz też
+Po odblokowaniu premium ekran może pokazać także:
+
+### Alternatywne rekomendacje
 
 Źródła danych:
 
 - `RuleMatch.AlternativePremiumResultIds`.
 
+## Projekty z pełnym `reason`
+
+Pierwsze projekty, w których wszystkie reguły mają `reason` w źródle i runtime:
+
+- `router-wifi-diagnosta`,
+- `zmywarka-diagnosta`,
+- `krawat-garnitur-coach`.
+
+Jest to pilnowane testem:
+
+- `tests/AppFactory.Mobile.Tests/RuleReasonsQualityTests.cs`.
+
 ## Następny krok
 
-1. Stopniowo dodawać `reason` do najważniejszych reguł w projektach.
-2. Dodać sekcję `Dlaczego taki wynik?` w ekranie wyniku.
-3. Dodać sekcję alternatywnych wyników.
-4. Dodać testy UI albo snapshoty dla ekranu wyniku.
+1. Dodać `reason` do kolejnych projektów.
+2. Rozważyć przeniesienie query parsing z `Result.razor` do małego serwisu testowalnego jednostkowo.
+3. Dodać testy/snapshoty dla ekranu wyniku.
+4. Dodać klikane alternatywy zamiast samej listy alternatywnych wyników.
