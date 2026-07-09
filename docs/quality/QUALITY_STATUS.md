@@ -38,7 +38,20 @@ Dodano:
 - `docs/quality/PLAN_DOPRACOWANIA_PROJEKTOW.md`,
 - `docs/quality/QUALITY_STATUS.md`,
 - `docs/quality/RULE_ENGINE_V2.md`,
+- `docs/quality/PRODUCTION_CHECKLIST.md`,
 - `tools/quality/README.md`.
+
+### CI
+
+Dodano:
+
+- `.github/workflows/quality-checks.yml`.
+
+Workflow uruchamia testy jakości na:
+
+- push do `main`,
+- pull request do `main`,
+- ręczne wywołanie `workflow_dispatch`.
 
 ### Testy globalne
 
@@ -166,7 +179,7 @@ Wykonano:
 
 ## Znane ryzyka przed statusem produkcyjnym
 
-- Pełna weryfikacja wymaga lokalnego uruchomienia testów lub CI.
+- Pełna weryfikacja wymaga lokalnego uruchomienia testów lub przejścia workflow CI.
 
 ## Definicja MVP-ready po dopracowaniu
 
@@ -183,12 +196,12 @@ Projekt jest uznawany za MVP-ready, jeśli ma:
 
 ## Następne kroki techniczne
 
-1. Uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport`.
+1. Poczekać na wynik GitHub Actions `Quality Checks` albo uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport`.
 2. Naprawić ewentualne błędy danych ujawnione przez globalny test.
 3. Rozważyć przeniesienie pełnego stanu dopasowania z query string do wspólnego serwisu stanu nawigacji.
 4. Dodać osobny test dla logiki wyboru alternatywy, gdy UI zostanie przeniesiony do komponentu.
-5. Przygotować checklistę produkcyjną dla buildów osobnych aplikacji.
+5. Przygotować profile buildów osobnych aplikacji.
 
 ## Uwagi
 
-Testy globalne, walidator, skrypty, Rule Engine v2, parser metadanych wyniku, ekran wyjaśnień i wybór alternatywnych rekomendacji zostały dodane w repo. Nie były uruchamiane lokalnie w tym trybie pracy. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo CI.
+Testy globalne, walidator, skrypty, Rule Engine v2, parser metadanych wyniku, ekran wyjaśnień, wybór alternatywnych rekomendacji, CI i checklist produkcyjny zostały dodane w repo. Nie uruchamiałem lokalnie `dotnet test`, bo pracuję przez GitHub connector. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo przejścia workflow CI.
