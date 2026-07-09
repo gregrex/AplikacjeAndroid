@@ -44,6 +44,7 @@ public sealed class ProductionReadinessTests
             "docs/quality/QUALITY_STATUS.md",
             "docs/quality/RULE_ENGINE_V2.md",
             "docs/quality/BUILD_PROFILES.md",
+            "docs/quality/IMAGE_ANALYSIS_V1.md",
             "tools/quality/run-quality-checks.ps1",
             "tools/quality/sync-runtime-packs.ps1",
             "tools/quality/write-project-quality-report.ps1",
@@ -154,6 +155,23 @@ public sealed class ProductionReadinessTests
             Assert.StartsWith("pl.gbcom.appfactory.", profile.ApplicationId, StringComparison.Ordinal);
             Assert.DoesNotContain("-", profile.ApplicationId);
         }
+    }
+
+    [Fact]
+    public void ImageAnalysisPolicy_CoversExpectedProjectsOnly()
+    {
+        var policies = new ImageAnalysisPolicyService();
+        var enabled = policies.GetEnabledProjectIds();
+
+        Assert.Equal(8, enabled.Count);
+        Assert.Contains("plama-ratownik", enabled);
+        Assert.Contains("pokoj-makeover", enabled);
+        Assert.Contains("rysunek-coach", enabled);
+        Assert.Contains("outfit-coach", enabled);
+        Assert.Contains("fryzury-proste", enabled);
+        Assert.Contains("barber-translator", enabled);
+        Assert.Contains("zmywarka-diagnosta", enabled);
+        Assert.Contains("silikon-fuga-fix", enabled);
     }
 
     [Fact]
