@@ -1,8 +1,8 @@
 [
-  { "id": "puppy_easy", "categoryId": "*", "when": { "age": "puppy", "level": "easy" }, "score": 90, "freeResultId": "puppy_easy_free", "premiumResultId": "puppy_easy_premium" },
-  { "id": "adult_normal", "categoryId": "*", "when": { "age": "adult", "level": "normal" }, "score": 80, "freeResultId": "adult_normal_free", "premiumResultId": "adult_normal_premium" },
-  { "id": "high_energy", "categoryId": "*", "when": { "energy": "high" }, "score": 85, "freeResultId": "high_energy_free", "premiumResultId": "high_energy_premium" },
-  { "id": "senior_low", "categoryId": "*", "when": { "age": "senior", "energy": "low" }, "score": 85, "freeResultId": "senior_low_free", "premiumResultId": "senior_low_premium" },
-  { "id": "hard_level", "categoryId": "*", "when": { "level": "hard" }, "score": 70, "freeResultId": "hard_level_free", "premiumResultId": "hard_level_premium" },
-  { "id": "default_any", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_free", "premiumResultId": "default_premium" }
+  { "id": "puppy_easy", "categoryId": "*", "when": { "age": "puppy", "level": "easy" }, "score": 90, "freeResultId": "puppy_easy_free", "premiumResultId": "puppy_easy_premium", "reason": "Wybrano tę regułę, bo pies jest szczeniakiem i użytkownik chce łatwy poziom. Plan stawia na krótkie, pozytywne ćwiczenia i częste przerwy." },
+  { "id": "adult_normal", "categoryId": "*", "when": { "age": "adult", "level": "normal" }, "score": 80, "freeResultId": "adult_normal_free", "premiumResultId": "adult_normal_premium", "reason": "Wybrano tę regułę, bo pies jest dorosły, a poziom normalny. Rekomendacja zakłada regularne ćwiczenia i jasne sygnały bez przeciążania psa." },
+  { "id": "high_energy", "categoryId": "*", "when": { "energy": "high" }, "score": 85, "freeResultId": "high_energy_free", "premiumResultId": "high_energy_premium", "reason": "Wybrano tę regułę, bo pies ma dużo energii. Plan zaczyna od ruchu i prostych zadań, żeby łatwiej wejść w naukę." },
+  { "id": "senior_low", "categoryId": "*", "when": { "age": "senior", "energy": "low" }, "score": 85, "freeResultId": "senior_low_free", "premiumResultId": "senior_low_premium", "reason": "Wybrano tę regułę, bo pies jest seniorem i ma niższą energię. Ćwiczenia powinny być łagodne, krótkie i bez presji." },
+  { "id": "hard_level", "categoryId": "*", "when": { "level": "hard" }, "score": 70, "freeResultId": "hard_level_free", "premiumResultId": "hard_level_premium", "reason": "Wybrano tę regułę, bo użytkownik wskazał trudniejszy poziom. Plan nadal opiera się na pozytywnym wzmacnianiu i stopniowaniu zadania." },
+  { "id": "default_any", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_free", "premiumResultId": "default_premium", "reason": "Wybrano regułę domyślną, bo odpowiedzi nie wskazały dokładnego profilu psa. Aplikacja zaczyna od bezpiecznego planu bazowego na 7 dni." }
 ]
