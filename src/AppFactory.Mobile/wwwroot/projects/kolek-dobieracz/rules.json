@@ -1,9 +1,9 @@
 [
-  { "id": "concrete_light", "categoryId": "*", "when": { "wall": "concrete", "weight": "light" }, "score": 90, "freeResultId": "concrete_light_free", "premiumResultId": "concrete_light_premium" },
-  { "id": "concrete_medium", "categoryId": "*", "when": { "wall": "concrete", "weight": "medium" }, "score": 90, "freeResultId": "concrete_medium_free", "premiumResultId": "concrete_medium_premium" },
-  { "id": "brick_light_medium", "categoryId": "*", "when": { "wall": "brick" }, "score": 75, "freeResultId": "brick_free", "premiumResultId": "brick_premium" },
-  { "id": "drywall_light", "categoryId": "*", "when": { "wall": "drywall", "weight": "light" }, "score": 80, "freeResultId": "drywall_light_free", "premiumResultId": "drywall_light_premium" },
-  { "id": "wood_any", "categoryId": "*", "when": { "wall": "wood" }, "score": 70, "freeResultId": "wood_free", "premiumResultId": "wood_premium" },
-  { "id": "heavy_or_unknown", "categoryId": "*", "when": { "weight": "heavy" }, "score": 100, "freeResultId": "risk_free", "premiumResultId": "risk_premium" },
-  { "id": "default_any", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_free", "premiumResultId": "default_premium" }
+  { "id": "concrete_light", "categoryId": "*", "when": { "wall": "concrete", "weight": "light" }, "score": 90, "freeResultId": "concrete_light_free", "premiumResultId": "concrete_light_premium", "reason": "Beton i lekki przedmiot pasują do prostego mocowania z kontrolą średnicy wiertła." },
+  { "id": "concrete_medium", "categoryId": "*", "when": { "wall": "concrete", "weight": "medium" }, "score": 90, "freeResultId": "concrete_medium_free", "premiumResultId": "concrete_medium_premium", "reason": "Beton i średni ciężar wymagają mocniejszego mocowania i kontroli głębokości otworu." },
+  { "id": "brick_light_medium", "categoryId": "*", "when": { "wall": "brick" }, "score": 75, "freeResultId": "brick_free", "premiumResultId": "brick_premium", "reason": "Cegła wymaga dobrania mocowania do pełnego lub pustego materiału." },
+  { "id": "drywall_light", "categoryId": "*", "when": { "wall": "drywall", "weight": "light" }, "score": 80, "freeResultId": "drywall_light_free", "premiumResultId": "drywall_light_premium", "reason": "Karton-gips i lekki przedmiot wymagają mocowania do płyty, nie zwykłego kołka do betonu." },
+  { "id": "wood_any", "categoryId": "*", "when": { "wall": "wood" }, "score": 70, "freeResultId": "wood_free", "premiumResultId": "wood_premium", "reason": "Drewno wymaga dobrania wkrętu i ostrożnego montażu bez rozszczepienia materiału." },
+  { "id": "heavy_or_unknown", "categoryId": "*", "when": { "weight": "heavy" }, "score": 100, "freeResultId": "risk_free", "premiumResultId": "risk_premium", "reason": "Ciężki przedmiot oznacza podwyższone ryzyko i wymaga sprawdzenia nośności ściany." },
+  { "id": "default_any", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_free", "premiumResultId": "default_premium", "reason": "Nie znaleziono jednoznacznego scenariusza, więc aplikacja zaczyna od identyfikacji ściany i ciężaru." }
 ]
