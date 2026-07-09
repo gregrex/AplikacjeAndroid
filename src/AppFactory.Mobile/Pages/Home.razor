@@ -10,19 +10,43 @@
     <p>Wybierz mikroaplikację. Każda korzysta ze wspólnego silnika, ale ma własny styl, własny typ wyniku i własne akcje.</p>
 </section>
 
-<div class="project-grid">
-    @foreach (var project in _projects)
-    {
-        var profile = UiProfiles.GetProfile(project.Id);
-        <article class="project-card">
-            <p class="result-kicker">@GetExperienceLabel(profile.ResultViewType)</p>
-            <h2>@project.Name</h2>
-            <p>@project.Description</p>
-            <p class="muted">Widok: @profile.ResultViewType</p>
-            <button class="button" @onclick="() => SelectProject(project.Id)">Otwórz aplikację</button>
-        </article>
-    }
-</div>
+<section class="card">
+    <h3>Katalog</h3>
+    <p class="muted">Widoczne projekty: @_filteredProjects.Count z @_projects.Count</p>
+
+    <label for="project-search">Szukaj aplikacji</label>
+    <input id="project-search" value="@_search" @oninput="OnSearchChanged" placeholder="np. plama, router, pies" />
+
+    <label for="experience-filter">Typ doświadczenia</label>
+    <select id="experience-filter" value="@_selectedExperience" @onchange="OnExperienceChanged">
+        <option value="">Wszystkie</option>
+        @foreach (var experience in _experienceFilters)
+        {
+            <option value="@experience">@GetExperienceLabel(experience)</option>
+        }
+    </select>
+</section>
+
+@if (_filteredProjects.Count == 0)
+{
+    <div class="card">Nie znaleziono projektu dla bieżących filtrów.</div>
+}
+else
+{
+    <div class="project-grid">
+        @foreach (var project in _filteredProjects)
+        {
+            var profile = UiProfiles.GetProfile(project.Id);
+            <article class="project-card">
+                <p class="result-kicker">@GetExperienceLabel(profile.ResultViewType)</p>
+                <h2>@project.Name</h2>
+                <p>@project.Description</p>
+                <p class="muted">Projekt: @project.Id</p>
+                <button class="button" @onclick="() => SelectProject(project.Id)">Otwórz aplikację</button>
+            </article>
+        }
+    </div>
+}
 
 <div class="card">
     <h3>Tryb MVP</h3>
@@ -31,16 +55,60 @@
 
 @code {
     private IReadOnlyList<ProjectCatalogItem> _projects = Array.Empty<ProjectCatalogItem>();
+    private IReadOnlyList<ProjectCatalogItem> _filteredProjects = Array.Empty<ProjectCatalogItem>();
+    private IReadOnlyList<string> _experienceFilters = Array.Empty<string>();
+    private string _search = string.Empty;
+    private string _selectedExperience = string.Empty;
 
     protected override void OnInitialized()
     {
         _projects = Catalog.GetProjects();
+        _experienceFilters = _projects
+            .Select(project => UiProfiles.GetProfile(project.Id).ResultViewType)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(GetExperienceLabel)
+            .ToArray();
+
+        ApplyFilters();
     }
 
     private void SelectProject(string projectId)
     {
         ProjectContext.SelectProject(projectId);
         Nav.NavigateTo("/categories");
+    }
+
+    private void OnSearchChanged(ChangeEventArgs args)
+    {
+        _search = args.Value?.ToString() ?? string.Empty;
+        ApplyFilters();
+    }
+
+    private void OnExperienceChanged(ChangeEventArgs args)
+    {
+        _selectedExperience = args.Value?.ToString() ?? string.Empty;
+        ApplyFilters();
+    }
+
+    private void ApplyFilters()
+    {
+        IEnumerable<ProjectCatalogItem> filtered = _projects;
+
+        if (!string.IsNullOrWhiteSpace(_search))
+        {
+            filtered = filtered.Where(project =>
+                project.Id.Contains(_search, StringComparison.OrdinalIgnoreCase)
+                || project.Name.Contains(_search, StringComparison.OrdinalIgnoreCase)
+                || project.Description.Contains(_search, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (!string.IsNullOrWhiteSpace(_selectedExperience))
+        {
+            filtered = filtered.Where(project =>
+                string.Equals(UiProfiles.GetProfile(project.Id).ResultViewType, _selectedExperience, StringComparison.OrdinalIgnoreCase));
+        }
+
+        _filteredProjects = filtered.ToArray();
     }
 
     private static string GetExperienceLabel(string resultViewType)
@@ -52,6 +120,13 @@
             "seven-day-plan" => "Plan 7 dni",
             "story-page" => "Bajka",
             "sales-copy-card" => "Opis do skopiowania",
+            "pet-activity-plan" => "Aktywność zwierzaka",
+            "style-checklist" => "Stylizacja",
+            "creative-lesson" => "Lekcja kreatywna",
+            "arrangement-plan" => "Aranżacja",
+            "packing-checklist" => "Pakowanie",
+            "craft-helper" => "Pomocnik craft",
+            "diagnostic-checklist" => "Diagnostyka",
             _ => "Aplikacja"
         };
     }
