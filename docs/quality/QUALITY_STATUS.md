@@ -132,22 +132,33 @@ Poprawiono też fallback: reguła domyślna musi mieć `categoryId = *` oraz pus
 
 ### Projekty z pełnymi uzasadnieniami reguł
 
-Dodano `reason` w źródle i runtime dla:
+Dodano `reason` w źródle i runtime dla wszystkich 20 projektów:
 
-- `router-wifi-diagnosta`,
-- `zmywarka-diagnosta`,
-- `krawat-garnitur-coach`,
-- `pakowanie-paczek`,
-- `silikon-fuga-fix`,
-- `chleb-zakwas-coach`,
-- `domfix`,
+- `plama-ratownik`,
+- `kolek-dobieracz`,
+- `pies-trener-7dni`,
+- `bajka-z-rysunku`,
+- `vinted-olx-opis`,
+- `kot-bawi-sie`,
+- `barber-translator`,
 - `outfit-coach`,
+- `domfix`,
 - `fryzury-proste`,
 - `rysunek-coach`,
 - `bukietownik`,
 - `pokoj-makeover`,
-- `kot-bawi-sie`,
-- `barber-translator`.
+- `pakowanie-paczek`,
+- `silikon-fuga-fix`,
+- `szydelko-pomocnik`,
+- `chleb-zakwas-coach`,
+- `zmywarka-diagnosta`,
+- `krawat-garnitur-coach`,
+- `router-wifi-diagnosta`.
+
+## Znane ryzyka przed statusem produkcyjnym
+
+- `plama-ratownik` ma bogatszy runtime niż source w części reguł i wyników. `reason` jest uzupełniony, ale projekt wymaga osobnego wyrównania source/runtime przed finalnym statusem produkcyjnym.
+- Pełna weryfikacja wymaga lokalnego uruchomienia testów lub CI.
 
 ## Definicja MVP-ready po dopracowaniu
 
@@ -164,9 +175,9 @@ Projekt jest uznawany za MVP-ready, jeśli ma:
 
 ## Następne kroki techniczne
 
-1. Uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport`.
-2. Naprawić ewentualne błędy danych ujawnione przez globalny test.
-3. Dodać `reason` do pozostałych projektów.
+1. Wyrównać `plama-ratownik` source/runtime.
+2. Uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport`.
+3. Naprawić ewentualne błędy danych ujawnione przez globalny test.
 4. Rozważyć przeniesienie pełnego stanu dopasowania z query string do wspólnego serwisu stanu nawigacji.
 5. Dodać osobny test dla logiki wyboru alternatywy, gdy UI zostanie przeniesiony do komponentu.
 
