@@ -12,54 +12,17 @@ Nie oznaczam jeszcze jako final `production-ready`, dopóki nie przejdzie lokaln
 
 ## Zakres katalogu
 
-Katalog aplikacji obejmuje 20 projektów:
-
-1. `plama-ratownik`
-2. `kolek-dobieracz`
-3. `pies-trener-7dni`
-4. `bajka-z-rysunku`
-5. `vinted-olx-opis`
-6. `kot-bawi-sie`
-7. `barber-translator`
-8. `outfit-coach`
-9. `domfix`
-10. `fryzury-proste`
-11. `rysunek-coach`
-12. `bukietownik`
-13. `pokoj-makeover`
-14. `pakowanie-paczek`
-15. `silikon-fuga-fix`
-16. `szydelko-pomocnik`
-17. `chleb-zakwas-coach`
-18. `zmywarka-diagnosta`
-19. `krawat-garnitur-coach`
-20. `router-wifi-diagnosta`
+Katalog aplikacji obejmuje 20 projektów.
 
 ## Wykonane w etapie jakościowym
 
 ### Dokumentacja
 
-Dodano:
-
-- `docs/quality/PLAN_DOPRACOWANIA_PROJEKTOW.md`,
-- `docs/quality/QUALITY_STATUS.md`,
-- `docs/quality/RULE_ENGINE_V2.md`,
-- `docs/quality/PRODUCTION_CHECKLIST.md`,
-- `docs/quality/PRODUCTION_EXECUTION_REPORT.md`,
-- `docs/quality/BUILD_PROFILES.md`,
-- `tools/quality/README.md`.
+Dodano dokumenty jakości, produkcji, build profiles oraz `docs/quality/IMAGE_ANALYSIS_V1.md`.
 
 ### CI
 
-Dodano:
-
-- `.github/workflows/quality-checks.yml`.
-
-Workflow uruchamia testy jakości na:
-
-- push do `main`,
-- pull request do `main`,
-- ręczne wywołanie `workflow_dispatch`.
+Dodano `.github/workflows/quality-checks.yml`.
 
 ### Testy globalne i produkcyjne
 
@@ -69,91 +32,53 @@ Dodano:
 - `tests/AppFactory.Mobile.Tests/RuleReasonsQualityTests.cs`,
 - `tests/AppFactory.Mobile.Tests/ProductionReadinessTests.cs`,
 - `tests/AppFactory.Mobile.Tests/ResultNavigationStateServiceTests.cs`,
-- `tests/AppFactory.Mobile.Tests/BuildProfileServiceTests.cs`.
+- `tests/AppFactory.Mobile.Tests/BuildProfileServiceTests.cs`,
+- `tests/AppFactory.Mobile.Tests/ImageAnalysisServiceTests.cs`.
 
-Testy sprawdzają:
-
-- kompletność paczek źródłowych,
-- kompletność paczek runtime,
-- obecność `theme.json`,
-- obecność listingów marketingowych,
-- obecność testów manualnych,
-- przejście przez wspólny `DataPackValidationService`,
-- walidację `app.json`,
-- walidację `theme.json`,
-- parytet językowy PL/EN/UK,
-- zgodność strukturalną runtime względem źródła,
-- `reason` dla każdej reguły w source i runtime,
-- istnienie infrastruktury produkcyjnej,
-- brak blokujących markerów ryzyka w statusie jakości,
-- serwis stanu nawigacji wyniku,
-- profile buildów katalogu i osobnych aplikacji.
-
-### Walidator
-
-Rozszerzono:
-
-- `src/AppFactory.Core/Services/DataPackValidationService.cs`.
-
-Walidator sprawdza teraz:
-
-- puste `appId`, `appName`, `defaultLanguage`, `supportedLanguages`,
-- zgodność `appId` z katalogiem projektu,
-- podstawowe pola `theme.json`,
-- puste ID kategorii, pytań, reguł i wyników,
-- puste `nameKey`, `textKey`, `icon`, `labelKey`,
-- duplikaty opcji pytań,
-- reguły wskazujące brakujące pytania,
-- reguły używające wartości spoza opcji pytania,
-- reguły wskazujące brakujące wyniki.
-
-### Narzędzia
-
-Dodano:
-
-- `tools/quality/sync-runtime-packs.ps1`,
-- `tools/quality/write-project-quality-report.ps1`,
-- `tools/quality/run-quality-checks.ps1`,
-- `tools/quality/write-build-profiles.ps1`.
-
-Skrypty pozwalają lokalnie:
-
-- zsynchronizować runtime z `projects`,
-- wygenerować markdownowy raport jakości,
-- wygenerować raport profili buildów,
-- uruchomić testy jakości,
-- uruchomić testy po synchronizacji runtime i wygenerowaniu raportu.
+Testy sprawdzają dane projektów, runtime, parytet języków, `reason`, profile buildów, serwis stanu wyniku oraz Image Analysis v1.
 
 ### Build profile per aplikacja
 
-Dodano:
-
-- `src/AppFactory.Core/Models/BuildProfile.cs`,
-- `src/AppFactory.Mobile/Models/BuildProfile.cs`,
-- `src/AppFactory.Core/Services/BuildProfileService.cs`,
-- `src/AppFactory.Mobile/Services/BuildProfileService.cs`,
-- `docs/quality/BUILD_PROFILES.md`,
-- `tools/quality/write-build-profiles.ps1`.
-
-Każdy projekt ma stabilny `ApplicationId` w formacie:
+Dodano modele, serwis, raport i generator build profiles. Każdy projekt ma stabilny `ApplicationId` w formacie:
 
 ```text
 pl.gbcom.appfactory.<projectIdBezMyślników>
 ```
 
-### UX katalogu i quizu
+### Image Analysis v1
 
-Rozszerzono:
+Dodano fundament analizy obrazu:
 
-- `src/AppFactory.Mobile/Pages/Home.razor`,
-- `src/AppFactory.Mobile/Pages/Quiz.razor`,
-- `src/AppFactory.Mobile/Pages/Result.razor`.
+- modele request/result/suggestion/policy,
+- `ImageAnalysisPolicyService`,
+- `IImageAnalysisProvider`,
+- `MockImageAnalysisProvider`,
+- `ImageAnalysisService`,
+- testy `ImageAnalysisServiceTests`,
+- dokument `IMAGE_ANALYSIS_V1.md`,
+- informację w UI kategorii dla projektów z włączoną analizą obrazu.
+
+Włączone projekty:
+
+- `plama-ratownik`,
+- `pokoj-makeover`,
+- `rysunek-coach`,
+- `outfit-coach`,
+- `fryzury-proste`,
+- `barber-translator`,
+- `zmywarka-diagnosta`,
+- `silikon-fuga-fix`.
+
+Image Analysis v1 używa mock providera. Wynik analizy jest tylko podpowiedzią do formularza i wymaga ręcznego potwierdzenia przez użytkownika.
+
+### UX katalogu, kategorii i quizu
 
 Dodano:
 
 - wyszukiwarkę aplikacji w katalogu,
 - filtr typu doświadczenia,
 - licznik widocznych projektów,
+- kartę `Image Analysis v1` dla projektów obsługujących obraz,
 - postęp quizu,
 - powrót do poprzedniego pytania,
 - reset quizu,
@@ -161,77 +86,29 @@ Dodano:
 
 ### Result navigation state
 
-Dodano:
-
-- `src/AppFactory.Core/Services/ResultNavigationStateService.cs`,
-- `src/AppFactory.Mobile/Services/ResultNavigationStateService.cs`.
-
-Quiz zapisuje metadane dopasowania w serwisie stanu, a ekran wyniku odczytuje je z serwisu. Query string parser został jako fallback dla linków bez stanu w pamięci.
+Dodano `ResultNavigationStateService`. Quiz zapisuje metadane dopasowania w serwisie stanu, a ekran wyniku odczytuje je z serwisu. Query string parser został jako fallback.
 
 ### Rule Engine v2 i ekran wyniku
 
-Rozszerzono:
+Silnik reguł zwraca teraz `Score`, `Reason`, `MatchedConditions`, `AlternativeRuleIds` i `AlternativePremiumResultIds`.
 
-- `src/AppFactory.Core/Models/ProjectDefinitions.cs`,
-- `src/AppFactory.Mobile/Models/ProjectDefinitions.cs`,
-- `src/AppFactory.Core/Services/RuleEngineService.cs`,
-- `src/AppFactory.Mobile/Services/RuleEngineService.cs`,
-- `src/AppFactory.Core/Models/MatchInfo.cs`,
-- `src/AppFactory.Mobile/Models/MatchInfo.cs`,
-- `src/AppFactory.Core/Services/MatchInfoParser.cs`,
-- `src/AppFactory.Mobile/Services/MatchInfoParser.cs`,
-- `tests/AppFactory.Mobile.Tests/RuleEngineServiceTests.cs`,
-- `tests/AppFactory.Mobile.Tests/MatchInfoParserTests.cs`.
+Ekran wyniku pokazuje wyjaśnienie wyniku, dopasowane odpowiedzi i alternatywne rekomendacje po odblokowaniu premium.
 
-Silnik reguł zwraca teraz:
-
-- `Score`,
-- `Reason`,
-- `MatchedConditions`,
-- `AlternativeRuleIds`,
-- `AlternativePremiumResultIds`.
-
-Ekran wyniku pokazuje teraz:
-
-- sekcję `Dlaczego taki wynik?`,
-- regułę i punkty dopasowania,
-- dopasowane odpowiedzi,
-- alternatywne rekomendacje po odblokowaniu premium,
-- przełączanie aktywnej rekomendacji premium na jedną z alternatyw.
-
-Parsowanie metadanych wyniku zostało wyciągnięte z `Result.razor` do `MatchInfoParser`, dzięki czemu jest testowalne jednostkowo.
-
-Poprawiono też fallback: reguła domyślna musi mieć `categoryId = *` oraz puste `when`.
-
-### Projekty z pełnymi uzasadnieniami reguł
+### Dane projektów
 
 Dodano `reason` w źródle i runtime dla wszystkich 20 projektów.
 
-### Wyrównanie `plama-ratownik`
+Wyrównano `plama-ratownik`:
 
-Wykonano:
-
-- wyrównanie source `rules.json` do pełnego zestawu runtime,
-- rozszerzenie source `results.pl.json` do pełnego zestawu wyników,
-- dodanie brakujących source `results.en.json`,
-- dodanie brakujących source `results.uk.json`.
+- source `rules.json`,
+- source `results.pl.json`,
+- source `results.en.json`,
+- source `results.uk.json`.
 
 ## Znane ryzyka przed statusem produkcyjnym
 
 - Pełna weryfikacja wymaga lokalnego uruchomienia testów lub przejścia workflow CI.
-
-## Definicja MVP-ready po dopracowaniu
-
-Projekt jest uznawany za MVP-ready, jeśli ma:
-
-- źródłowy `data` pack,
-- runtime pack w `wwwroot`,
-- PL/EN/UK z tymi samymi `resultId`,
-- theme źródłowy i runtime,
-- manual tests,
-- listing marketingowy,
-- wpis w `ProjectCatalogService`,
-- wynik przechodzący przez globalne testy jakości.
+- Image Analysis v1 ma mock providera. Realny provider wymaga osobnego pakietu integracyjnego.
 
 ## Następne kroki techniczne
 
@@ -239,8 +116,9 @@ Projekt jest uznawany za MVP-ready, jeśli ma:
 2. Naprawić ewentualne błędy danych ujawnione przez globalny test.
 3. Po zielonym CI zmienić status z `production-ready candidate` na `production-ready`.
 4. Rozwinąć profile buildów o rzeczywiste flavor/pipeline per aplikacja.
-5. Dodać testy UI/snapshoty dla `Home`, `Quiz` i `Result`.
+5. Zastąpić `MockImageAnalysisProvider` realnym providerem.
+6. Dodać testy UI/snapshoty dla `Home`, `Categories`, `Quiz` i `Result`.
 
 ## Uwagi
 
-Testy globalne, walidator, skrypty, Rule Engine v2, parser metadanych wyniku, ekran wyjaśnień, wybór alternatywnych rekomendacji, CI, checklist produkcyjny, raport wykonania checklisty, profile buildów, UX katalogu/quizu i serwis stanu wyniku zostały dodane w repo. Nie uruchamiałem lokalnie `dotnet test`, bo pracuję przez GitHub connector. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo przejścia workflow CI.
+Nie uruchamiałem lokalnie `dotnet test`, bo pracuję przez GitHub connector. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo przejścia workflow CI.
