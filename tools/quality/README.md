@@ -31,6 +31,30 @@ Uruchomienie właściwe:
 pwsh ./tools/quality/sync-runtime-packs.ps1
 ```
 
+### `write-project-quality-report.ps1`
+
+Generuje markdownowy raport jakości do:
+
+```text
+docs/quality/PROJECTS_REPORT.md
+```
+
+Uruchomienie:
+
+```powershell
+pwsh ./tools/quality/write-project-quality-report.ps1
+```
+
+Raport pokazuje:
+
+- czy projekt jest w `ProjectCatalogService`,
+- czy ma folder źródłowy,
+- czy ma komplet danych źródłowych,
+- czy ma komplet runtime,
+- czy ma theme,
+- czy ma marketing,
+- czy ma manual tests.
+
 ### `run-quality-checks.ps1`
 
 Uruchamia testy jakości projektu.
@@ -45,6 +69,18 @@ Z synchronizacją runtime przed testami:
 pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst
 ```
 
+Z wygenerowaniem raportu przed testami:
+
+```powershell
+pwsh ./tools/quality/run-quality-checks.ps1 -WriteReport
+```
+
+Pełny przebieg: synchronizacja runtime, raport i testy:
+
+```powershell
+pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport
+```
+
 ## Co sprawdzają testy globalne
 
 Test `AllProjectsQualityTests` sprawdza:
@@ -56,26 +92,22 @@ Test `AllProjectsQualityTests` sprawdza:
 - czy każdy projekt ma listing marketingowy PL,
 - czy każdy projekt ma manual tests,
 - czy dane przechodzą `DataPackValidationService`,
+- czy `app.json` ma poprawne podstawowe pola,
+- czy `theme.json` ma poprawne podstawowe pola,
 - czy PL/EN/UK mają te same `resultId`,
 - czy runtime ma tę samą strukturę ID co źródło.
 
 ## Zalecany lokalny proces
 
-1. Uruchom synchronizację runtime:
+1. Uruchom pełną ścieżkę jakości:
 
 ```powershell
-pwsh ./tools/quality/sync-runtime-packs.ps1
+pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport
 ```
 
-2. Uruchom testy:
+2. Jeśli testy pokażą błąd, napraw pierwszy projekt z listy błędów.
 
-```powershell
-pwsh ./tools/quality/run-quality-checks.ps1
-```
-
-3. Jeśli testy pokażą błąd, napraw pierwszy projekt z listy błędów.
-
-4. Powtórz testy.
+3. Powtórz testy.
 
 ## Uwaga
 
