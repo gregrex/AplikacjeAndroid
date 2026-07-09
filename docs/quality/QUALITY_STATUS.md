@@ -37,6 +37,7 @@ Dodano:
 
 - `docs/quality/PLAN_DOPRACOWANIA_PROJEKTOW.md`,
 - `docs/quality/QUALITY_STATUS.md`,
+- `docs/quality/RULE_ENGINE_V2.md`,
 - `tools/quality/README.md`.
 
 ### Testy globalne
@@ -91,6 +92,26 @@ Skrypty pozwalają lokalnie:
 - uruchomić testy jakości,
 - uruchomić testy po synchronizacji runtime i wygenerowaniu raportu.
 
+### Rule Engine v2
+
+Rozszerzono:
+
+- `src/AppFactory.Core/Models/ProjectDefinitions.cs`,
+- `src/AppFactory.Mobile/Models/ProjectDefinitions.cs`,
+- `src/AppFactory.Core/Services/RuleEngineService.cs`,
+- `src/AppFactory.Mobile/Services/RuleEngineService.cs`,
+- `tests/AppFactory.Mobile.Tests/RuleEngineServiceTests.cs`.
+
+Silnik reguł zwraca teraz:
+
+- `Score`,
+- `Reason`,
+- `MatchedConditions`,
+- `AlternativeRuleIds`,
+- `AlternativePremiumResultIds`.
+
+Poprawiono też fallback: reguła domyślna musi mieć `categoryId = *` oraz puste `when`.
+
 ## Definicja MVP-ready po dopracowaniu
 
 Projekt jest uznawany za MVP-ready, jeśli ma:
@@ -108,10 +129,10 @@ Projekt jest uznawany za MVP-ready, jeśli ma:
 
 1. Uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport`.
 2. Naprawić ewentualne błędy danych ujawnione przez globalny test.
-3. Rozważyć zastąpienie wielu per-projektowych testów jednym testem parametrycznym.
-4. Rozszerzyć silnik reguł o `reason`, alternatywne wyniki i wyjaśnienie dopasowania.
-5. Dodać wspólny ekran `Dlaczego taki wynik`.
+3. Stopniowo dodać `reason` do najważniejszych reguł w projektach.
+4. Dodać wspólny ekran `Dlaczego taki wynik`.
+5. Dodać sekcję alternatywnych wyników na ekranie wyniku.
 
 ## Uwagi
 
-Testy globalne, walidator i skrypty zostały dodane w repo. Nie były uruchamiane lokalnie w tym trybie pracy. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo CI.
+Testy globalne, walidator, skrypty i Rule Engine v2 zostały dodane w repo. Nie były uruchamiane lokalnie w tym trybie pracy. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo CI.
