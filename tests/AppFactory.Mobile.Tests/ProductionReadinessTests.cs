@@ -40,11 +40,14 @@ public sealed class ProductionReadinessTests
         var requiredFiles = new[]
         {
             "docs/quality/PRODUCTION_CHECKLIST.md",
+            "docs/quality/PRODUCTION_EXECUTION_REPORT.md",
             "docs/quality/QUALITY_STATUS.md",
             "docs/quality/RULE_ENGINE_V2.md",
+            "docs/quality/BUILD_PROFILES.md",
             "tools/quality/run-quality-checks.ps1",
             "tools/quality/sync-runtime-packs.ps1",
             "tools/quality/write-project-quality-report.ps1",
+            "tools/quality/write-build-profiles.ps1",
             ".github/workflows/quality-checks.yml"
         };
 
@@ -131,6 +134,26 @@ public sealed class ProductionReadinessTests
         }
 
         Assert.True(errors.Count == 0, string.Join(Environment.NewLine, errors));
+    }
+
+    [Fact]
+    public void BuildProfiles_CoverCatalogAndEveryProject()
+    {
+        var projects = new ProjectCatalogService().GetProjects();
+        var profiles = new BuildProfileService().GetAllProfiles(projects);
+        var profileProjectIds = profiles.Select(x => x.ProjectId).ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        Assert.Contains(profiles, x => x.IsCatalogBuild && x.ApplicationId == "pl.gbcom.appfactory");
+
+        foreach (var project in projects)
+        {
+            Assert.Contains(project.Id, profileProjectIds);
+            var profile = profiles.Single(x => string.Equals(x.ProjectId, project.Id, StringComparison.OrdinalIgnoreCase));
+            Assert.False(profile.IsCatalogBuild);
+            Assert.Equal(project.Name, profile.ApplicationTitle);
+            Assert.StartsWith("pl.gbcom.appfactory.", profile.ApplicationId, StringComparison.Ordinal);
+            Assert.DoesNotContain("-", profile.ApplicationId);
+        }
     }
 
     [Fact]
