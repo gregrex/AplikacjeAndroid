@@ -7,6 +7,7 @@
 @inject LanguageService Language
 @inject ProjectContextService ProjectContext
 @inject ProjectUiProfileService UiProfiles
+@inject NavigationManager Nav
 
 <h1>Wynik</h1>
 <p class="muted">Projekt: @ProjectContext.CurrentProjectId | Język wybrany: @Language.CurrentLanguage | Język wyników: @_loadedResultLanguage</p>
@@ -19,6 +20,35 @@ else
 {
     <ProjectResultView ProjectId="@ProjectContext.CurrentProjectId" Result="@_freeResult" ShowPremiumBlocks="false" />
 
+    @if (_matchInfo.HasAnyInfo)
+    {
+        <section class="card">
+            <h3>Dlaczego taki wynik?</h3>
+
+            @if (!string.IsNullOrWhiteSpace(_matchInfo.Reason))
+            {
+                <p>@_matchInfo.Reason</p>
+            }
+            else
+            {
+                <p>Wynik został dobrany na podstawie odpowiedzi z formularza i najlepiej dopasowanej reguły.</p>
+            }
+
+            <p class="muted">Reguła: @_matchInfo.RuleId | Punkty dopasowania: @_matchInfo.Score</p>
+
+            @if (_matchInfo.MatchedConditions.Count > 0)
+            {
+                <h4>Dopasowane odpowiedzi</h4>
+                <ul>
+                    @foreach (var condition in _matchInfo.MatchedConditions)
+                    {
+                        <li>@condition</li>
+                    }
+                </ul>
+            }
+        </section>
+    }
+
     @if (!_premiumUnlocked)
     {
         <button class="button secondary" @onclick="UnlockPremium">@_uiProfile.PrimaryActionLabel</button>
@@ -26,6 +56,23 @@ else
     else if (_premiumResult is not null)
     {
         <ProjectResultView ProjectId="@ProjectContext.CurrentProjectId" Result="@_premiumResult" ShowPremiumBlocks="true" />
+
+        @if (_alternativeResults.Count > 0)
+        {
+            <section class="card">
+                <h3>Alternatywne rekomendacje</h3>
+                <p class="muted">Inne wyniki, które również pasowały do części odpowiedzi.</p>
+                <ul>
+                    @foreach (var alternative in _alternativeResults)
+                    {
+                        <li>
+                            <strong>@alternative.Title</strong><br />
+                            <span>@alternative.Summary</span>
+                        </li>
+                    }
+                </ul>
+            </section>
+        }
     }
 
     <p>
@@ -40,13 +87,16 @@ else
 
     private ResultDefinition? _freeResult;
     private ResultDefinition? _premiumResult;
+    private readonly List<ResultDefinition> _alternativeResults = new();
     private bool _premiumUnlocked;
     private string _loadedResultLanguage = "pl";
     private ProjectUiProfile _uiProfile = new();
+    private MatchInfo _matchInfo = new();
 
     protected override async Task OnInitializedAsync()
     {
         _uiProfile = UiProfiles.GetProfile(ProjectContext.CurrentProjectId);
+        _matchInfo = MatchInfo.FromUri(Nav.Uri);
 
         var availableResultLanguages = new[] { "pl", "en", "uk" };
         _loadedResultLanguage = Language.GetResultLanguageWithFallback(availableResultLanguages);
@@ -54,6 +104,15 @@ else
         var results = await ProjectData.LoadResultsAsync(ProjectContext.CurrentProjectId, _loadedResultLanguage);
         _freeResult = ResultService.FindResult(results, FreeResultId);
         _premiumResult = ResultService.FindResult(results, PremiumResultId);
+
+        foreach (var alternativeId in _matchInfo.AlternativePremiumResultIds)
+        {
+            var alternative = ResultService.FindResult(results, alternativeId);
+            if (alternative is not null && alternative.Id != PremiumResultId)
+            {
+                _alternativeResults.Add(alternative);
+            }
+        }
 
         await History.AddAsync(new HistoryEntry
         {
@@ -75,5 +134,69 @@ else
             ProjectId = ProjectContext.CurrentProjectId,
             ResultId = _premiumUnlocked ? PremiumResultId : FreeResultId
         });
+    }
+
+    private sealed class MatchInfo
+    {
+        public string RuleId { get; init; } = string.Empty;
+        public int Score { get; init; }
+        public string Reason { get; init; } = string.Empty;
+        public List<string> MatchedConditions { get; init; } = new();
+        public List<string> AlternativePremiumResultIds { get; init; } = new();
+
+        public bool HasAnyInfo => !string.IsNullOrWhiteSpace(RuleId) || Score > 0 || !string.IsNullOrWhiteSpace(Reason) || MatchedConditions.Count > 0;
+
+        public static MatchInfo FromUri(string uri)
+        {
+            var query = new Uri(uri).Query;
+            var values = ParseQuery(query);
+
+            return new MatchInfo
+            {
+                RuleId = GetValue(values, "ruleId"),
+                Score = int.TryParse(GetValue(values, "score"), out var score) ? score : 0,
+                Reason = GetValue(values, "reason"),
+                MatchedConditions = SplitList(GetValue(values, "matched")),
+                AlternativePremiumResultIds = SplitList(GetValue(values, "alternatives"))
+            };
+        }
+
+        private static Dictionary<string, string> ParseQuery(string query)
+        {
+            var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return result;
+            }
+
+            var normalizedQuery = query.StartsWith("?", StringComparison.Ordinal) ? query[1..] : query;
+            foreach (var part in normalizedQuery.Split('&', StringSplitOptions.RemoveEmptyEntries))
+            {
+                var separatorIndex = part.IndexOf('=');
+                if (separatorIndex < 0)
+                {
+                    result[Uri.UnescapeDataString(part)] = string.Empty;
+                    continue;
+                }
+
+                var key = Uri.UnescapeDataString(part[..separatorIndex]);
+                var value = Uri.UnescapeDataString(part[(separatorIndex + 1)..]);
+                result[key] = value;
+            }
+
+            return result;
+        }
+
+        private static string GetValue(Dictionary<string, string> values, string key)
+        {
+            return values.TryGetValue(key, out var value) ? value : string.Empty;
+        }
+
+        private static List<string> SplitList(string value)
+        {
+            return string.IsNullOrWhiteSpace(value)
+                ? new List<string>()
+                : value.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+        }
     }
 }
