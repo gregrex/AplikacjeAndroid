@@ -12,20 +12,26 @@ public sealed class RuleReasonsQualityTests
 
     private static readonly string[] ProjectsWithRequiredReasons =
     {
-        "router-wifi-diagnosta",
-        "zmywarka-diagnosta",
-        "krawat-garnitur-coach",
-        "pakowanie-paczek",
-        "silikon-fuga-fix",
-        "chleb-zakwas-coach",
-        "domfix",
+        "plama-ratownik",
+        "kolek-dobieracz",
+        "pies-trener-7dni",
+        "bajka-z-rysunku",
+        "vinted-olx-opis",
+        "kot-bawi-sie",
+        "barber-translator",
         "outfit-coach",
+        "domfix",
         "fryzury-proste",
         "rysunek-coach",
         "bukietownik",
         "pokoj-makeover",
-        "kot-bawi-sie",
-        "barber-translator"
+        "pakowanie-paczek",
+        "silikon-fuga-fix",
+        "szydelko-pomocnik",
+        "chleb-zakwas-coach",
+        "zmywarka-diagnosta",
+        "krawat-garnitur-coach",
+        "router-wifi-diagnosta"
     };
 
     [Fact]
