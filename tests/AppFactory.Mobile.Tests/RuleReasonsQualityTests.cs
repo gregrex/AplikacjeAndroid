@@ -20,7 +20,8 @@ public sealed class RuleReasonsQualityTests
         "chleb-zakwas-coach",
         "domfix",
         "outfit-coach",
-        "fryzury-proste"
+        "fryzury-proste",
+        "rysunek-coach"
     };
 
     [Fact]
