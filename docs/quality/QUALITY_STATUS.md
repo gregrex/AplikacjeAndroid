@@ -4,6 +4,12 @@
 
 Etap jakościowy rozpoczęty po domknięciu 20 projektów MVP.
 
+## Status produkcyjny
+
+Aktualny status repo: **production-ready candidate**.
+
+Nie oznaczam jeszcze jako final `production-ready`, dopóki nie przejdzie lokalny `dotnet test`, skrypt jakości albo workflow GitHub Actions `Quality Checks`.
+
 ## Zakres katalogu
 
 Katalog aplikacji obejmuje 20 projektów:
@@ -39,6 +45,7 @@ Dodano:
 - `docs/quality/QUALITY_STATUS.md`,
 - `docs/quality/RULE_ENGINE_V2.md`,
 - `docs/quality/PRODUCTION_CHECKLIST.md`,
+- `docs/quality/PRODUCTION_EXECUTION_REPORT.md`,
 - `tools/quality/README.md`.
 
 ### CI
@@ -53,13 +60,15 @@ Workflow uruchamia testy jakości na:
 - pull request do `main`,
 - ręczne wywołanie `workflow_dispatch`.
 
-### Testy globalne
+### Testy globalne i produkcyjne
 
 Dodano:
 
-- `tests/AppFactory.Mobile.Tests/AllProjectsQualityTests.cs`.
+- `tests/AppFactory.Mobile.Tests/AllProjectsQualityTests.cs`,
+- `tests/AppFactory.Mobile.Tests/RuleReasonsQualityTests.cs`,
+- `tests/AppFactory.Mobile.Tests/ProductionReadinessTests.cs`.
 
-Test globalny sprawdza:
+Testy sprawdzają:
 
 - kompletność paczek źródłowych,
 - kompletność paczek runtime,
@@ -70,7 +79,10 @@ Test globalny sprawdza:
 - walidację `app.json`,
 - walidację `theme.json`,
 - parytet językowy PL/EN/UK,
-- zgodność strukturalną runtime względem źródła.
+- zgodność strukturalną runtime względem źródła,
+- `reason` dla każdej reguły w source i runtime,
+- istnienie infrastruktury produkcyjnej,
+- brak blokujących markerów ryzyka w statusie jakości.
 
 ### Walidator
 
@@ -120,8 +132,7 @@ Rozszerzono:
 - `src/AppFactory.Mobile/Pages/Quiz.razor`,
 - `src/AppFactory.Mobile/Pages/Result.razor`,
 - `tests/AppFactory.Mobile.Tests/RuleEngineServiceTests.cs`,
-- `tests/AppFactory.Mobile.Tests/MatchInfoParserTests.cs`,
-- `tests/AppFactory.Mobile.Tests/RuleReasonsQualityTests.cs`.
+- `tests/AppFactory.Mobile.Tests/MatchInfoParserTests.cs`.
 
 Silnik reguł zwraca teraz:
 
@@ -198,10 +209,10 @@ Projekt jest uznawany za MVP-ready, jeśli ma:
 
 1. Poczekać na wynik GitHub Actions `Quality Checks` albo uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport`.
 2. Naprawić ewentualne błędy danych ujawnione przez globalny test.
-3. Rozważyć przeniesienie pełnego stanu dopasowania z query string do wspólnego serwisu stanu nawigacji.
-4. Dodać osobny test dla logiki wyboru alternatywy, gdy UI zostanie przeniesiony do komponentu.
+3. Po zielonym CI zmienić status z `production-ready candidate` na `production-ready`.
+4. Rozważyć przeniesienie pełnego stanu dopasowania z query string do wspólnego serwisu stanu nawigacji.
 5. Przygotować profile buildów osobnych aplikacji.
 
 ## Uwagi
 
-Testy globalne, walidator, skrypty, Rule Engine v2, parser metadanych wyniku, ekran wyjaśnień, wybór alternatywnych rekomendacji, CI i checklist produkcyjny zostały dodane w repo. Nie uruchamiałem lokalnie `dotnet test`, bo pracuję przez GitHub connector. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo przejścia workflow CI.
+Testy globalne, walidator, skrypty, Rule Engine v2, parser metadanych wyniku, ekran wyjaśnień, wybór alternatywnych rekomendacji, CI, checklist produkcyjny i raport wykonania checklisty zostały dodane w repo. Nie uruchamiałem lokalnie `dotnet test`, bo pracuję przez GitHub connector. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo przejścia workflow CI.
