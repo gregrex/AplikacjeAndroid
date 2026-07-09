@@ -1,8 +1,8 @@
 [
-  { "id": "short_any", "categoryId": "*", "when": { "tone": "short" }, "score": 70, "freeResultId": "short_free", "premiumResultId": "short_premium" },
-  { "id": "friendly_any", "categoryId": "*", "when": { "tone": "friendly" }, "score": 75, "freeResultId": "friendly_free", "premiumResultId": "friendly_premium" },
-  { "id": "detailed_any", "categoryId": "*", "when": { "tone": "detailed" }, "score": 80, "freeResultId": "detailed_free", "premiumResultId": "detailed_premium" },
-  { "id": "electronics_good", "categoryId": "electronics", "when": { "condition": "good" }, "score": 90, "freeResultId": "electronics_free", "premiumResultId": "electronics_premium" },
-  { "id": "used_any", "categoryId": "*", "when": { "condition": "used" }, "score": 85, "freeResultId": "used_free", "premiumResultId": "used_premium" },
-  { "id": "default_any", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_free", "premiumResultId": "default_premium" }
+  { "id": "short_any", "categoryId": "*", "when": { "tone": "short" }, "score": 70, "freeResultId": "short_free", "premiumResultId": "short_premium", "reason": "Wybrano tę regułę, bo użytkownik chce krótki opis. Rekomendacja skupia się na najważniejszych informacjach bez rozbudowanych ozdobników." },
+  { "id": "friendly_any", "categoryId": "*", "when": { "tone": "friendly" }, "score": 75, "freeResultId": "friendly_free", "premiumResultId": "friendly_premium", "reason": "Wybrano tę regułę, bo użytkownik chce przyjazny ton. Opis ma brzmieć naturalnie i zachęcająco, ale bez przesady sprzedażowej." },
+  { "id": "detailed_any", "categoryId": "*", "when": { "tone": "detailed" }, "score": 80, "freeResultId": "detailed_free", "premiumResultId": "detailed_premium", "reason": "Wybrano tę regułę, bo użytkownik chce opis szczegółowy. Plan dodaje stan, wymiary, cechy, wysyłkę i jasne informacje dla kupującego." },
+  { "id": "electronics_good", "categoryId": "electronics", "when": { "condition": "good" }, "score": 90, "freeResultId": "electronics_free", "premiumResultId": "electronics_premium", "reason": "Wybrano tę regułę, bo przedmiot to elektronika w dobrym stanie. Opis powinien jasno podać działanie, akcesoria i ewentualne ślady używania." },
+  { "id": "used_any", "categoryId": "*", "when": { "condition": "used" }, "score": 85, "freeResultId": "used_free", "premiumResultId": "used_premium", "reason": "Wybrano tę regułę, bo przedmiot jest używany. Najważniejsza jest uczciwa informacja o stanie, śladach użytkowania i mocnych stronach oferty." },
+  { "id": "default_any", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_free", "premiumResultId": "default_premium", "reason": "Wybrano regułę domyślną, bo odpowiedzi nie wskazały jednego stylu opisu. Aplikacja przygotowuje bezpieczny, uniwersalny szablon sprzedażowy." }
 ]
