@@ -96,7 +96,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         _uiProfile = UiProfiles.GetProfile(ProjectContext.CurrentProjectId);
-        _matchInfo = MatchInfo.FromUri(Nav.Uri);
+        _matchInfo = MatchInfoParser.Parse(Nav.Uri);
 
         var availableResultLanguages = new[] { "pl", "en", "uk" };
         _loadedResultLanguage = Language.GetResultLanguageWithFallback(availableResultLanguages);
@@ -134,69 +134,5 @@ else
             ProjectId = ProjectContext.CurrentProjectId,
             ResultId = _premiumUnlocked ? PremiumResultId : FreeResultId
         });
-    }
-
-    private sealed class MatchInfo
-    {
-        public string RuleId { get; init; } = string.Empty;
-        public int Score { get; init; }
-        public string Reason { get; init; } = string.Empty;
-        public List<string> MatchedConditions { get; init; } = new();
-        public List<string> AlternativePremiumResultIds { get; init; } = new();
-
-        public bool HasAnyInfo => !string.IsNullOrWhiteSpace(RuleId) || Score > 0 || !string.IsNullOrWhiteSpace(Reason) || MatchedConditions.Count > 0;
-
-        public static MatchInfo FromUri(string uri)
-        {
-            var query = new Uri(uri).Query;
-            var values = ParseQuery(query);
-
-            return new MatchInfo
-            {
-                RuleId = GetValue(values, "ruleId"),
-                Score = int.TryParse(GetValue(values, "score"), out var score) ? score : 0,
-                Reason = GetValue(values, "reason"),
-                MatchedConditions = SplitList(GetValue(values, "matched")),
-                AlternativePremiumResultIds = SplitList(GetValue(values, "alternatives"))
-            };
-        }
-
-        private static Dictionary<string, string> ParseQuery(string query)
-        {
-            var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            if (string.IsNullOrWhiteSpace(query))
-            {
-                return result;
-            }
-
-            var normalizedQuery = query.StartsWith("?", StringComparison.Ordinal) ? query[1..] : query;
-            foreach (var part in normalizedQuery.Split('&', StringSplitOptions.RemoveEmptyEntries))
-            {
-                var separatorIndex = part.IndexOf('=');
-                if (separatorIndex < 0)
-                {
-                    result[Uri.UnescapeDataString(part)] = string.Empty;
-                    continue;
-                }
-
-                var key = Uri.UnescapeDataString(part[..separatorIndex]);
-                var value = Uri.UnescapeDataString(part[(separatorIndex + 1)..]);
-                result[key] = value;
-            }
-
-            return result;
-        }
-
-        private static string GetValue(Dictionary<string, string> values, string key)
-        {
-            return values.TryGetValue(key, out var value) ? value : string.Empty;
-        }
-
-        private static List<string> SplitList(string value)
-        {
-            return string.IsNullOrWhiteSpace(value)
-                ? new List<string>()
-                : value.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
-        }
     }
 }
