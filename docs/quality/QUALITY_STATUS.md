@@ -100,9 +100,14 @@ Rozszerzono:
 - `src/AppFactory.Mobile/Models/ProjectDefinitions.cs`,
 - `src/AppFactory.Core/Services/RuleEngineService.cs`,
 - `src/AppFactory.Mobile/Services/RuleEngineService.cs`,
+- `src/AppFactory.Core/Models/MatchInfo.cs`,
+- `src/AppFactory.Mobile/Models/MatchInfo.cs`,
+- `src/AppFactory.Core/Services/MatchInfoParser.cs`,
+- `src/AppFactory.Mobile/Services/MatchInfoParser.cs`,
 - `src/AppFactory.Mobile/Pages/Quiz.razor`,
 - `src/AppFactory.Mobile/Pages/Result.razor`,
 - `tests/AppFactory.Mobile.Tests/RuleEngineServiceTests.cs`,
+- `tests/AppFactory.Mobile.Tests/MatchInfoParserTests.cs`,
 - `tests/AppFactory.Mobile.Tests/RuleReasonsQualityTests.cs`.
 
 Silnik reguł zwraca teraz:
@@ -120,6 +125,8 @@ Ekran wyniku pokazuje teraz:
 - dopasowane odpowiedzi,
 - alternatywne rekomendacje po odblokowaniu premium.
 
+Parsowanie metadanych wyniku zostało wyciągnięte z `Result.razor` do `MatchInfoParser`, dzięki czemu jest testowalne jednostkowo.
+
 Poprawiono też fallback: reguła domyślna musi mieć `categoryId = *` oraz puste `when`.
 
 ### Projekty z pełnymi uzasadnieniami reguł
@@ -128,7 +135,9 @@ Dodano `reason` w źródle i runtime dla:
 
 - `router-wifi-diagnosta`,
 - `zmywarka-diagnosta`,
-- `krawat-garnitur-coach`.
+- `krawat-garnitur-coach`,
+- `pakowanie-paczek`,
+- `silikon-fuga-fix`.
 
 ## Definicja MVP-ready po dopracowaniu
 
@@ -148,9 +157,9 @@ Projekt jest uznawany za MVP-ready, jeśli ma:
 1. Uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport`.
 2. Naprawić ewentualne błędy danych ujawnione przez globalny test.
 3. Dodać `reason` do kolejnych projektów.
-4. Przenieść query parsing z `Result.razor` do małego serwisu testowalnego jednostkowo.
-5. Dodać klikane alternatywy na ekranie wyniku.
+4. Dodać klikane alternatywy na ekranie wyniku.
+5. Rozważyć przeniesienie pełnego stanu dopasowania z query string do wspólnego serwisu stanu nawigacji.
 
 ## Uwagi
 
-Testy globalne, walidator, skrypty, Rule Engine v2 i ekran wyjaśnień zostały dodane w repo. Nie były uruchamiane lokalnie w tym trybie pracy. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo CI.
+Testy globalne, walidator, skrypty, Rule Engine v2, parser metadanych wyniku i ekran wyjaśnień zostały dodane w repo. Nie były uruchamiane lokalnie w tym trybie pracy. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo CI.
