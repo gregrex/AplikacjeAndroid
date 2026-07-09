@@ -1,6 +1,7 @@
 param(
     [string]$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path,
-    [switch]$SyncRuntimeFirst
+    [switch]$SyncRuntimeFirst,
+    [switch]$WriteReport
 )
 
 $ErrorActionPreference = "Stop"
@@ -16,6 +17,16 @@ if ($SyncRuntimeFirst) {
 
     Write-Host "Synchronizing runtime packs before tests..."
     & $syncScript -RepoRoot $RepoRoot
+}
+
+if ($WriteReport) {
+    $reportScript = Join-Path $PSScriptRoot "write-project-quality-report.ps1"
+    if (-not (Test-Path $reportScript)) {
+        throw "Report script not found: $reportScript"
+    }
+
+    Write-Host "Writing project quality report..."
+    & $reportScript -RepoRoot $RepoRoot
 }
 
 $testProject = Join-Path $RepoRoot "tests\AppFactory.Mobile.Tests\AppFactory.Mobile.Tests.csproj"
