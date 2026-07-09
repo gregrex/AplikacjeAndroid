@@ -24,7 +24,7 @@ if (-not (Test-Path $testProject)) {
 }
 
 Write-Host "Running dotnet test for project quality..."
-& dotnet test $testProject --no-restore --verbosity minimal
+& dotnet test $testProject --verbosity minimal
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Quality checks failed. Read the test output above and fix the first failing project/file."
