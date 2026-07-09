@@ -92,7 +92,7 @@ Skrypty pozwalają lokalnie:
 - uruchomić testy jakości,
 - uruchomić testy po synchronizacji runtime i wygenerowaniu raportu.
 
-### Rule Engine v2
+### Rule Engine v2 i ekran wyniku
 
 Rozszerzono:
 
@@ -100,7 +100,10 @@ Rozszerzono:
 - `src/AppFactory.Mobile/Models/ProjectDefinitions.cs`,
 - `src/AppFactory.Core/Services/RuleEngineService.cs`,
 - `src/AppFactory.Mobile/Services/RuleEngineService.cs`,
-- `tests/AppFactory.Mobile.Tests/RuleEngineServiceTests.cs`.
+- `src/AppFactory.Mobile/Pages/Quiz.razor`,
+- `src/AppFactory.Mobile/Pages/Result.razor`,
+- `tests/AppFactory.Mobile.Tests/RuleEngineServiceTests.cs`,
+- `tests/AppFactory.Mobile.Tests/RuleReasonsQualityTests.cs`.
 
 Silnik reguł zwraca teraz:
 
@@ -110,7 +113,22 @@ Silnik reguł zwraca teraz:
 - `AlternativeRuleIds`,
 - `AlternativePremiumResultIds`.
 
+Ekran wyniku pokazuje teraz:
+
+- sekcję `Dlaczego taki wynik?`,
+- regułę i punkty dopasowania,
+- dopasowane odpowiedzi,
+- alternatywne rekomendacje po odblokowaniu premium.
+
 Poprawiono też fallback: reguła domyślna musi mieć `categoryId = *` oraz puste `when`.
+
+### Projekty z pełnymi uzasadnieniami reguł
+
+Dodano `reason` w źródle i runtime dla:
+
+- `router-wifi-diagnosta`,
+- `zmywarka-diagnosta`,
+- `krawat-garnitur-coach`.
 
 ## Definicja MVP-ready po dopracowaniu
 
@@ -129,10 +147,10 @@ Projekt jest uznawany za MVP-ready, jeśli ma:
 
 1. Uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport`.
 2. Naprawić ewentualne błędy danych ujawnione przez globalny test.
-3. Stopniowo dodać `reason` do najważniejszych reguł w projektach.
-4. Dodać wspólny ekran `Dlaczego taki wynik`.
-5. Dodać sekcję alternatywnych wyników na ekranie wyniku.
+3. Dodać `reason` do kolejnych projektów.
+4. Przenieść query parsing z `Result.razor` do małego serwisu testowalnego jednostkowo.
+5. Dodać klikane alternatywy na ekranie wyniku.
 
 ## Uwagi
 
-Testy globalne, walidator, skrypty i Rule Engine v2 zostały dodane w repo. Nie były uruchamiane lokalnie w tym trybie pracy. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo CI.
+Testy globalne, walidator, skrypty, Rule Engine v2 i ekran wyjaśnień zostały dodane w repo. Nie były uruchamiane lokalnie w tym trybie pracy. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo CI.
