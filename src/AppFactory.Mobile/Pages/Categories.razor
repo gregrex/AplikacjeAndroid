@@ -1,9 +1,24 @@
 @page "/categories"
 @inject ProjectDataService ProjectData
 @inject ProjectContextService ProjectContext
+@inject ImageAnalysisPolicyService ImagePolicies
 
 <h1>Wybierz kategorię</h1>
 <p class="muted">Projekt: @ProjectContext.CurrentProjectId</p>
+
+@if (_imagePolicy.IsEnabled)
+{
+    <section class="card">
+        <p class="result-kicker">Image Analysis v1</p>
+        <h3>Analiza zdjęcia dostępna</h3>
+        <p>Ten projekt może korzystać z opcjonalnej analizy obrazu jako podpowiedzi do formularza. W wersji v1 działa mock provider — użytkownik nadal potwierdza odpowiedzi ręcznie.</p>
+        <p class="muted">Formaty: @string.Join(", ", _imagePolicy.AcceptedContentTypes) | Limit: @(_imagePolicy.MaxSizeBytes / 1024 / 1024) MB</p>
+        @if (_imagePolicy.IsSafetySensitive)
+        {
+            <p class="muted">Uwaga: projekt wymaga ostrożności. Zdjęcie nie zastępuje oceny ryzyka.</p>
+        }
+    </section>
+}
 
 @if (_categories.Count == 0)
 {
@@ -23,9 +38,11 @@ else
 
 @code {
     private List<CategoryDefinition> _categories = new();
+    private ImageAnalysisProjectPolicy _imagePolicy = new();
 
     protected override async Task OnInitializedAsync()
     {
+        _imagePolicy = ImagePolicies.GetPolicy(ProjectContext.CurrentProjectId);
         _categories = await ProjectData.LoadCategoriesAsync(ProjectContext.CurrentProjectId);
     }
 }
