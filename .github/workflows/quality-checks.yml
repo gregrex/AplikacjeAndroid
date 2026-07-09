@@ -1,0 +1,39 @@
+name: Quality Checks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run AppFactory quality tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore
+        run: dotnet restore tests/AppFactory.Mobile.Tests/AppFactory.Mobile.Tests.csproj
+
+      - name: Run quality tests
+        shell: pwsh
+        run: ./tools/quality/run-quality-checks.ps1 -WriteReport
+
+      - name: Upload quality report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-quality-report
+          path: docs/quality/PROJECTS_REPORT.md
+          if-no-files-found: ignore
