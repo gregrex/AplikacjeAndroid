@@ -81,13 +81,15 @@ Walidator sprawdza teraz:
 Dodano:
 
 - `tools/quality/sync-runtime-packs.ps1`,
+- `tools/quality/write-project-quality-report.ps1`,
 - `tools/quality/run-quality-checks.ps1`.
 
 Skrypty pozwalają lokalnie:
 
 - zsynchronizować runtime z `projects`,
+- wygenerować markdownowy raport jakości,
 - uruchomić testy jakości,
-- uruchomić testy po synchronizacji runtime.
+- uruchomić testy po synchronizacji runtime i wygenerowaniu raportu.
 
 ## Definicja MVP-ready po dopracowaniu
 
@@ -104,11 +106,11 @@ Projekt jest uznawany za MVP-ready, jeśli ma:
 
 ## Następne kroki techniczne
 
-1. Uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1`.
+1. Uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport`.
 2. Naprawić ewentualne błędy danych ujawnione przez globalny test.
-3. Dodać generator raportu brakujących plików do markdown.
-4. Rozważyć zastąpienie wielu per-projektowych testów jednym testem parametrycznym.
-5. Rozszerzyć silnik reguł o `reason`, alternatywne wyniki i wyjaśnienie dopasowania.
+3. Rozważyć zastąpienie wielu per-projektowych testów jednym testem parametrycznym.
+4. Rozszerzyć silnik reguł o `reason`, alternatywne wyniki i wyjaśnienie dopasowania.
+5. Dodać wspólny ekran `Dlaczego taki wynik`.
 
 ## Uwagi
 
