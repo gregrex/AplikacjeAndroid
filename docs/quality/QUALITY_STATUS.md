@@ -123,7 +123,8 @@ Ekran wyniku pokazuje teraz:
 - sekcję `Dlaczego taki wynik?`,
 - regułę i punkty dopasowania,
 - dopasowane odpowiedzi,
-- alternatywne rekomendacje po odblokowaniu premium.
+- alternatywne rekomendacje po odblokowaniu premium,
+- przełączanie aktywnej rekomendacji premium na jedną z alternatyw.
 
 Parsowanie metadanych wyniku zostało wyciągnięte z `Result.razor` do `MatchInfoParser`, dzięki czemu jest testowalne jednostkowo.
 
@@ -157,9 +158,9 @@ Projekt jest uznawany za MVP-ready, jeśli ma:
 1. Uruchomić lokalnie `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport`.
 2. Naprawić ewentualne błędy danych ujawnione przez globalny test.
 3. Dodać `reason` do kolejnych projektów.
-4. Dodać klikane alternatywy na ekranie wyniku.
-5. Rozważyć przeniesienie pełnego stanu dopasowania z query string do wspólnego serwisu stanu nawigacji.
+4. Rozważyć przeniesienie pełnego stanu dopasowania z query string do wspólnego serwisu stanu nawigacji.
+5. Dodać osobny test dla logiki wyboru alternatywy, gdy UI zostanie przeniesiony do komponentu.
 
 ## Uwagi
 
-Testy globalne, walidator, skrypty, Rule Engine v2, parser metadanych wyniku i ekran wyjaśnień zostały dodane w repo. Nie były uruchamiane lokalnie w tym trybie pracy. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo CI.
+Testy globalne, walidator, skrypty, Rule Engine v2, parser metadanych wyniku, ekran wyjaśnień i wybór alternatywnych rekomendacji zostały dodane w repo. Nie były uruchamiane lokalnie w tym trybie pracy. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo CI.
