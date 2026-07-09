@@ -5,7 +5,8 @@
     "when": { "wall": "concrete", "weight": "light" },
     "score": 90,
     "freeResultId": "concrete_light_free",
-    "premiumResultId": "concrete_light_premium"
+    "premiumResultId": "concrete_light_premium",
+    "reason": "Wybrano tę regułę, bo ściana jest betonowa, a obciążenie lekkie. Rekomendacja stawia na prosty kołek rozporowy i ostrożne wiercenie."
   },
   {
     "id": "concrete_medium",
@@ -13,7 +14,8 @@
     "when": { "wall": "concrete", "weight": "medium" },
     "score": 90,
     "freeResultId": "concrete_medium_free",
-    "premiumResultId": "concrete_medium_premium"
+    "premiumResultId": "concrete_medium_premium",
+    "reason": "Wybrano tę regułę, bo beton i średni ciężar wymagają mocniejszego mocowania oraz kontroli średnicy wiertła i głębokości otworu."
   },
   {
     "id": "brick_light_medium",
@@ -21,7 +23,8 @@
     "when": { "wall": "brick" },
     "score": 75,
     "freeResultId": "brick_free",
-    "premiumResultId": "brick_premium"
+    "premiumResultId": "brick_premium",
+    "reason": "Wybrano tę regułę, bo ściana jest z cegły. Trzeba dobrać mocowanie do pełnej lub pustej cegły i nie niszczyć struktury ściany."
   },
   {
     "id": "drywall_light",
@@ -29,7 +32,8 @@
     "when": { "wall": "drywall", "weight": "light" },
     "score": 80,
     "freeResultId": "drywall_light_free",
-    "premiumResultId": "drywall_light_premium"
+    "premiumResultId": "drywall_light_premium",
+    "reason": "Wybrano tę regułę, bo ściana jest z karton-gipsu, a przedmiot jest lekki. Potrzebne jest mocowanie do płyty, nie zwykły kołek do betonu."
   },
   {
     "id": "wood_any",
@@ -37,7 +41,8 @@
     "when": { "wall": "wood" },
     "score": 70,
     "freeResultId": "wood_free",
-    "premiumResultId": "wood_premium"
+    "premiumResultId": "wood_premium",
+    "reason": "Wybrano tę regułę, bo podłoże jest drewniane. Najważniejsze jest dobranie wkrętu do drewna i uniknięcie rozszczepienia materiału."
   },
   {
     "id": "heavy_or_unknown",
@@ -45,7 +50,8 @@
     "when": { "weight": "heavy" },
     "score": 100,
     "freeResultId": "risk_free",
-    "premiumResultId": "risk_premium"
+    "premiumResultId": "risk_premium",
+    "reason": "Wybrano regułę wysokiego ryzyka, bo przedmiot jest ciężki. Przy dużym obciążeniu trzeba sprawdzić nośność ściany i nie polegać na przypadkowym kołku."
   },
   {
     "id": "default_any",
@@ -53,6 +59,7 @@
     "when": {},
     "score": 1,
     "freeResultId": "default_free",
-    "premiumResultId": "default_premium"
+    "premiumResultId": "default_premium",
+    "reason": "Wybrano regułę domyślną, bo odpowiedzi nie dały jednoznacznego scenariusza. Aplikacja zaczyna od bezpiecznej identyfikacji ściany i ciężaru."
   }
 ]
