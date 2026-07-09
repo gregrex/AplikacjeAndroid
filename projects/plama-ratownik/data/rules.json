@@ -1,47 +1,15 @@
 [
-  {
-    "id": "coffee_cotton_fresh",
-    "categoryId": "coffee",
-    "when": { "material": "cotton", "fresh": "yes" },
-    "score": 100,
-    "freeResultId": "coffee_cotton_fresh_free",
-    "premiumResultId": "coffee_cotton_fresh_premium",
-    "reason": "Wybrano tę regułę, bo plama z kawy jest świeża i dotyczy bawełny. Najważniejsze jest szybkie płukanie i unikanie temperatury, która mogłaby utrwalić zabrudzenie."
-  },
-  {
-    "id": "blood_any_fresh",
-    "categoryId": "blood",
-    "when": { "fresh": "yes" },
-    "score": 90,
-    "freeResultId": "blood_fresh_free",
-    "premiumResultId": "blood_fresh_premium",
-    "reason": "Wybrano tę regułę, bo plama z krwi jest świeża. Priorytetem jest zimna woda i brak gorącej temperatury, która utrwala białko."
-  },
-  {
-    "id": "grease_any",
-    "categoryId": "grease",
-    "when": {},
-    "score": 70,
-    "freeResultId": "grease_free",
-    "premiumResultId": "grease_premium",
-    "reason": "Wybrano tę regułę, bo problemem jest tłuszcz. Najpierw trzeba zebrać nadmiar i użyć środka, który rozbija tłuste zabrudzenie."
-  },
-  {
-    "id": "red_wine_any",
-    "categoryId": "red_wine",
-    "when": {},
-    "score": 70,
-    "freeResultId": "red_wine_free",
-    "premiumResultId": "red_wine_premium",
-    "reason": "Wybrano tę regułę, bo plama pochodzi z czerwonego wina. Ważne jest odsączanie bez wcierania oraz szybkie, łagodne płukanie."
-  },
-  {
-    "id": "default_any",
-    "categoryId": "*",
-    "when": {},
-    "score": 1,
-    "freeResultId": "default_free",
-    "premiumResultId": "default_premium",
-    "reason": "Wybrano regułę domyślną, bo odpowiedzi nie wskazały konkretnego typu plamy. Aplikacja zaczyna od bezpiecznych kroków, które nie utrwalają zabrudzenia."
-  }
+  { "id": "coffee_cotton_fresh", "categoryId": "coffee", "when": { "material": "cotton", "fresh": "yes" }, "score": 100, "freeResultId": "coffee_cotton_fresh_free", "premiumResultId": "coffee_cotton_fresh_premium", "reason": "Świeża kawa na bawełnie wymaga szybkiego płukania i unikania wysokiej temperatury." },
+  { "id": "coffee_any_old", "categoryId": "coffee", "when": { "fresh": "no" }, "score": 80, "freeResultId": "coffee_old_free", "premiumResultId": "coffee_old_premium", "reason": "Stara plama z kawy wymaga spokojniejszego namaczania i kontroli materiału przed praniem." },
+  { "id": "tea_any", "categoryId": "tea", "when": {}, "score": 70, "freeResultId": "tea_free", "premiumResultId": "tea_premium", "reason": "Plama z herbaty zwykle wymaga chłodnego płukania i delikatnego detergentu bez mocnego wcierania." },
+  { "id": "grease_any", "categoryId": "grease", "when": {}, "score": 75, "freeResultId": "grease_free", "premiumResultId": "grease_premium", "reason": "Tłuszcz trzeba najpierw zebrać, a potem użyć środka rozbijającego tłuste zabrudzenie." },
+  { "id": "red_wine_any", "categoryId": "red_wine", "when": {}, "score": 75, "freeResultId": "red_wine_free", "premiumResultId": "red_wine_premium", "reason": "Czerwone wino najlepiej odsączać bez tarcia, żeby nie rozprowadzić barwnika głębiej." },
+  { "id": "blood_any_fresh", "categoryId": "blood", "when": { "fresh": "yes" }, "score": 90, "freeResultId": "blood_fresh_free", "premiumResultId": "blood_fresh_premium", "reason": "Świeża krew wymaga zimnej wody, bo ciepło może utrwalić białkową plamę." },
+  { "id": "blood_any_old", "categoryId": "blood", "when": { "fresh": "no" }, "score": 80, "freeResultId": "blood_old_free", "premiumResultId": "blood_old_premium", "reason": "Stara plama z krwi wymaga cierpliwego namaczania w zimnej wodzie i łagodnego działania." },
+  { "id": "grass_any", "categoryId": "grass", "when": {}, "score": 70, "freeResultId": "grass_free", "premiumResultId": "grass_premium", "reason": "Trawa zostawia barwnik, więc wynik zaczyna od delikatnego detergentu i kontroli materiału." },
+  { "id": "mud_any", "categoryId": "mud", "when": {}, "score": 70, "freeResultId": "mud_free", "premiumResultId": "mud_premium", "reason": "Błoto najlepiej najpierw wysuszyć i usunąć mechanicznie, zanim użyje się wody." },
+  { "id": "pen_any", "categoryId": "pen", "when": {}, "score": 70, "freeResultId": "pen_free", "premiumResultId": "pen_premium", "reason": "Tusz i długopis wymagają testu środka w niewidocznym miejscu, bo łatwo rozmazać plamę." },
+  { "id": "cosmetics_any", "categoryId": "cosmetics", "when": {}, "score": 70, "freeResultId": "cosmetics_free", "premiumResultId": "cosmetics_premium", "reason": "Kosmetyki często łączą tłuszcz i pigment, więc trzeba działać ostrożnie etapami." },
+  { "id": "rust_any", "categoryId": "rust", "when": {}, "score": 70, "freeResultId": "rust_free", "premiumResultId": "rust_premium", "reason": "Rdza jest trudną plamą mineralną, więc wynik ostrzega przed przypadkową chemią i mocnym tarciem." },
+  { "id": "default_any", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_free", "premiumResultId": "default_premium", "reason": "Nie znaleziono dokładnego scenariusza, więc aplikacja zaczyna od uniwersalnych, bezpiecznych kroków." }
 ]
