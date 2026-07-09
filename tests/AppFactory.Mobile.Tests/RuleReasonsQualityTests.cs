@@ -19,7 +19,8 @@ public sealed class RuleReasonsQualityTests
         "silikon-fuga-fix",
         "chleb-zakwas-coach",
         "domfix",
-        "outfit-coach"
+        "outfit-coach",
+        "fryzury-proste"
     };
 
     [Fact]
