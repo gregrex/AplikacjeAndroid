@@ -1,9 +1,9 @@
 [
-  { "id": "quick_five", "categoryId": "quick", "when": { "time": "five" }, "score": 95, "freeResultId": "quick_five_free", "premiumResultId": "quick_five_premium" },
-  { "id": "sport_hold", "categoryId": "sport", "when": { "occasion": "sport" }, "score": 90, "freeResultId": "sport_hold_free", "premiumResultId": "sport_hold_premium" },
-  { "id": "everyday_low", "categoryId": "everyday", "when": { "finish": "natural" }, "score": 85, "freeResultId": "everyday_low_free", "premiumResultId": "everyday_low_premium" },
-  { "id": "elegant_neat", "categoryId": "elegant", "when": { "finish": "neat" }, "score": 82, "freeResultId": "elegant_neat_free", "premiumResultId": "elegant_neat_premium" },
-  { "id": "curly_soft", "categoryId": "*", "when": { "hair_type": "curly" }, "score": 78, "freeResultId": "curly_soft_free", "premiumResultId": "curly_soft_premium" },
-  { "id": "clip_simple", "categoryId": "*", "when": { "accessories": "clip" }, "score": 70, "freeResultId": "clip_simple_free", "premiumResultId": "clip_simple_premium" },
-  { "id": "default_hair", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_hair_free", "premiumResultId": "default_hair_premium" }
+  { "id": "quick_five", "categoryId": "quick", "when": { "time": "five" }, "score": 95, "freeResultId": "quick_five_free", "premiumResultId": "quick_five_premium", "reason": "Wybrano tę regułę, bo użytkownik ma bardzo mało czasu. Rekomendacja stawia na proste uczesanie możliwe do wykonania w kilka minut." },
+  { "id": "sport_hold", "categoryId": "sport", "when": { "occasion": "sport" }, "score": 90, "freeResultId": "sport_hold_free", "premiumResultId": "sport_hold_premium", "reason": "Wybrano tę regułę, bo okazją jest sport lub aktywność. Najważniejsze jest trzymanie włosów i wygoda ruchu." },
+  { "id": "everyday_low", "categoryId": "everyday", "when": { "finish": "natural" }, "score": 85, "freeResultId": "everyday_low_free", "premiumResultId": "everyday_low_premium", "reason": "Wybrano tę regułę, bo użytkownik wskazał naturalne wykończenie. Plan proponuje codzienne uczesanie bez sztywnego efektu." },
+  { "id": "elegant_neat", "categoryId": "elegant", "when": { "finish": "neat" }, "score": 82, "freeResultId": "elegant_neat_free", "premiumResultId": "elegant_neat_premium", "reason": "Wybrano tę regułę, bo użytkownik chce schludne wykończenie. Rekomendacja dobiera bardziej uporządkowane uczesanie na elegantszą okazję." },
+  { "id": "curly_soft", "categoryId": "*", "when": { "hair_type": "curly" }, "score": 78, "freeResultId": "curly_soft_free", "premiumResultId": "curly_soft_premium", "reason": "Wybrano tę regułę, bo użytkownik wskazał włosy kręcone. Plan unika mocnego rozczesywania i stawia na miękkie ułożenie." },
+  { "id": "clip_simple", "categoryId": "*", "when": { "accessories": "clip" }, "score": 70, "freeResultId": "clip_simple_free", "premiumResultId": "clip_simple_premium", "reason": "Wybrano tę regułę, bo użytkownik ma spinkę lub klamrę. Uczesanie wykorzystuje akcesorium jako szybki sposób utrzymania kształtu." },
+  { "id": "default_hair", "categoryId": "*", "when": {}, "score": 1, "freeResultId": "default_hair_free", "premiumResultId": "default_hair_premium", "reason": "Wybrano regułę domyślną, bo odpowiedzi nie wskazały jednego silniejszego scenariusza. Aplikacja proponuje proste i neutralne uczesanie bazowe." }
 ]
