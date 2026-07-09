@@ -37,6 +37,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<ClipboardExportService>();
         builder.Services.AddSingleton<ResultNavigationStateService>();
         builder.Services.AddSingleton<BuildProfileService>();
+        builder.Services.AddSingleton<ImageAnalysisPolicyService>();
+        builder.Services.AddSingleton<IImageAnalysisProvider, MockImageAnalysisProvider>();
+        builder.Services.AddSingleton<ImageAnalysisService>();
 
         return builder.Build();
     }
