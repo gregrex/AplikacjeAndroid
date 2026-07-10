@@ -50,8 +50,8 @@ public sealed class FavoritesService
 
         try
         {
-            return JsonSerializer.Deserialize<List<FavoriteEntry>>(json, JsonOptions)
-                   ?? Array.Empty<FavoriteEntry>();
+            var entries = JsonSerializer.Deserialize<List<FavoriteEntry>>(json, JsonOptions);
+            return entries is null ? Array.Empty<FavoriteEntry>() : entries;
         }
         catch (JsonException)
         {
