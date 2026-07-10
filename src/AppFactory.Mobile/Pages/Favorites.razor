@@ -27,6 +27,7 @@ else
             <p class="result-kicker">Zapisane wyniki</p>
             <h2>@_entries.Count pozycji</h2>
         </div>
+        <button class="button ghost" @onclick="ClearFavorites">Wyczyść ulubione</button>
     </div>
 
     <div class="project-grid">
@@ -47,6 +48,7 @@ else
                 {
                     <span class="muted small">Starszy wpis bez kompletnej trasy wyniku.</span>
                 }
+                <button class="button ghost block" @onclick="() => Remove(entry.Id)">Usuń z ulubionych</button>
             </article>
         }
     </div>
@@ -71,5 +73,17 @@ else
         var freeId = string.IsNullOrWhiteSpace(entry.FreeResultId) ? entry.ResultId : entry.FreeResultId;
         var premiumId = string.IsNullOrWhiteSpace(entry.PremiumResultId) ? entry.ResultId : entry.PremiumResultId;
         Nav.NavigateTo($"/result/{entry.CategoryId}/{freeId}/{premiumId}");
+    }
+
+    private async Task Remove(string entryId)
+    {
+        await Favorites.RemoveAsync(entryId);
+        _entries = await Favorites.GetAllAsync();
+    }
+
+    private async Task ClearFavorites()
+    {
+        await Favorites.ClearAsync();
+        _entries = Array.Empty<FavoriteEntry>();
     }
 }
