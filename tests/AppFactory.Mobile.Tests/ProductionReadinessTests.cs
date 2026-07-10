@@ -62,6 +62,19 @@ public sealed class ProductionReadinessTests
     }
 
     [Fact]
+    public void LocalAiInfrastructure_UsesOnnxRuntime()
+    {
+        var root = GetRepoRoot();
+        var coreProject = File.ReadAllText(Path.Combine(root, "src", "AppFactory.Core", "AppFactory.Core.csproj"));
+        var mobileProject = File.ReadAllText(Path.Combine(root, "src", "AppFactory.Mobile", "AppFactory.Mobile.csproj"));
+
+        Assert.Contains("Microsoft.ML.OnnxRuntime", coreProject);
+        Assert.Contains("Microsoft.ML.OnnxRuntime", mobileProject);
+        Assert.Equal(new[] { 1, 1, 1, 256 }, LocalAiInputTensorFactory.DefaultInputShape);
+        Assert.Equal("input", LocalAiInputTensorFactory.DefaultInputName);
+    }
+
+    [Fact]
     public void EveryCatalogProject_MeetsProductionChecklistDataRequirements()
     {
         var root = GetRepoRoot();
