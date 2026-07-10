@@ -1,0 +1,91 @@
+@page "/tools"
+@inject ProjectContextService ProjectContext
+@inject ProjectUiProfileService UiProfiles
+@inject ProjectToolStateService ToolState
+
+@{
+    var profile = UiProfiles.GetProfile(ProjectContext.CurrentProjectId);
+}
+
+<section class="hero-card">
+    <div class="hero-icon" aria-hidden="true">@profile.Icon</div>
+    <p class="result-kicker">Narzędzia lokalne</p>
+    <h1>@profile.HeroTitle</h1>
+    <p>Dane są przechowywane lokalnie na urządzeniu.</p>
+</section>
+
+@if (profile.ToolKind == "crochet-counter")
+{
+    <section class="tool-card">
+        <p class="result-kicker">Licznik rzędów</p>
+        <h2>Aktualny rząd</h2>
+        <div class="counter-display" aria-live="polite">@_rowCount</div>
+        <div class="inline-actions">
+            <button class="button ghost" @onclick="Decrease">− Odejmij</button>
+            <button class="button" @onclick="Increase">+ Dodaj rząd</button>
+            <button class="button danger" @onclick="ResetRows">Wyzeruj</button>
+        </div>
+    </section>
+
+    <section class="tool-card">
+        <p class="result-kicker">Notatki robótki</p>
+        <h2>Włóczka, szydełko i zmiany wzoru</h2>
+        <textarea rows="7" @bind="_notes" placeholder="Np. włóczka bawełniana, szydełko 3,5 mm, zmiana koloru po 12. rzędzie"></textarea>
+        <button class="button block" @onclick="SaveNotes">Zapisz notatki</button>
+        @if (!string.IsNullOrWhiteSpace(_status))
+        {
+            <p class="status-success">@_status</p>
+        }
+    </section>
+}
+else
+{
+    <div class="empty-state">
+        <div class="empty-state-icon" aria-hidden="true">🧰</div>
+        <h2>Brak dodatkowych narzędzi</h2>
+        <p class="muted">Ten projekt korzysta z quizu, wyników i funkcji zapisu.</p>
+        <a class="button" href="/categories">Wróć do projektu</a>
+    </div>
+}
+
+@code {
+    private int _rowCount;
+    private string _notes = string.Empty;
+    private string _status = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        _rowCount = ToolState.GetRowCount(ProjectContext.CurrentProjectId);
+        _notes = ToolState.GetNotes(ProjectContext.CurrentProjectId);
+    }
+
+    private void Increase()
+    {
+        _rowCount++;
+        SaveRows();
+    }
+
+    private void Decrease()
+    {
+        _rowCount = Math.Max(0, _rowCount - 1);
+        SaveRows();
+    }
+
+    private void ResetRows()
+    {
+        _rowCount = 0;
+        SaveRows();
+    }
+
+    private void SaveRows()
+    {
+        ToolState.SetRowCount(ProjectContext.CurrentProjectId, _rowCount);
+        _status = "Licznik zapisany lokalnie.";
+    }
+
+    private void SaveNotes()
+    {
+        ToolState.SetNotes(ProjectContext.CurrentProjectId, _notes);
+        _status = "Notatki zapisane lokalnie.";
+    }
+}
