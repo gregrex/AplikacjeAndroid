@@ -79,6 +79,22 @@ public sealed class ScenarioImplementationAuditTests
         Assert.True(errors.Count == 0, string.Join(Environment.NewLine, errors));
     }
 
+    [Fact]
+    public void PersistentActions_UseDeviceStorageAndSupportReopening()
+    {
+        var root = GetRepoRoot();
+        var mobile = Path.Combine(root, "src", "AppFactory.Mobile");
+        var errors = new List<string>();
+
+        RequireTokens(errors, Path.Combine(mobile, "Services", "HistoryService.cs"), "Preferences.Default", "JsonSerializer", "ClearAsync");
+        RequireTokens(errors, Path.Combine(mobile, "Services", "FavoritesService.cs"), "Preferences.Default", "JsonSerializer", "RemoveAsync", "ClearAsync");
+        RequireTokens(errors, Path.Combine(mobile, "Pages", "History.razor"), "Otwórz wynik", "Wyczyść historię", "ProjectContext.SelectProject");
+        RequireTokens(errors, Path.Combine(mobile, "Pages", "Favorites.razor"), "Otwórz zapisany wynik", "Usuń z ulubionych", "ProjectContext.SelectProject");
+        RequireTokens(errors, Path.Combine(mobile, "Pages", "Result.razor"), "FreeResultId = FreeResultId", "PremiumResultId = PremiumResultId");
+
+        Assert.True(errors.Count == 0, string.Join(Environment.NewLine, errors));
+    }
+
     private static HashSet<string> InferCapabilities(string body)
     {
         var text = body.ToLowerInvariant();
@@ -123,9 +139,9 @@ public sealed class ScenarioImplementationAuditTests
             "result-data" => HasResultData(project),
             "premium" => FileContainsAll(Path.Combine(mobile, "Pages", "Result.razor"), out evidence, "UnlockPremium", "ShowRewardedAsync", "_premiumUnlocked"),
             "favorites" => FileContainsAll(Path.Combine(mobile, "Pages", "Result.razor"), out evidence, "Favorites.AddAsync", "FavoriteEntry")
-                           && FileContains(Path.Combine(mobile, "Pages", "Favorites.razor"), "Otwórz zapisany wynik", out evidence),
+                           && FileContainsAll(Path.Combine(mobile, "Pages", "Favorites.razor"), out evidence, "Otwórz zapisany wynik", "Usuń z ulubionych"),
             "history" => FileContainsAll(Path.Combine(mobile, "Pages", "Result.razor"), out evidence, "History.AddAsync", "HistoryEntry")
-                         && FileContains(Path.Combine(mobile, "Pages", "History.razor"), "Otwórz wynik", out evidence),
+                         && FileContainsAll(Path.Combine(mobile, "Pages", "History.razor"), out evidence, "Otwórz wynik", "Wyczyść historię"),
             "localization" => HasLanguageFiles(project)
                               && FileContainsAll(Path.Combine(root, "src", "AppFactory.Core", "Services", "LanguageService.cs"), out evidence, "GetResultLanguageWithFallback", "CurrentLanguage"),
             "fallback" => HasGlobalFallback(Path.Combine(project, "data", "rules.json")),
@@ -157,8 +173,8 @@ public sealed class ScenarioImplementationAuditTests
             return FileContains(Path.Combine(mobileRoot, "Services", "ProjectToolStateService.cs"), "Preferences.Default", out evidence);
         }
 
-        return File.Exists(Path.Combine(mobileRoot, "Pages", "History.razor"))
-               && File.Exists(Path.Combine(mobileRoot, "Pages", "Favorites.razor"));
+        return FileContainsAll(Path.Combine(mobileRoot, "Services", "HistoryService.cs"), out evidence, "Preferences.Default", "JsonSerializer")
+               && FileContainsAll(Path.Combine(mobileRoot, "Services", "FavoritesService.cs"), out evidence, "Preferences.Default", "JsonSerializer");
     }
 
     private static bool HasResultData(string projectRoot) =>
@@ -214,6 +230,24 @@ public sealed class ScenarioImplementationAuditTests
 
         var content = File.ReadAllText(path);
         return markers.All(marker => content.Contains(marker, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static void RequireTokens(List<string> errors, string path, params string[] tokens)
+    {
+        if (!File.Exists(path))
+        {
+            errors.Add($"missing file: {path}");
+            return;
+        }
+
+        var content = File.ReadAllText(path);
+        foreach (var token in tokens)
+        {
+            if (!content.Contains(token, StringComparison.OrdinalIgnoreCase))
+            {
+                errors.Add($"{Path.GetFileName(path)}: missing '{token}'");
+            }
+        }
     }
 
     private static IReadOnlyList<ScenarioBlock> SplitScenarios(string content)
