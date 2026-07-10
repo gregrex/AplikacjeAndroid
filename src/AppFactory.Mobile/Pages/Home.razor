@@ -2,34 +2,49 @@
 @inject ProjectCatalogService Catalog
 @inject ProjectContextService ProjectContext
 @inject ProjectUiProfileService UiProfiles
+@inject ImageAnalysisPolicyService ImagePolicies
+@inject AudioAnalysisPolicyService AudioPolicies
 @inject NavigationManager Nav
 
 <section class="hero-card">
-    <p class="result-kicker">AppFactory MVP</p>
-    <h1>Aplikacje Android</h1>
-    <p>Wybierz mikroaplikację. Każda korzysta ze wspólnego silnika, ale ma własny styl, własny typ wyniku i własne akcje.</p>
+    <div class="hero-icon" aria-hidden="true">▦</div>
+    <p class="result-kicker">20 wyspecjalizowanych aplikacji</p>
+    <h1>Wybierz pomocnika</h1>
+    <p>Każda mikroaplikacja ma własną grafikę, scenariusze, reguły biznesowe i dopasowany sposób prezentacji wyniku.</p>
 </section>
 
-<section class="card">
-    <h3>Katalog</h3>
-    <p class="muted">Widoczne projekty: @_filteredProjects.Count z @_projects.Count</p>
-
-    <label for="project-search">Szukaj aplikacji</label>
-    <input id="project-search" value="@_search" @oninput="OnSearchChanged" placeholder="np. plama, router, pies" />
-
-    <label for="experience-filter">Typ doświadczenia</label>
-    <select id="experience-filter" value="@_selectedExperience" @onchange="OnExperienceChanged">
-        <option value="">Wszystkie</option>
-        @foreach (var experience in _experienceFilters)
-        {
-            <option value="@experience">@GetExperienceLabel(experience)</option>
-        }
-    </select>
+<section class="card filter-panel" aria-label="Filtry katalogu">
+    <div class="filter-row">
+        <label for="project-search">Szukaj aplikacji</label>
+        <input id="project-search" value="@_search" @oninput="OnSearchChanged" placeholder="np. plama, router, pies" />
+    </div>
+    <div class="filter-row">
+        <label for="experience-filter">Typ doświadczenia</label>
+        <select id="experience-filter" value="@_selectedExperience" @onchange="OnExperienceChanged">
+            <option value="">Wszystkie typy</option>
+            @foreach (var experience in _experienceFilters)
+            {
+                <option value="@experience">@GetExperienceLabel(experience)</option>
+            }
+        </select>
+    </div>
 </section>
+
+<div class="section-heading">
+    <div>
+        <p class="result-kicker">Katalog</p>
+        <h2>Widoczne: @_filteredProjects.Count z @_projects.Count</h2>
+    </div>
+</div>
 
 @if (_filteredProjects.Count == 0)
 {
-    <div class="card">Nie znaleziono projektu dla bieżących filtrów.</div>
+    <div class="empty-state">
+        <div class="empty-state-icon" aria-hidden="true">⌕</div>
+        <h3>Brak wyników</h3>
+        <p class="muted">Zmień wyszukiwanie lub typ doświadczenia.</p>
+        <button class="button ghost" @onclick="ClearFilters">Wyczyść filtry</button>
+    </div>
 }
 else
 {
@@ -37,21 +52,34 @@ else
         @foreach (var project in _filteredProjects)
         {
             var profile = UiProfiles.GetProfile(project.Id);
+            var imageEnabled = ImagePolicies.GetPolicy(project.Id).IsEnabled;
+            var audioEnabled = AudioPolicies.GetPolicy(project.Id).IsEnabled;
+
             <article class="project-card">
-                <p class="result-kicker">@GetExperienceLabel(profile.ResultViewType)</p>
+                <div class="project-icon" aria-hidden="true">@profile.Icon</div>
+                <p class="result-kicker">@profile.Badge</p>
                 <h2>@project.Name</h2>
-                <p>@project.Description</p>
-                <p class="muted">Projekt: @project.Id</p>
-                <button class="button" @onclick="() => SelectProject(project.Id)">Otwórz aplikację</button>
+                <p>@profile.HeroDescription</p>
+                <div class="chip-row" aria-label="Możliwości aplikacji">
+                    <span class="chip">@GetExperienceLabel(profile.ResultViewType)</span>
+                    @if (imageEnabled)
+                    {
+                        <span class="chip">AI obraz</span>
+                    }
+                    @if (audioEnabled)
+                    {
+                        <span class="chip">AI dźwięk</span>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(profile.ToolKind))
+                    {
+                        <span class="chip">Narzędzia</span>
+                    }
+                </div>
+                <button class="button" @onclick="() => SelectProject(project.Id)">Otwórz aplikację <span aria-hidden="true">→</span></button>
             </article>
         }
     </div>
 }
-
-<div class="card">
-    <h3>Tryb MVP</h3>
-    <p>Na tym etapie używamy lokalnych reguł, lokalnych danych, indywidualnych profili UI i mockowanych reklam.</p>
-</div>
 
 @code {
     private IReadOnlyList<ProjectCatalogItem> _projects = Array.Empty<ProjectCatalogItem>();
@@ -90,6 +118,13 @@ else
         ApplyFilters();
     }
 
+    private void ClearFilters()
+    {
+        _search = string.Empty;
+        _selectedExperience = string.Empty;
+        ApplyFilters();
+    }
+
     private void ApplyFilters()
     {
         IEnumerable<ProjectCatalogItem> filtered = _projects;
@@ -99,7 +134,8 @@ else
             filtered = filtered.Where(project =>
                 project.Id.Contains(_search, StringComparison.OrdinalIgnoreCase)
                 || project.Name.Contains(_search, StringComparison.OrdinalIgnoreCase)
-                || project.Description.Contains(_search, StringComparison.OrdinalIgnoreCase));
+                || project.Description.Contains(_search, StringComparison.OrdinalIgnoreCase)
+                || UiProfiles.GetProfile(project.Id).Badge.Contains(_search, StringComparison.OrdinalIgnoreCase));
         }
 
         if (!string.IsNullOrWhiteSpace(_selectedExperience))
@@ -111,23 +147,20 @@ else
         _filteredProjects = filtered.ToArray();
     }
 
-    private static string GetExperienceLabel(string resultViewType)
+    private static string GetExperienceLabel(string resultViewType) => resultViewType switch
     {
-        return resultViewType switch
-        {
-            "instruction-checklist" => "Instrukcja",
-            "technical-safety-checklist" => "Techniczna checklista",
-            "seven-day-plan" => "Plan 7 dni",
-            "story-page" => "Bajka",
-            "sales-copy-card" => "Opis do skopiowania",
-            "pet-activity-plan" => "Aktywność zwierzaka",
-            "style-checklist" => "Stylizacja",
-            "creative-lesson" => "Lekcja kreatywna",
-            "arrangement-plan" => "Aranżacja",
-            "packing-checklist" => "Pakowanie",
-            "craft-helper" => "Pomocnik craft",
-            "diagnostic-checklist" => "Diagnostyka",
-            _ => "Aplikacja"
-        };
-    }
+        "instruction-checklist" => "Instrukcja",
+        "technical-safety-checklist" => "Techniczna checklista",
+        "seven-day-plan" => "Plan 7 dni",
+        "story-page" => "Bajka",
+        "sales-copy-card" => "Opis do skopiowania",
+        "pet-activity-plan" => "Aktywność zwierzaka",
+        "style-checklist" => "Stylizacja",
+        "creative-lesson" => "Lekcja kreatywna",
+        "arrangement-plan" => "Aranżacja",
+        "packing-checklist" => "Pakowanie",
+        "craft-helper" => "Pomocnik craft",
+        "diagnostic-checklist" => "Diagnostyka",
+        _ => "Aplikacja"
+    };
 }
