@@ -12,7 +12,7 @@ Katalog obejmuje 20 projektów.
 
 ## UI/UX wszystkich aplikacji
 
-Każdy projekt ma teraz dedykowany profil:
+Każdy projekt ma dedykowany profil:
 
 - ikonę,
 - badge doświadczenia,
@@ -21,21 +21,6 @@ Każdy projekt ma teraz dedykowany profil:
 - typ widoku wyniku,
 - etykiety akcji premium i zapisu,
 - konfigurację safety, kopiowania lub narzędzi specjalnych.
-
-Obsługiwane typy wyników:
-
-- instrukcja,
-- techniczna checklista,
-- plan 7 dni,
-- bajka,
-- opis sprzedażowy,
-- aktywność zwierzaka,
-- checklista stylu,
-- lekcja kreatywna,
-- plan aranżacji,
-- checklista pakowania,
-- pomocnik craft,
-- diagnostyka.
 
 Wspólny design system obejmuje:
 
@@ -78,28 +63,17 @@ projects/<projectId>/tests/production-scenarios.md
 - **5 scenariuszy na projekt**,
 - **100 scenariuszy produkcyjnych**.
 
-Test struktury:
+Testy:
 
 ```text
 tests/AppFactory.Mobile.Tests/ProjectProductionScenariosTests.cs
-```
-
-Test osiągalności reguł:
-
-```text
 tests/AppFactory.Mobile.Tests/AllProjectRuleReachabilityTests.cs
+tests/AppFactory.Mobile.Tests/ScenarioImplementationAuditTests.cs
 ```
 
 ## Audyt akcji i logiki biznesowej
 
-Dodano:
-
-```text
-tests/AppFactory.Mobile.Tests/ScenarioImplementationAuditTests.cs
-docs/quality/SCENARIO_IMPLEMENTATION_AUDIT.md
-```
-
-Każdy scenariusz jest mapowany na wymagane capabilities, między innymi:
+Każdy scenariusz jest mapowany na wymagane capabilities:
 
 - katalog i motyw,
 - quiz i silnik reguł,
@@ -133,7 +107,13 @@ Wpisy przechowują pełną trasę wyniku:
 - wynik free,
 - wynik premium.
 
-Historia i ulubione pozwalają ponownie otworzyć zapisany wynik.
+Historia i ulubione:
+
+- zapisują dane lokalnie przez `Preferences`,
+- pozostają po restarcie aplikacji,
+- pozwalają ponownie otworzyć wynik,
+- obsługują czyszczenie list,
+- ulubione obsługują usunięcie pojedynczej pozycji.
 
 ### Kopiowanie
 
@@ -150,27 +130,6 @@ Dodano:
 - zwiększanie, zmniejszanie i reset,
 - lokalny zapis przez `Preferences`,
 - notatki robótki.
-
-## Testy globalne i produkcyjne
-
-Repo zawiera między innymi:
-
-- `AllProjectsQualityTests.cs`,
-- `RuleReasonsQualityTests.cs`,
-- `ProductionReadinessTests.cs`,
-- `ProjectProductionScenariosTests.cs`,
-- `ScenarioImplementationAuditTests.cs`,
-- `AllProjectRuleReachabilityTests.cs`,
-- `UiUxProductionTests.cs`,
-- `AiSuggestionWorkflowTests.cs`,
-- `RuleEngineServiceTests.cs`,
-- `MatchInfoParserTests.cs`,
-- `ResultNavigationStateServiceTests.cs`,
-- `BuildProfileServiceTests.cs`,
-- `ImageAnalysisServiceTests.cs`,
-- `AudioAnalysisServiceTests.cs`,
-- `LocalAiModelStoreTests.cs`,
-- `LocalAiInputTensorFactoryTests.cs`.
 
 ## Local AI on device
 
@@ -206,4 +165,4 @@ pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport
 
 ## Uwagi
 
-Nie uruchamiałem lokalnie `dotnet test`, ponieważ zmiany wykonuję przez GitHub connector. Status CI i wygląd na fizycznym urządzeniu nie zostały potwierdzone w tej sesji.
+Nie uruchamiałem lokalnie `dotnet test`, ponieważ zmiany wykonuję przez GitHub connector. Dla ostatniego sprawdzonego commita GitHub nie zwrócił żadnych statusów CI, więc kompilacja i testy nie są jeszcze potwierdzone. Wygląd na fizycznym urządzeniu również nie został potwierdzony w tej sesji.
