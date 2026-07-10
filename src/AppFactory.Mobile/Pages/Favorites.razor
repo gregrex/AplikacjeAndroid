@@ -1,22 +1,55 @@
 @page "/favorites"
 @inject FavoritesService Favorites
+@inject ProjectContextService ProjectContext
+@inject ProjectUiProfileService UiProfiles
+@inject NavigationManager Nav
 
-<h1>Ulubione</h1>
+<section class="hero-card">
+    <div class="hero-icon" aria-hidden="true">♡</div>
+    <p class="result-kicker">Twoje zapisane wybory</p>
+    <h1>Ulubione</h1>
+    <p>Najważniejsze instrukcje, plany i rekomendacje w jednym miejscu.</p>
+</section>
 
 @if (_entries.Count == 0)
 {
-    <div class="card">Brak ulubionych.</div>
+    <div class="empty-state">
+        <div class="empty-state-icon" aria-hidden="true">♡</div>
+        <h2>Brak ulubionych</h2>
+        <p class="muted">Dodaj wynik po zakończeniu quizu, aby pojawił się na tej liście.</p>
+        <a class="button" href="/">Wybierz aplikację</a>
+    </div>
 }
 else
 {
-    @foreach (var entry in _entries)
-    {
-        <div class="card">
-            <strong>@entry.ProjectId</strong>
-            <p>Wynik: @entry.ResultId</p>
-            <p class="muted">@entry.CreatedAt.ToLocalTime()</p>
+    <div class="section-heading">
+        <div>
+            <p class="result-kicker">Zapisane wyniki</p>
+            <h2>@_entries.Count pozycji</h2>
         </div>
-    }
+    </div>
+
+    <div class="project-grid">
+        @foreach (var entry in _entries.OrderByDescending(x => x.CreatedAt))
+        {
+            var profile = UiProfiles.GetProfile(entry.ProjectId);
+            <article class="project-card">
+                <div class="project-icon" aria-hidden="true">@profile.Icon</div>
+                <p class="result-kicker">@profile.Badge</p>
+                <h3>@entry.ProjectId</h3>
+                <p class="muted small">Wynik: @entry.ResultId</p>
+                <p class="muted small">@entry.CreatedAt.ToLocalTime().ToString("g")</p>
+                @if (CanOpen(entry))
+                {
+                    <button class="button block" @onclick="() => Open(entry)">Otwórz zapisany wynik</button>
+                }
+                else
+                {
+                    <span class="muted small">Starszy wpis bez kompletnej trasy wyniku.</span>
+                }
+            </article>
+        }
+    </div>
 }
 
 @code {
@@ -25,5 +58,18 @@ else
     protected override async Task OnInitializedAsync()
     {
         _entries = await Favorites.GetAllAsync();
+    }
+
+    private static bool CanOpen(FavoriteEntry entry) =>
+        !string.IsNullOrWhiteSpace(entry.ProjectId)
+        && !string.IsNullOrWhiteSpace(entry.CategoryId)
+        && (!string.IsNullOrWhiteSpace(entry.FreeResultId) || !string.IsNullOrWhiteSpace(entry.ResultId));
+
+    private void Open(FavoriteEntry entry)
+    {
+        ProjectContext.SelectProject(entry.ProjectId);
+        var freeId = string.IsNullOrWhiteSpace(entry.FreeResultId) ? entry.ResultId : entry.FreeResultId;
+        var premiumId = string.IsNullOrWhiteSpace(entry.PremiumResultId) ? entry.ResultId : entry.PremiumResultId;
+        Nav.NavigateTo($"/result/{entry.CategoryId}/{freeId}/{premiumId}");
     }
 }
