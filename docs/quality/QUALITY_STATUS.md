@@ -29,13 +29,25 @@ Dodano `.github/workflows/quality-checks.yml`.
 
 ### Testy globalne i produkcyjne
 
-Dodano testy danych, reguł, produkcji, build profiles, stanu wyniku, analizy obrazu, analizy dźwięku i pobierania modeli:
+Dodano testy danych, reguł, produkcji, build profiles, stanu wyniku, analizy obrazu, analizy dźwięku, wejścia tensorowego i pobierania modeli:
 
 - `tests/AppFactory.Mobile.Tests/ImageAnalysisServiceTests.cs`,
 - `tests/AppFactory.Mobile.Tests/AudioAnalysisServiceTests.cs`,
-- `tests/AppFactory.Mobile.Tests/LocalAiModelStoreTests.cs`.
+- `tests/AppFactory.Mobile.Tests/LocalAiModelStoreTests.cs`,
+- `tests/AppFactory.Mobile.Tests/LocalAiInputTensorFactoryTests.cs`.
 
 ### Local AI on device
+
+Wybrano runtime:
+
+```text
+Microsoft.ML.OnnxRuntime
+```
+
+Pakiet dodano do:
+
+- `src/AppFactory.Core/AppFactory.Core.csproj`,
+- `src/AppFactory.Mobile/AppFactory.Mobile.csproj`.
 
 Dodano lokalną warstwę AI dla telefonu:
 
@@ -43,15 +55,11 @@ Dodano lokalną warstwę AI dla telefonu:
 - `LocalAiModelStatus`,
 - `LocalAiModelDownloadResult`,
 - `LocalAiModelCatalogService`,
-- `LocalAiModelStore`.
+- `LocalAiModelStore`,
+- `OnnxModelRunner`,
+- `LocalAiInputTensorFactory`.
 
-`LocalAiModelStore` obsługuje:
-
-- status modelu,
-- pobieranie modelu,
-- zapis lokalny,
-- weryfikację SHA256,
-- usunięcie pliku przy błędnym hash.
+`LocalAiModelStore` obsługuje status, pobieranie, zapis lokalny, weryfikację SHA256 i usunięcie pliku przy błędnym hash.
 
 ### Obraz lokalnie
 
@@ -59,9 +67,12 @@ Dodano lokalną warstwę AI dla telefonu:
 
 - `OnDeviceImageAnalysisProvider`,
 - `ILocalVisionInferenceEngine`,
-- `LocalVisionInferenceEngine`.
+- `LocalVisionInferenceEngine`,
+- `OnnxModelRunner`.
 
 Mock provider obrazu został usunięty z Core i Mobile. Provider obrazu wymaga pobranego i zweryfikowanego modelu `local-vision-v1`.
+
+`LocalVisionInferenceEngine` uruchamia model ONNX i mapuje score'y na sugestie odpowiedzi dla projektów obrazowych.
 
 ### Dźwięk lokalnie
 
@@ -75,7 +86,8 @@ Dodano rozpoznawanie dźwięku jako osobny moduł:
 - `OnDeviceAudioAnalysisProvider`,
 - `ILocalAudioInferenceEngine`,
 - `LocalAudioInferenceEngine`,
-- `AudioAnalysisService`.
+- `AudioAnalysisService`,
+- `OnnxModelRunner`.
 
 Włączone projekty audio:
 
@@ -84,6 +96,18 @@ Włączone projekty audio:
 - `kot-bawi-sie`.
 
 Provider dźwięku wymaga pobranego i zweryfikowanego modelu `local-audio-v1`.
+
+`LocalAudioInferenceEngine` uruchamia model ONNX i mapuje score'y na sugestie odpowiedzi dla projektów audio.
+
+### Wejście modelu v1
+
+Aktualny kontrakt wejścia ONNX:
+
+```text
+input: float32[1,1,1,256]
+```
+
+`LocalAiInputTensorFactory` czyta lokalny plik obrazu lub audio i buduje znormalizowany tensor z bajtów pliku.
 
 ### UI
 
@@ -115,16 +139,15 @@ Wyrównano `plama-ratownik` source/runtime.
 
 - Pełna weryfikacja wymaga lokalnego uruchomienia testów lub przejścia workflow CI.
 - Modele `local-vision-v1` i `local-audio-v1` mają profile, ale wymagają skonfigurowania `DownloadUrl` i `Sha256`.
-- `LocalVisionInferenceEngine` i `LocalAudioInferenceEngine` są adapterami pod natywny runtime inferencji; trzeba podłączyć ONNX albo TFLite dla Android MAUI.
+- Aktualne wejście modelu jest neutralne. Dla wysokiej jakości rozpoznawania trzeba dobrać docelowe modele, etykiety i preprocesory.
 
 ## Następne kroki techniczne
 
-1. Wybrać ONNX albo TFLite jako runtime lokalnego AI.
-2. Dodać pakiet runtime do `AppFactory.Mobile.csproj`.
-3. Skonfigurować `DownloadUrl` i `Sha256` dla modeli.
-4. Zaimplementować `LocalVisionInferenceEngine`.
-5. Zaimplementować `LocalAudioInferenceEngine`.
-6. Uruchomić `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport` albo poczekać na workflow CI.
+1. Skonfigurować `DownloadUrl` i `Sha256` dla modeli.
+2. Podstawić realne modele ONNX zgodne z wejściem `input: float32[1,1,1,256]` albo dodać dedykowane preprocesory pod wybrane modele.
+3. Dodać etykiety klas dla obrazu i audio.
+4. Uruchomić testy na Androidzie.
+5. Uruchomić `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport` albo poczekać na workflow CI.
 
 ## Uwagi
 
