@@ -2,9 +2,32 @@
 
 ## Cel
 
-Ten moduł przygotowuje lokalne rozpoznawanie obrazu i dźwięku na telefonie.
+Ten moduł dodaje lokalne rozpoznawanie obrazu i dźwięku na telefonie przez ONNX Runtime.
 
-Aplikacja nie używa już mockowego providera obrazu w DI. Produkcyjna ścieżka obrazu przechodzi przez `OnDeviceImageAnalysisProvider`.
+Aplikacja nie używa mockowego providera obrazu w DI. Produkcyjna ścieżka obrazu przechodzi przez `OnDeviceImageAnalysisProvider`.
+
+## Runtime
+
+Wybrany runtime:
+
+```text
+Microsoft.ML.OnnxRuntime
+```
+
+Pakiet został dodany do:
+
+```text
+src/AppFactory.Core/AppFactory.Core.csproj
+src/AppFactory.Mobile/AppFactory.Mobile.csproj
+```
+
+Wspólny runner:
+
+```text
+OnnxModelRunner
+```
+
+uruchamia model ONNX przez `InferenceSession` i zwraca wektor score'ów.
 
 ## Modele lokalne
 
@@ -43,6 +66,18 @@ UI pobierania jest w:
 src/AppFactory.Mobile/Pages/Settings.razor
 ```
 
+## Wejście modelu v1
+
+Do czasu dobrania docelowych modeli i preprocesorów obowiązuje neutralne wejście:
+
+```text
+input: float32[1,1,1,256]
+```
+
+`LocalAiInputTensorFactory` czyta lokalny plik obrazu lub audio i buduje znormalizowany tensor z bajtów pliku.
+
+To jest działająca ścieżka techniczna ONNX, ale jakość rozpoznawania zależy od docelowego modelu i etykiet.
+
 ## Obraz
 
 Ścieżka obrazu:
@@ -52,11 +87,12 @@ ImageAnalysisService
 OnDeviceImageAnalysisProvider
 ILocalVisionInferenceEngine
 LocalVisionInferenceEngine
+OnnxModelRunner
 ```
 
 `OnDeviceImageAnalysisProvider` wymaga pobranego i zweryfikowanego modelu `local-vision-v1`.
 
-`LocalVisionInferenceEngine` jest miejscem na natywną implementację Android ONNX/TFLite. Do czasu podłączenia runtime nie zwraca rozpoznania.
+`LocalVisionInferenceEngine` uruchamia model ONNX i mapuje score'y na sugestie odpowiedzi dla projektów obrazowych.
 
 ## Dźwięk
 
@@ -67,11 +103,12 @@ AudioAnalysisService
 OnDeviceAudioAnalysisProvider
 ILocalAudioInferenceEngine
 LocalAudioInferenceEngine
+OnnxModelRunner
 ```
 
 `OnDeviceAudioAnalysisProvider` wymaga pobranego i zweryfikowanego modelu `local-audio-v1`.
 
-`LocalAudioInferenceEngine` jest miejscem na natywną implementację Android ONNX/TFLite. Do czasu podłączenia runtime nie zwraca rozpoznania.
+`LocalAudioInferenceEngine` uruchamia model ONNX i mapuje score'y na sugestie odpowiedzi dla projektów audio.
 
 ## Projekty audio
 
@@ -91,13 +128,12 @@ Dodano:
 
 Testy sprawdzają polityki, walidację plików, blokadę bez modelu oraz pobieranie i weryfikację SHA256.
 
-## Do finalnej inferencji
+## Do finalnego rozpoznawania jakościowego
 
-Żeby uruchomić prawdziwe rozpoznawanie na telefonie, trzeba jeszcze:
+Żeby uzyskać dobre rozpoznawanie produkcyjne, trzeba jeszcze:
 
-1. Wybrać runtime ONNX albo TFLite dla Android MAUI.
-2. Dodać pakiet runtime do `AppFactory.Mobile.csproj`.
-3. Skonfigurować `DownloadUrl` i `Sha256` w `LocalAiModelCatalogService`.
-4. Zaimplementować `LocalVisionInferenceEngine`.
-5. Zaimplementować `LocalAudioInferenceEngine`.
-6. Dodać test integracyjny na małym modelu testowym.
+1. Podstawić realne modele ONNX zgodne z wejściem albo dopisać dedykowane preprocesory.
+2. Skonfigurować `DownloadUrl` i `Sha256` w `LocalAiModelCatalogService`.
+3. Dodać etykiety klas dla każdego modelu.
+4. Dodać test integracyjny na małym modelu testowym.
+5. Uruchomić testy na Androidzie, bo runtime działa na urządzeniu, a nie tylko w kodzie repo.
