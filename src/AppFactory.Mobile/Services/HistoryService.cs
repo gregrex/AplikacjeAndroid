@@ -40,8 +40,8 @@ public sealed class HistoryService
 
         try
         {
-            return JsonSerializer.Deserialize<List<HistoryEntry>>(json, JsonOptions)
-                   ?? Array.Empty<HistoryEntry>();
+            var entries = JsonSerializer.Deserialize<List<HistoryEntry>>(json, JsonOptions);
+            return entries is null ? Array.Empty<HistoryEntry>() : entries;
         }
         catch (JsonException)
         {
