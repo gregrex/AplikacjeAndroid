@@ -39,6 +39,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<BuildProfileService>();
         builder.Services.AddSingleton<LocalAiModelCatalogService>();
         builder.Services.AddSingleton<LocalAiModelStore>();
+        builder.Services.AddSingleton<OnnxModelRunner>();
+        builder.Services.AddSingleton<LocalAiInputTensorFactory>();
         builder.Services.AddSingleton<ImageAnalysisPolicyService>();
         builder.Services.AddSingleton<ILocalVisionInferenceEngine, LocalVisionInferenceEngine>();
         builder.Services.AddSingleton<IImageAnalysisProvider, OnDeviceImageAnalysisProvider>();
