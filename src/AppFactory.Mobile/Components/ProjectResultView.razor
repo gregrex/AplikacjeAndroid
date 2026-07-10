@@ -3,7 +3,10 @@
 
 @if (Result is null)
 {
-    <div class="card">@_profile.EmptyStateText</div>
+    <div class="empty-state">
+        <div class="empty-state-icon" aria-hidden="true">@_profile.Icon</div>
+        <p>@_profile.EmptyStateText</p>
+    </div>
 }
 else
 {
@@ -11,7 +14,7 @@ else
         @if (_profile.ResultViewType == "story-page")
         {
             <div class="story-page-card">
-                <p class="result-kicker">Bajka</p>
+                <p class="result-kicker">@_profile.Icon Bajka</p>
                 <h2>@Result.Title</h2>
                 <p class="story-summary">@Result.Summary</p>
                 @RenderStepsAsParagraphs(Result)
@@ -20,7 +23,7 @@ else
         else if (_profile.ResultViewType == "seven-day-plan")
         {
             <div class="plan-card">
-                <p class="result-kicker">Plan treningowy</p>
+                <p class="result-kicker">@_profile.Icon Plan treningowy</p>
                 <h2>@Result.Title</h2>
                 <p>@Result.Summary</p>
                 <div class="day-plan">
@@ -34,21 +37,17 @@ else
         else if (_profile.ResultViewType == "sales-copy-card")
         {
             <div class="copy-card">
-                <p class="result-kicker">Opis do skopiowania</p>
+                <p class="result-kicker">@_profile.Icon Opis do skopiowania</p>
                 <h2>@Result.Title</h2>
                 <p>@Result.Summary</p>
                 <textarea class="copy-text" readonly>@BuildCopyText(Result)</textarea>
-                <button class="button" @onclick="CopyResult">Kopiuj opis</button>
-                @if (!string.IsNullOrWhiteSpace(_copyStatus))
-                {
-                    <p class="muted">@_copyStatus</p>
-                }
+                <button class="button block" @onclick="CopyResult">Kopiuj opis</button>
             </div>
         }
-        else if (_profile.ResultViewType == "technical-safety-checklist")
+        else if (_profile.ResultViewType == "technical-safety-checklist" || _profile.ResultViewType == "diagnostic-checklist")
         {
             <div class="technical-card">
-                <p class="result-kicker">Checklista techniczna</p>
+                <p class="result-kicker">@_profile.Icon @GetKicker()</p>
                 <h2>@Result.Title</h2>
                 <p>@Result.Summary</p>
                 <ol class="checklist technical-list">
@@ -59,10 +58,24 @@ else
                 </ol>
             </div>
         }
+        else if (_profile.ResultViewType is "style-checklist" or "creative-lesson" or "arrangement-plan" or "packing-checklist" or "craft-helper" or "pet-activity-plan")
+        {
+            <div class="plan-card">
+                <p class="result-kicker">@_profile.Icon @GetKicker()</p>
+                <h2>@Result.Title</h2>
+                <p>@Result.Summary</p>
+                <div class="day-plan">
+                    @foreach (var step in Result.Steps)
+                    {
+                        <div class="day-row">@step</div>
+                    }
+                </div>
+            </div>
+        }
         else
         {
             <div class="instruction-card">
-                <p class="result-kicker">Instrukcja</p>
+                <p class="result-kicker">@_profile.Icon @GetKicker()</p>
                 <h2>@Result.Title</h2>
                 <p>@Result.Summary</p>
                 <ol class="checklist">
@@ -74,10 +87,21 @@ else
             </div>
         }
 
+        @if (_profile.ShowCopyAction && _profile.ResultViewType != "sales-copy-card")
+        {
+            <button class="button ghost block" @onclick="CopyResult">Kopiuj rekomendację</button>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(_copyStatus))
+        {
+            <p class="status-success">@_copyStatus</p>
+        }
+
         @if (_profile.ShowSafetyBlock && Result.Warnings.Count > 0)
         {
             <div class="safety-card">
-                <h4>Ostrzeżenia</h4>
+                <p class="result-kicker">Bezpieczeństwo</p>
+                <h4>Sprawdź przed działaniem</h4>
                 <ul>
                     @foreach (var warning in Result.Warnings)
                     {
@@ -92,6 +116,7 @@ else
             @if (_profile.ShowNeededBlock && Result.Needed.Count > 0)
             {
                 <div class="support-card">
+                    <p class="result-kicker">Przygotuj</p>
                     <h4>Potrzebne rzeczy</h4>
                     <ul>
                         @foreach (var item in Result.Needed)
@@ -105,6 +130,7 @@ else
             @if (_profile.ShowDontDoBlock && Result.DontDo.Count > 0)
             {
                 <div class="danger-card">
+                    <p class="result-kicker">Unikaj</p>
                     <h4>Czego nie robić</h4>
                     <ul>
                         @foreach (var item in Result.DontDo)
@@ -141,13 +167,24 @@ else
         }
 
         await ClipboardExport.CopyResultAsync(Result);
-        _copyStatus = "Opis skopiowany do schowka.";
+        _copyStatus = "Treść skopiowana do schowka.";
     }
 
-    private static string BuildCopyText(ResultDefinition result)
+    private string GetKicker() => _profile.ResultViewType switch
     {
-        return string.Join(Environment.NewLine, result.Steps);
-    }
+        "technical-safety-checklist" => "Checklista techniczna",
+        "diagnostic-checklist" => "Diagnostyka",
+        "style-checklist" => "Stylizacja",
+        "creative-lesson" => "Lekcja",
+        "arrangement-plan" => "Plan aranżacji",
+        "packing-checklist" => "Pakowanie",
+        "craft-helper" => "Pomocnik robótki",
+        "pet-activity-plan" => "Aktywność",
+        _ => "Instrukcja"
+    };
+
+    private static string BuildCopyText(ResultDefinition result) =>
+        $"{result.Title}{Environment.NewLine}{result.Summary}{Environment.NewLine}{Environment.NewLine}{string.Join(Environment.NewLine, result.Steps.Select((step, index) => $"{index + 1}. {step}"))}";
 
     private static RenderFragment RenderStepsAsParagraphs(ResultDefinition result) => builder =>
     {
