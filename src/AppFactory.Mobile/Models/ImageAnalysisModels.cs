@@ -5,6 +5,7 @@ public sealed class ImageAnalysisRequest
     public string ProjectId { get; init; } = string.Empty;
     public string CategoryId { get; init; } = string.Empty;
     public string FileName { get; init; } = string.Empty;
+    public string LocalFilePath { get; init; } = string.Empty;
     public string ContentType { get; init; } = string.Empty;
     public long SizeBytes { get; init; }
     public IReadOnlyDictionary<string, string> UserContext { get; init; } = new Dictionary<string, string>();
