@@ -3,6 +3,7 @@
 @inject RuleEngineService RuleEngine
 @inject ProjectContextService ProjectContext
 @inject ProjectUiProfileService UiProfiles
+@inject AiSuggestionStateService SuggestionState
 @inject ResultNavigationStateService ResultNavigationState
 @inject NavigationManager Nav
 
@@ -40,6 +41,21 @@ else if (_currentQuestion is not null)
         </div>
 
         <h2>@_currentQuestion.TextKey</h2>
+
+        @if (CurrentSuggestion is not null)
+        {
+            <div class="ai-result">
+                <p class="result-kicker">Sugestia Local AI · @CurrentSuggestion.Source</p>
+                <p><strong>@GetSuggestedOptionLabel(CurrentSuggestion.Value)</strong> · pewność @CurrentSuggestion.Confidence.ToString("P0")</p>
+                @if (!string.IsNullOrWhiteSpace(CurrentSuggestion.Reason))
+                {
+                    <p class="muted small">@CurrentSuggestion.Reason</p>
+                }
+                <button class="button block" @onclick="UseSuggestion">Użyj tej sugestii</button>
+                <p class="muted small">Odpowiedź trafi do quizu dopiero po kliknięciu tego przycisku.</p>
+            </div>
+        }
+
         <div class="answer-list">
             @for (var optionIndex = 0; optionIndex < _currentQuestion.Options.Count; optionIndex++)
             {
@@ -91,12 +107,36 @@ else
     private int _displayQuestionNumber => Math.Min(_index + 1, _questions.Count);
     private int ProgressPercent => _questions.Count == 0 ? 0 : (int)Math.Round((_displayQuestionNumber / (double)_questions.Count) * 100);
     private QuestionDefinition? _currentQuestion => _index < _questions.Count ? _questions[_index] : null;
+    private AiSuggestedAnswer? CurrentSuggestion => _currentQuestion is null
+        ? null
+        : SuggestionState.GetForQuestion(ProjectContext.CurrentProjectId, _currentQuestion.Id);
 
     protected override async Task OnInitializedAsync()
     {
         _questions = await ProjectData.LoadQuestionsAsync(ProjectContext.CurrentProjectId);
         _rules = await ProjectData.LoadRulesAsync(ProjectContext.CurrentProjectId);
     }
+
+    private void UseSuggestion()
+    {
+        if (CurrentSuggestion is null || _currentQuestion is null)
+        {
+            return;
+        }
+
+        var optionExists = _currentQuestion.Options.Any(x => string.Equals(x.Value, CurrentSuggestion.Value, StringComparison.OrdinalIgnoreCase));
+        if (!optionExists)
+        {
+            _errorMessage = "Sugestia AI nie pasuje do opcji tego pytania i nie została użyta.";
+            SuggestionState.Remove(ProjectContext.CurrentProjectId, _currentQuestion.Id);
+            return;
+        }
+
+        SelectAnswer(CurrentSuggestion.Value);
+    }
+
+    private string GetSuggestedOptionLabel(string value) =>
+        _currentQuestion?.Options.FirstOrDefault(x => string.Equals(x.Value, value, StringComparison.OrdinalIgnoreCase))?.LabelKey ?? value;
 
     private void SelectAnswer(string value)
     {
@@ -105,8 +145,10 @@ else
             return;
         }
 
-        _answers.RemoveAll(x => x.QuestionId == _currentQuestion.Id);
-        _answers.Add(new UserAnswer { QuestionId = _currentQuestion.Id, Value = value });
+        var questionId = _currentQuestion.Id;
+        _answers.RemoveAll(x => x.QuestionId == questionId);
+        _answers.Add(new UserAnswer { QuestionId = questionId, Value = value });
+        SuggestionState.Remove(ProjectContext.CurrentProjectId, questionId);
         _index++;
         _errorMessage = string.Empty;
     }
@@ -142,6 +184,7 @@ else
             return;
         }
 
+        SuggestionState.Clear(ProjectContext.CurrentProjectId);
         ResultNavigationState.Store(ProjectContext.CurrentProjectId, CategoryId, match.FreeResultId, match.PremiumResultId, match);
         Nav.NavigateTo($"/result/{CategoryId}/{match.FreeResultId}/{match.PremiumResultId}");
     }
