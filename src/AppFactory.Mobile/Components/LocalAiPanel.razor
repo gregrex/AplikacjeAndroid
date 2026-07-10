@@ -1,0 +1,201 @@
+@inject ProjectContextService ProjectContext
+@inject ImageAnalysisPolicyService ImagePolicies
+@inject AudioAnalysisPolicyService AudioPolicies
+@inject LocalMediaInputService MediaInput
+@inject ImageAnalysisService ImageAnalysis
+@inject AudioAnalysisService AudioAnalysis
+
+@if (_imagePolicy.IsEnabled || _audioPolicy.IsEnabled)
+{
+    <section class="ai-card">
+        <p class="result-kicker">Local AI na urządzeniu</p>
+        <h3>Analiza pliku bez wysyłania do serwera</h3>
+        <p class="muted">Wybierz lokalne zdjęcie lub nagranie. Model musi być wcześniej pobrany i zweryfikowany w ustawieniach.</p>
+
+        @if (_imagePolicy.IsEnabled)
+        {
+            <div class="card">
+                <div class="section-heading">
+                    <div>
+                        <h4>Analiza obrazu</h4>
+                        <p class="muted small">JPEG, PNG lub WEBP · maks. @(_imagePolicy.MaxSizeBytes / 1024 / 1024) MB</p>
+                    </div>
+                    <span aria-hidden="true">🖼️</span>
+                </div>
+                <button class="button block" disabled="@_isBusy" @onclick="AnalyzeImageAsync">Wybierz zdjęcie i analizuj</button>
+
+                @if (_imageResult is not null)
+                {
+                    @RenderImageResult(_imageResult)
+                }
+            </div>
+        }
+
+        @if (_audioPolicy.IsEnabled)
+        {
+            <div class="card">
+                <div class="section-heading">
+                    <div>
+                        <h4>Analiza dźwięku</h4>
+                        <p class="muted small">Nagranie do @_audioPolicy.MaxDuration.TotalSeconds.ToString("0") s · maks. @(_audioPolicy.MaxSizeBytes / 1024 / 1024) MB</p>
+                    </div>
+                    <span aria-hidden="true">🎙️</span>
+                </div>
+                <div class="filter-row">
+                    <label for="audio-duration">Czas nagrania w sekundach</label>
+                    <input id="audio-duration" type="number" min="1" max="@_audioPolicy.MaxDuration.TotalSeconds" @bind="_audioDurationSeconds" />
+                </div>
+                <button class="button block" disabled="@_isBusy" @onclick="AnalyzeAudioAsync">Wybierz nagranie i analizuj</button>
+
+                @if (_audioResult is not null)
+                {
+                    @RenderAudioResult(_audioResult)
+                }
+            </div>
+        }
+    </section>
+}
+
+@code {
+    private ImageAnalysisProjectPolicy _imagePolicy = new();
+    private AudioAnalysisProjectPolicy _audioPolicy = new();
+    private ImageAnalysisResult? _imageResult;
+    private AudioAnalysisResult? _audioResult;
+    private double _audioDurationSeconds = 10;
+    private bool _isBusy;
+
+    protected override void OnInitialized()
+    {
+        _imagePolicy = ImagePolicies.GetPolicy(ProjectContext.CurrentProjectId);
+        _audioPolicy = AudioPolicies.GetPolicy(ProjectContext.CurrentProjectId);
+    }
+
+    private async Task AnalyzeImageAsync()
+    {
+        _isBusy = true;
+        try
+        {
+            var file = await MediaInput.PickImageAsync();
+            if (file is null)
+            {
+                return;
+            }
+
+            _imageResult = await ImageAnalysis.AnalyzeAsync(new ImageAnalysisRequest
+            {
+                ProjectId = ProjectContext.CurrentProjectId,
+                FileName = file.FileName,
+                LocalFilePath = file.LocalFilePath,
+                ContentType = file.ContentType,
+                SizeBytes = file.SizeBytes
+            });
+        }
+        catch (Exception ex)
+        {
+            _imageResult = new ImageAnalysisResult
+            {
+                ProjectId = ProjectContext.CurrentProjectId,
+                IsEnabled = true,
+                IsAccepted = false,
+                Summary = $"Nie udało się wybrać lub przeanalizować zdjęcia: {ex.Message}"
+            };
+        }
+        finally
+        {
+            _isBusy = false;
+        }
+    }
+
+    private async Task AnalyzeAudioAsync()
+    {
+        _isBusy = true;
+        try
+        {
+            var file = await MediaInput.PickAudioAsync();
+            if (file is null)
+            {
+                return;
+            }
+
+            _audioResult = await AudioAnalysis.AnalyzeAsync(new AudioAnalysisRequest
+            {
+                ProjectId = ProjectContext.CurrentProjectId,
+                FileName = file.FileName,
+                LocalFilePath = file.LocalFilePath,
+                ContentType = file.ContentType,
+                SizeBytes = file.SizeBytes,
+                Duration = TimeSpan.FromSeconds(_audioDurationSeconds)
+            });
+        }
+        catch (Exception ex)
+        {
+            _audioResult = new AudioAnalysisResult
+            {
+                ProjectId = ProjectContext.CurrentProjectId,
+                IsEnabled = true,
+                IsAccepted = false,
+                Summary = $"Nie udało się wybrać lub przeanalizować nagrania: {ex.Message}"
+            };
+        }
+        finally
+        {
+            _isBusy = false;
+        }
+    }
+
+    private static RenderFragment RenderImageResult(ImageAnalysisResult result) => builder =>
+    {
+        var seq = 0;
+        builder.OpenElement(seq++, "div");
+        builder.AddAttribute(seq++, "class", "ai-result");
+        builder.OpenElement(seq++, "p");
+        builder.AddAttribute(seq++, "class", result.IsAccepted ? "status-success" : "status-error");
+        builder.AddContent(seq++, result.Summary);
+        builder.CloseElement();
+
+        foreach (var suggestion in result.SuggestedAnswers)
+        {
+            builder.OpenElement(seq++, "p");
+            builder.AddContent(seq++, $"Sugestia: {suggestion.QuestionId} = {suggestion.Value} ({suggestion.Confidence:P0})");
+            builder.CloseElement();
+        }
+
+        foreach (var warning in result.Warnings)
+        {
+            builder.OpenElement(seq++, "p");
+            builder.AddAttribute(seq++, "class", "muted small");
+            builder.AddContent(seq++, warning);
+            builder.CloseElement();
+        }
+
+        builder.CloseElement();
+    };
+
+    private static RenderFragment RenderAudioResult(AudioAnalysisResult result) => builder =>
+    {
+        var seq = 0;
+        builder.OpenElement(seq++, "div");
+        builder.AddAttribute(seq++, "class", "ai-result");
+        builder.OpenElement(seq++, "p");
+        builder.AddAttribute(seq++, "class", result.IsAccepted ? "status-success" : "status-error");
+        builder.AddContent(seq++, result.Summary);
+        builder.CloseElement();
+
+        foreach (var suggestion in result.SuggestedAnswers)
+        {
+            builder.OpenElement(seq++, "p");
+            builder.AddContent(seq++, $"Sugestia: {suggestion.QuestionId} = {suggestion.Value} ({suggestion.Confidence:P0})");
+            builder.CloseElement();
+        }
+
+        foreach (var warning in result.Warnings)
+        {
+            builder.OpenElement(seq++, "p");
+            builder.AddAttribute(seq++, "class", "muted small");
+            builder.AddContent(seq++, warning);
+            builder.CloseElement();
+        }
+
+        builder.CloseElement();
+    };
+}
