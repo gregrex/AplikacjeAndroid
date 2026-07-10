@@ -2,20 +2,40 @@
 @implements IDisposable
 @inject ProjectThemeService ThemeService
 @inject ProjectContextService ProjectContext
+@inject ProjectUiProfileService UiProfiles
 
 <div class="app-shell" style="@_themeStyle">
-    <div class="topbar">
-        <div>@_brandName</div>
-        <small>@ProjectContext.CurrentProjectId</small>
-    </div>
+    <header class="topbar">
+        <a class="brand-link" href="/" aria-label="Wróć do katalogu">
+            <span class="brand-mark" aria-hidden="true">@_profile.Icon</span>
+            <span class="brand-copy">
+                <strong>@_brandName</strong>
+                <small>@_profile.Badge</small>
+            </span>
+        </a>
+        <span class="project-status" title="Aktywny projekt">@ShortProjectId</span>
+    </header>
+
     <main class="content">
         @Body
     </main>
+
+    <nav class="bottom-nav" aria-label="Główna nawigacja">
+        <a href="/" class="bottom-nav-item"><span aria-hidden="true">⌂</span><small>Katalog</small></a>
+        <a href="/history" class="bottom-nav-item"><span aria-hidden="true">◷</span><small>Historia</small></a>
+        <a href="/favorites" class="bottom-nav-item"><span aria-hidden="true">♡</span><small>Ulubione</small></a>
+        <a href="/settings" class="bottom-nav-item"><span aria-hidden="true">⚙</span><small>Ustawienia</small></a>
+    </nav>
 </div>
 
 @code {
     private string _brandName = "AppFactory Mobile";
     private string _themeStyle = string.Empty;
+    private ProjectUiProfile _profile = new();
+
+    private string ShortProjectId => ProjectContext.CurrentProjectId.Length > 18
+        ? $"{ProjectContext.CurrentProjectId[..16]}…"
+        : ProjectContext.CurrentProjectId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -32,6 +52,7 @@
     private async Task LoadThemeAsync(string projectId)
     {
         var theme = await ThemeService.LoadThemeAsync(projectId);
+        _profile = UiProfiles.GetProfile(projectId);
         _brandName = string.IsNullOrWhiteSpace(theme.BrandName) ? "AppFactory Mobile" : theme.BrandName;
         _themeStyle = BuildStyle(theme);
     }
