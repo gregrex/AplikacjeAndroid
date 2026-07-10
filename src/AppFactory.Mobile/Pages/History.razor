@@ -1,23 +1,56 @@
 @page "/history"
 @inject HistoryService History
+@inject ProjectContextService ProjectContext
+@inject ProjectUiProfileService UiProfiles
+@inject NavigationManager Nav
 
-<h1>Historia</h1>
+<section class="hero-card">
+    <div class="hero-icon" aria-hidden="true">◷</div>
+    <p class="result-kicker">Lokalny zapis</p>
+    <h1>Historia wyników</h1>
+    <p>Wróć do poprzednich rekomendacji bez ponownego przechodzenia całego katalogu.</p>
+</section>
 
 @if (_entries.Count == 0)
 {
-    <div class="card">Brak historii.</div>
+    <div class="empty-state">
+        <div class="empty-state-icon" aria-hidden="true">◷</div>
+        <h2>Historia jest pusta</h2>
+        <p class="muted">Wygenerowane wyniki pojawią się tutaj automatycznie.</p>
+        <a class="button" href="/">Wybierz aplikację</a>
+    </div>
 }
 else
 {
-    @foreach (var entry in _entries)
-    {
-        <div class="card">
-            <strong>@entry.ProjectId</strong>
-            <p>Kategoria: @entry.CategoryId</p>
-            <p>Wynik: @entry.ResultId</p>
-            <p class="muted">@entry.CreatedAt.ToLocalTime()</p>
+    <div class="section-heading">
+        <div>
+            <p class="result-kicker">Ostatnie wyniki</p>
+            <h2>@_entries.Count zapisanych pozycji</h2>
         </div>
-    }
+    </div>
+
+    <div class="project-grid">
+        @foreach (var entry in _entries.OrderByDescending(x => x.CreatedAt))
+        {
+            var profile = UiProfiles.GetProfile(entry.ProjectId);
+            <article class="project-card">
+                <div class="project-icon" aria-hidden="true">@profile.Icon</div>
+                <p class="result-kicker">@profile.Badge</p>
+                <h3>@entry.ProjectId</h3>
+                <p class="muted small">Kategoria: @entry.CategoryId</p>
+                <p class="muted small">Wynik: @entry.ResultId</p>
+                <p class="muted small">@entry.CreatedAt.ToLocalTime().ToString("g")</p>
+                @if (CanOpen(entry))
+                {
+                    <button class="button block" @onclick="() => Open(entry)">Otwórz wynik</button>
+                }
+                else
+                {
+                    <span class="muted small">Starszy wpis bez kompletnej trasy wyniku.</span>
+                }
+            </article>
+        }
+    </div>
 }
 
 @code {
@@ -26,5 +59,18 @@ else
     protected override async Task OnInitializedAsync()
     {
         _entries = await History.GetAllAsync();
+    }
+
+    private static bool CanOpen(HistoryEntry entry) =>
+        !string.IsNullOrWhiteSpace(entry.ProjectId)
+        && !string.IsNullOrWhiteSpace(entry.CategoryId)
+        && (!string.IsNullOrWhiteSpace(entry.FreeResultId) || !string.IsNullOrWhiteSpace(entry.ResultId));
+
+    private void Open(HistoryEntry entry)
+    {
+        ProjectContext.SelectProject(entry.ProjectId);
+        var freeId = string.IsNullOrWhiteSpace(entry.FreeResultId) ? entry.ResultId : entry.FreeResultId;
+        var premiumId = string.IsNullOrWhiteSpace(entry.PremiumResultId) ? freeId : entry.PremiumResultId;
+        Nav.NavigateTo($"/result/{entry.CategoryId}/{freeId}/{premiumId}");
     }
 }
