@@ -46,6 +46,14 @@ public sealed class ProductionReadinessTests
             "docs/quality/BUILD_PROFILES.md",
             "docs/quality/IMAGE_ANALYSIS_V1.md",
             "docs/quality/LOCAL_AI_ON_DEVICE.md",
+            "docs/quality/PROJECT_SCENARIO_COVERAGE.md",
+            "docs/quality/SCENARIO_EXECUTION_TRACKER.md",
+            "docs/quality/UI_UX_AUDIT.md",
+            "docs/quality/SCENARIO_IMPLEMENTATION_AUDIT.md",
+            "src/AppFactory.Mobile/Components/LocalAiPanel.razor",
+            "src/AppFactory.Mobile/Pages/ProjectTools.razor",
+            "src/AppFactory.Mobile/Services/LocalMediaInputService.cs",
+            "src/AppFactory.Mobile/Services/ProjectToolStateService.cs",
             "tools/quality/run-quality-checks.ps1",
             "tools/quality/sync-runtime-packs.ps1",
             "tools/quality/write-project-quality-report.ps1",
@@ -101,6 +109,7 @@ public sealed class ProductionReadinessTests
             RequireFile(errors, project.Id, Path.Combine(runtimeDir, "theme.json"), "runtime theme.json");
             RequireFile(errors, project.Id, Path.Combine(sourceDir, "marketing", "store-listing.pl.md"), "Polish store listing");
             RequireFile(errors, project.Id, Path.Combine(sourceDir, "tests", "manual-tests.md"), "manual tests");
+            RequireFile(errors, project.Id, Path.Combine(sourceDir, "tests", "production-scenarios.md"), "five production scenarios");
         }
 
         Assert.True(errors.Count == 0, string.Join(Environment.NewLine, errors));
@@ -174,8 +183,7 @@ public sealed class ProductionReadinessTests
     [Fact]
     public void ImageAnalysisPolicy_CoversExpectedProjectsOnly()
     {
-        var policies = new ImageAnalysisPolicyService();
-        var enabled = policies.GetEnabledProjectIds();
+        var enabled = new ImageAnalysisPolicyService().GetEnabledProjectIds();
 
         Assert.Equal(8, enabled.Count);
         Assert.Contains("plama-ratownik", enabled);
@@ -191,8 +199,7 @@ public sealed class ProductionReadinessTests
     [Fact]
     public void AudioAnalysisPolicy_CoversExpectedProjectsOnly()
     {
-        var policies = new AudioAnalysisPolicyService();
-        var enabled = policies.GetEnabledProjectIds();
+        var enabled = new AudioAnalysisPolicyService().GetEnabledProjectIds();
 
         Assert.Equal(3, enabled.Count);
         Assert.Contains("zmywarka-diagnosta", enabled);
