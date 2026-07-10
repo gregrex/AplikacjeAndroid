@@ -4,26 +4,73 @@
 
 Aktualny status repo: **production-ready candidate**.
 
-Repo ma komplet danych, testów strukturalnych i scenariuszy akceptacyjnych. Finalny status `production-ready` wymaga zielonego CI oraz wykonania scenariuszy na Androidzie.
+Kod zawiera komplet danych, scenariuszy, profili UI/UX i automatycznych gate'ów implementacji. Finalny status `production-ready` wymaga zielonego CI oraz wykonania scenariuszy na Androidzie.
 
 ## Zakres katalogu
 
 Katalog obejmuje 20 projektów.
 
+## UI/UX wszystkich aplikacji
+
+Każdy projekt ma teraz dedykowany profil:
+
+- ikonę,
+- badge doświadczenia,
+- własny hero title i opis,
+- nagłówki kategorii, quizu i wyniku,
+- typ widoku wyniku,
+- etykiety akcji premium i zapisu,
+- konfigurację safety, kopiowania lub narzędzi specjalnych.
+
+Obsługiwane typy wyników:
+
+- instrukcja,
+- techniczna checklista,
+- plan 7 dni,
+- bajka,
+- opis sprzedażowy,
+- aktywność zwierzaka,
+- checklista stylu,
+- lekcja kreatywna,
+- plan aranżacji,
+- checklista pakowania,
+- pomocnik craft,
+- diagnostyka.
+
+Wspólny design system obejmuje:
+
+- sticky topbar,
+- dolną nawigację,
+- safe-area Android,
+- responsywne siatki,
+- gradientowe hero,
+- większe cele dotykowe,
+- progress quizu,
+- kafle odpowiedzi,
+- stany puste,
+- karty bezpieczeństwa,
+- warianty wyniku zależne od projektu,
+- `prefers-reduced-motion`.
+
+Raport:
+
+```text
+docs/quality/UI_UX_AUDIT.md
+```
+
+Gate:
+
+```text
+tests/AppFactory.Mobile.Tests/UiUxProductionTests.cs
+```
+
 ## Scenariusze produkcyjne
 
-Dla każdego projektu dodano:
+Dla każdego projektu istnieje:
 
 ```text
 projects/<projectId>/tests/production-scenarios.md
 ```
-
-Każdy plik ma dokładnie pięć scenariuszy `SCN-01`–`SCN-05` zawierających:
-
-- cel,
-- numerowane kroki,
-- oczekiwany wynik,
-- opis pokrycia.
 
 Łączne pokrycie:
 
@@ -31,29 +78,78 @@ Każdy plik ma dokładnie pięć scenariuszy `SCN-01`–`SCN-05` zawierających:
 - **5 scenariuszy na projekt**,
 - **100 scenariuszy produkcyjnych**.
 
-Raport:
-
-```text
-docs/quality/PROJECT_SCENARIO_COVERAGE.md
-```
-
-Automatyczny gate:
+Test struktury:
 
 ```text
 tests/AppFactory.Mobile.Tests/ProjectProductionScenariosTests.cs
 ```
 
-sprawdza:
+Test osiągalności reguł:
 
-- istnienie pliku dla każdego projektu,
-- dokładnie pięć scenariuszy,
-- identyfikatory `SCN-01`–`SCN-05`,
-- sekcje `Cel`, `Kroki`, `Oczekiwany wynik`, `Pokrycie`,
-- minimum dwa kroki na scenariusz,
-- scenariusz `local-vision-v1` + ONNX dla projektów obrazowych,
-- scenariusz `local-audio-v1` + ONNX dla projektów dźwiękowych.
+```text
+tests/AppFactory.Mobile.Tests/AllProjectRuleReachabilityTests.cs
+```
 
-Generator raportu `write-project-quality-report.ps1` pokazuje osobną kolumnę pokrycia pięciu scenariuszy.
+## Audyt akcji i logiki biznesowej
+
+Dodano:
+
+```text
+tests/AppFactory.Mobile.Tests/ScenarioImplementationAuditTests.cs
+docs/quality/SCENARIO_IMPLEMENTATION_AUDIT.md
+```
+
+Każdy scenariusz jest mapowany na wymagane capabilities, między innymi:
+
+- katalog i motyw,
+- quiz i silnik reguł,
+- wynik free/premium,
+- ulubione i historia,
+- języki PL/EN/UK,
+- fallback,
+- alternatywy,
+- kopiowanie,
+- Local AI image/audio,
+- trwałość danych,
+- safety,
+- narzędzia projektu.
+
+Test sprawdza dowody implementacji w faktycznych stronach, usługach, danych i politykach projektu.
+
+## Naprawione luki scenariuszy
+
+### Local AI
+
+Dodano rzeczywisty wybór lokalnego zdjęcia i nagrania przez `LocalMediaInputService` oraz `LocalAiPanel`.
+
+Sugestie AI są przenoszone do quizu przez `AiSuggestionStateService`. Quiz pokazuje przycisk `Użyj tej sugestii`; odpowiedź trafia do formularza dopiero po ręcznym zatwierdzeniu.
+
+### Historia i ulubione
+
+Wpisy przechowują pełną trasę wyniku:
+
+- projekt,
+- kategorię,
+- wynik free,
+- wynik premium.
+
+Historia i ulubione pozwalają ponownie otworzyć zapisany wynik.
+
+### Kopiowanie
+
+Wspólna akcja kopiowania działa dla:
+
+- `vinted-olx-opis`,
+- `barber-translator`.
+
+### Szydełko
+
+Dodano:
+
+- licznik rzędów,
+- zwiększanie, zmniejszanie i reset,
+- lokalny zapis przez `Preferences`,
+- notatki robótki.
 
 ## Testy globalne i produkcyjne
 
@@ -63,6 +159,10 @@ Repo zawiera między innymi:
 - `RuleReasonsQualityTests.cs`,
 - `ProductionReadinessTests.cs`,
 - `ProjectProductionScenariosTests.cs`,
+- `ScenarioImplementationAuditTests.cs`,
+- `AllProjectRuleReachabilityTests.cs`,
+- `UiUxProductionTests.cs`,
+- `AiSuggestionWorkflowTests.cs`,
 - `RuleEngineServiceTests.cs`,
 - `MatchInfoParserTests.cs`,
 - `ResultNavigationStateServiceTests.cs`,
@@ -74,24 +174,13 @@ Repo zawiera między innymi:
 
 ## Local AI on device
 
-Wybrany runtime:
+Runtime:
 
 ```text
 Microsoft.ML.OnnxRuntime
 ```
 
-Pakiet jest w projektach Core i Mobile.
-
-Warstwa lokalnego AI obejmuje:
-
-- `LocalAiModelCatalogService`,
-- `LocalAiModelStore`,
-- `OnnxModelRunner`,
-- `LocalAiInputTensorFactory`,
-- `OnDeviceImageAnalysisProvider`,
-- `LocalVisionInferenceEngine`,
-- `OnDeviceAudioAnalysisProvider`,
-- `LocalAudioInferenceEngine`.
+Warstwa obejmuje downloader, SHA256, lokalny model store, tensor input, provider obrazu, provider audio, FilePicker oraz ręczne zatwierdzanie sugestii w quizie.
 
 Aktualny kontrakt wejścia:
 
@@ -100,20 +189,6 @@ input: float32[1,1,1,256]
 ```
 
 Modele `local-vision-v1` i `local-audio-v1` wymagają skonfigurowania adresu pobierania, SHA256 i docelowych etykiet klas.
-
-## Pozostałe wykonane elementy
-
-- komplet source i runtime dla 20 projektów,
-- `reason` dla wszystkich reguł,
-- parytet wyników PL/EN/UK,
-- build profiles dla katalogu i osobnych aplikacji,
-- CI `Quality Checks`,
-- wyszukiwarka i filtrowanie katalogu,
-- ulepszony quiz,
-- stan wyniku poza query string,
-- alternatywne rekomendacje,
-- historia i ulubione,
-- UI pobierania lokalnych modeli.
 
 ## Weryfikacja wymagana przed publikacją
 
@@ -125,9 +200,10 @@ pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport
 
 2. Wykonać 100 scenariuszy na emulatorze lub urządzeniu Android.
 3. Zapisać PASS/FAIL dla każdego scenariusza.
-4. Naprawić wszystkie błędy krytyczne i wysokie.
-5. Skonfigurować docelowe modele ONNX lub wyłączyć funkcje Local AI w buildzie publikacyjnym do czasu gotowości modeli.
+4. Sprawdzić FilePicker, klawiaturę, safe-area, systemowy back i długie tłumaczenia.
+5. Naprawić wszystkie błędy krytyczne i wysokie.
+6. Skonfigurować docelowe modele ONNX albo wyłączyć funkcje AI w buildzie publikacyjnym do czasu gotowości modeli.
 
 ## Uwagi
 
-Nie uruchamiałem lokalnie `dotnet test`, ponieważ zmiany wykonuję przez GitHub connector. Dostępne wywołanie workflow dla sprawdzanego commita nie zostało zwrócone przez connector, więc nie oznaczam testów jako wykonanych.
+Nie uruchamiałem lokalnie `dotnet test`, ponieważ zmiany wykonuję przez GitHub connector. Status CI i wygląd na fizycznym urządzeniu nie zostały potwierdzone w tej sesji.
