@@ -1,65 +1,80 @@
 @page "/categories"
 @inject ProjectDataService ProjectData
 @inject ProjectContextService ProjectContext
-@inject ImageAnalysisPolicyService ImagePolicies
-@inject AudioAnalysisPolicyService AudioPolicies
+@inject ProjectUiProfileService UiProfiles
 
-<h1>Wybierz kategorię</h1>
-<p class="muted">Projekt: @ProjectContext.CurrentProjectId</p>
+@{
+    var profile = UiProfiles.GetProfile(ProjectContext.CurrentProjectId);
+}
 
-@if (_imagePolicy.IsEnabled)
+<section class="hero-card">
+    <div class="hero-icon" aria-hidden="true">@profile.Icon</div>
+    <p class="result-kicker">@profile.Badge</p>
+    <h1>@profile.HeroTitle</h1>
+    <p>@profile.HeroDescription</p>
+</section>
+
+@if (!string.IsNullOrWhiteSpace(profile.ToolKind))
 {
-    <section class="card">
-        <p class="result-kicker">Local AI image</p>
-        <h3>Rozpoznawanie obrazu lokalnie</h3>
-        <p>Ten projekt może korzystać z opcjonalnej analizy zdjęcia. Wynik jest podpowiedzią do formularza i wymaga ręcznego potwierdzenia.</p>
-        <p class="muted">Formaty: @string.Join(", ", _imagePolicy.AcceptedContentTypes) | Limit: @(_imagePolicy.MaxSizeBytes / 1024 / 1024) MB</p>
-        @if (_imagePolicy.IsSafetySensitive)
-        {
-            <p class="muted">Uwaga: projekt wymaga ostrożności. Zdjęcie nie zastępuje oceny ryzyka.</p>
-        }
+    <section class="tool-card">
+        <div class="section-heading">
+            <div>
+                <p class="result-kicker">Dodatkowe narzędzia</p>
+                <h3>Licznik i notatki projektu</h3>
+            </div>
+            <span aria-hidden="true">🧰</span>
+        </div>
+        <p class="muted">Stan jest zapisywany lokalnie i pozostaje po ponownym uruchomieniu aplikacji.</p>
+        <a class="button" href="/tools">Otwórz narzędzia</a>
     </section>
 }
 
-@if (_audioPolicy.IsEnabled)
-{
-    <section class="card">
-        <p class="result-kicker">Local AI audio</p>
-        <h3>Rozpoznawanie dźwięku lokalnie</h3>
-        <p>Ten projekt może korzystać z opcjonalnej analizy nagrania. Wynik jest podpowiedzią do formularza i wymaga ręcznego potwierdzenia.</p>
-        <p class="muted">Formaty: @string.Join(", ", _audioPolicy.AcceptedContentTypes) | Limit: @(_audioPolicy.MaxSizeBytes / 1024 / 1024) MB | Czas: @_audioPolicy.MaxDuration.TotalSeconds s</p>
-        @if (_audioPolicy.IsSafetySensitive)
-        {
-            <p class="muted">Uwaga: projekt wymaga ostrożności. Nagranie nie zastępuje oceny ryzyka.</p>
-        }
-    </section>
-}
+<LocalAiPanel />
+
+<div class="section-heading">
+    <div>
+        <p class="result-kicker">Krok 1</p>
+        <h2>@profile.CategoryHeading</h2>
+    </div>
+    <span class="muted small">@_categories.Count opcji</span>
+</div>
 
 @if (_categories.Count == 0)
 {
-    <div class="card">Ładowanie kategorii...</div>
+    <div class="empty-state">
+        <div class="empty-state-icon" aria-hidden="true">…</div>
+        <h3>Ładowanie kategorii</h3>
+        <p class="muted">Dane projektu są odczytywane lokalnie.</p>
+    </div>
 }
 else
 {
-    @foreach (var category in _categories)
-    {
-        <div class="card">
-            <h3>@category.Id</h3>
-            <p class="muted">@category.NameKey</p>
-            <a class="button" href="/quiz/@category.Id">Wybierz</a>
-        </div>
-    }
+    <div class="category-grid">
+        @for (var index = 0; index < _categories.Count; index++)
+        {
+            var category = _categories[index];
+            <article class="project-card">
+                <div class="category-icon" aria-hidden="true">@GetCategoryIcon(index)</div>
+                <p class="result-kicker">Temat @(index + 1)</p>
+                <h3>@category.NameKey</h3>
+                <p class="muted small">Identyfikator: @category.Id</p>
+                <a class="button block" href="/quiz/@category.Id">Wybierz <span aria-hidden="true">→</span></a>
+            </article>
+        }
+    </div>
 }
 
 @code {
     private List<CategoryDefinition> _categories = new();
-    private ImageAnalysisProjectPolicy _imagePolicy = new();
-    private AudioAnalysisProjectPolicy _audioPolicy = new();
 
     protected override async Task OnInitializedAsync()
     {
-        _imagePolicy = ImagePolicies.GetPolicy(ProjectContext.CurrentProjectId);
-        _audioPolicy = AudioPolicies.GetPolicy(ProjectContext.CurrentProjectId);
         _categories = await ProjectData.LoadCategoriesAsync(ProjectContext.CurrentProjectId);
+    }
+
+    private static string GetCategoryIcon(int index)
+    {
+        var icons = new[] { "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧" };
+        return icons[index % icons.Length];
     }
 }
