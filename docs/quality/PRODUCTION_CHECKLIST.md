@@ -76,16 +76,24 @@ Każdy projekt musi poprawnie współpracować z ekranem wyniku:
 - widoczne dopasowane odpowiedzi,
 - alternatywne rekomendacje, jeśli silnik reguł je zwróci.
 
-## 5. Marketing i manual QA
+## 5. Marketing, manual QA i scenariusze użycia
 
 Każdy projekt musi mieć:
 
 ```text
 projects/<projectId>/marketing/store-listing.pl.md
 projects/<projectId>/tests/manual-tests.md
+projects/<projectId>/tests/production-scenarios.md
 ```
 
-Manual QA powinno obejmować:
+`production-scenarios.md` musi zawierać dokładnie pięć scenariuszy `SCN-01`–`SCN-05`. Każdy scenariusz musi mieć:
+
+- cel,
+- co najmniej dwa numerowane kroki,
+- oczekiwany wynik,
+- opis pokrycia.
+
+Manual QA i scenariusze produkcyjne powinny łącznie obejmować:
 
 - wejście z katalogu projektów,
 - przejście quizu,
@@ -94,7 +102,17 @@ Manual QA powinno obejmować:
 - zapis do ulubionych,
 - zapis w historii,
 - zmianę języka PL/EN/UK,
-- przypadek default/fallback.
+- przypadek default/fallback,
+- bezpieczeństwo domenowe,
+- Local AI image/audio dla projektów, które mają je włączone.
+
+Automatyczny gate:
+
+```text
+tests/AppFactory.Mobile.Tests/ProjectProductionScenariosTests.cs
+```
+
+sprawdza komplet pięciu scenariuszy oraz pokrycie ONNX dla projektów obrazu i dźwięku.
 
 ## 6. Bezpieczeństwo domenowe
 
@@ -113,6 +131,7 @@ Projekt można oznaczyć jako produkcyjny dopiero gdy:
 - ma `reason` dla każdej reguły,
 - ma PL/EN/UK parytet wyników,
 - ma manual QA,
+- ma dokładnie pięć kompletnych scenariuszy produkcyjnych,
 - ma listing marketingowy,
 - nie ma znanych blokujących ryzyk w `QUALITY_STATUS.md`.
 
