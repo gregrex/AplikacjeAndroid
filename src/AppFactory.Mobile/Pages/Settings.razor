@@ -1,5 +1,7 @@
 @page "/settings"
 @inject LanguageService Language
+@inject LocalAiModelCatalogService ModelCatalog
+@inject LocalAiModelStore ModelStore
 
 <h1>Ustawienia</h1>
 
@@ -22,13 +24,64 @@
 </div>
 
 <div class="card">
+    <h3>Lokalne AI na telefonie</h3>
+    <p>Modele obrazu i dźwięku są pobierane na urządzenie i używane lokalnie. Jeśli URL albo SHA256 modelu nie są skonfigurowane, pobieranie jest zablokowane.</p>
+
+    @foreach (var model in _models)
+    {
+        var status = _statuses[model.ModelId];
+        <section class="card">
+            <p class="result-kicker">@model.Modality</p>
+            <h4>@model.ModelId</h4>
+            <p class="muted">Wersja: @model.Version | Plik: @model.FileName</p>
+            <p>Status: @status.Message</p>
+            <p class="muted">Ścieżka lokalna: @status.LocalPath</p>
+            <button class="button" disabled="@(!status.IsConfigured || _isDownloading)" @onclick="() => DownloadModel(model)">Pobierz / odśwież model</button>
+        </section>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(_downloadMessage))
+    {
+        <p class="muted">@_downloadMessage</p>
+    }
+</div>
+
+<div class="card">
     <h3>Prywatność</h3>
     <p>Aplikacja działa lokalnie bez własnego serwera. Dane użytkownika w MVP są przechowywane tylko lokalnie.</p>
 </div>
 
 @code {
+    private IReadOnlyList<LocalAiModelProfile> _models = Array.Empty<LocalAiModelProfile>();
+    private Dictionary<string, LocalAiModelStatus> _statuses = new(StringComparer.OrdinalIgnoreCase);
+    private bool _isDownloading;
+    private string _downloadMessage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        RefreshModels();
+    }
+
     private void SetLanguage(string language)
     {
         Language.SetLanguage(language);
+    }
+
+    private async Task DownloadModel(LocalAiModelProfile model)
+    {
+        _isDownloading = true;
+        _downloadMessage = $"Pobieram model {model.ModelId}...";
+
+        var result = await ModelStore.DownloadAsync(model);
+        _downloadMessage = result.Message;
+
+        RefreshModels();
+        _isDownloading = false;
+    }
+
+    private void RefreshModels()
+    {
+        _models = ModelCatalog.GetAll();
+        _statuses = _models.ToDictionary(model => model.ModelId, ModelStore.GetStatus, StringComparer.OrdinalIgnoreCase);
     }
 }
