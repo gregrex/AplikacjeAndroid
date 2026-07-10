@@ -37,9 +37,16 @@ public static class MauiProgram
         builder.Services.AddSingleton<ClipboardExportService>();
         builder.Services.AddSingleton<ResultNavigationStateService>();
         builder.Services.AddSingleton<BuildProfileService>();
+        builder.Services.AddSingleton<LocalAiModelCatalogService>();
+        builder.Services.AddSingleton<LocalAiModelStore>();
         builder.Services.AddSingleton<ImageAnalysisPolicyService>();
-        builder.Services.AddSingleton<IImageAnalysisProvider, MockImageAnalysisProvider>();
+        builder.Services.AddSingleton<ILocalVisionInferenceEngine, LocalVisionInferenceEngine>();
+        builder.Services.AddSingleton<IImageAnalysisProvider, OnDeviceImageAnalysisProvider>();
         builder.Services.AddSingleton<ImageAnalysisService>();
+        builder.Services.AddSingleton<AudioAnalysisPolicyService>();
+        builder.Services.AddSingleton<ILocalAudioInferenceEngine, LocalAudioInferenceEngine>();
+        builder.Services.AddSingleton<IAudioAnalysisProvider, OnDeviceAudioAnalysisProvider>();
+        builder.Services.AddSingleton<AudioAnalysisService>();
 
         return builder.Build();
     }
