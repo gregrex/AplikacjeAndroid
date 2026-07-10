@@ -4,13 +4,14 @@
 @inject LocalMediaInputService MediaInput
 @inject ImageAnalysisService ImageAnalysis
 @inject AudioAnalysisService AudioAnalysis
+@inject AiSuggestionStateService SuggestionState
 
 @if (_imagePolicy.IsEnabled || _audioPolicy.IsEnabled)
 {
     <section class="ai-card">
         <p class="result-kicker">Local AI na urządzeniu</p>
         <h3>Analiza pliku bez wysyłania do serwera</h3>
-        <p class="muted">Wybierz lokalne zdjęcie lub nagranie. Model musi być wcześniej pobrany i zweryfikowany w ustawieniach.</p>
+        <p class="muted">Wybierz lokalne zdjęcie lub nagranie. Sugestia zostanie pokazana w quizie i wymaga ręcznego zatwierdzenia.</p>
 
         @if (_imagePolicy.IsEnabled)
         {
@@ -89,6 +90,11 @@
                 ContentType = file.ContentType,
                 SizeBytes = file.SizeBytes
             });
+
+            if (_imageResult.IsAccepted && _imageResult.SuggestedAnswers.Count > 0)
+            {
+                SuggestionState.StoreImageSuggestions(ProjectContext.CurrentProjectId, _imageResult.SuggestedAnswers);
+            }
         }
         catch (Exception ex)
         {
@@ -126,6 +132,11 @@
                 SizeBytes = file.SizeBytes,
                 Duration = TimeSpan.FromSeconds(_audioDurationSeconds)
             });
+
+            if (_audioResult.IsAccepted && _audioResult.SuggestedAnswers.Count > 0)
+            {
+                SuggestionState.StoreAudioSuggestions(ProjectContext.CurrentProjectId, _audioResult.SuggestedAnswers);
+            }
         }
         catch (Exception ex)
         {
@@ -143,24 +154,38 @@
         }
     }
 
-    private static RenderFragment RenderImageResult(ImageAnalysisResult result) => builder =>
+    private static RenderFragment RenderImageResult(ImageAnalysisResult result) => builder => RenderResult(builder, result.IsAccepted, result.Summary,
+        result.SuggestedAnswers.Select(x => $"{x.QuestionId} = {x.Value} ({x.Confidence:P0})"), result.Warnings);
+
+    private static RenderFragment RenderAudioResult(AudioAnalysisResult result) => builder => RenderResult(builder, result.IsAccepted, result.Summary,
+        result.SuggestedAnswers.Select(x => $"{x.QuestionId} = {x.Value} ({x.Confidence:P0})"), result.Warnings);
+
+    private static void RenderResult(RenderTreeBuilder builder, bool accepted, string summary, IEnumerable<string> suggestions, IEnumerable<string> warnings)
     {
         var seq = 0;
         builder.OpenElement(seq++, "div");
         builder.AddAttribute(seq++, "class", "ai-result");
         builder.OpenElement(seq++, "p");
-        builder.AddAttribute(seq++, "class", result.IsAccepted ? "status-success" : "status-error");
-        builder.AddContent(seq++, result.Summary);
+        builder.AddAttribute(seq++, "class", accepted ? "status-success" : "status-error");
+        builder.AddContent(seq++, summary);
         builder.CloseElement();
 
-        foreach (var suggestion in result.SuggestedAnswers)
+        foreach (var suggestion in suggestions)
         {
             builder.OpenElement(seq++, "p");
-            builder.AddContent(seq++, $"Sugestia: {suggestion.QuestionId} = {suggestion.Value} ({suggestion.Confidence:P0})");
+            builder.AddContent(seq++, $"Sugestia: {suggestion}");
             builder.CloseElement();
         }
 
-        foreach (var warning in result.Warnings)
+        if (accepted && suggestions.Any())
+        {
+            builder.OpenElement(seq++, "p");
+            builder.AddAttribute(seq++, "class", "status-success");
+            builder.AddContent(seq++, "Sugestia czeka w quizie na ręczne zatwierdzenie.");
+            builder.CloseElement();
+        }
+
+        foreach (var warning in warnings)
         {
             builder.OpenElement(seq++, "p");
             builder.AddAttribute(seq++, "class", "muted small");
@@ -169,33 +194,5 @@
         }
 
         builder.CloseElement();
-    };
-
-    private static RenderFragment RenderAudioResult(AudioAnalysisResult result) => builder =>
-    {
-        var seq = 0;
-        builder.OpenElement(seq++, "div");
-        builder.AddAttribute(seq++, "class", "ai-result");
-        builder.OpenElement(seq++, "p");
-        builder.AddAttribute(seq++, "class", result.IsAccepted ? "status-success" : "status-error");
-        builder.AddContent(seq++, result.Summary);
-        builder.CloseElement();
-
-        foreach (var suggestion in result.SuggestedAnswers)
-        {
-            builder.OpenElement(seq++, "p");
-            builder.AddContent(seq++, $"Sugestia: {suggestion.QuestionId} = {suggestion.Value} ({suggestion.Confidence:P0})");
-            builder.CloseElement();
-        }
-
-        foreach (var warning in result.Warnings)
-        {
-            builder.OpenElement(seq++, "p");
-            builder.AddAttribute(seq++, "class", "muted small");
-            builder.AddContent(seq++, warning);
-            builder.CloseElement();
-        }
-
-        builder.CloseElement();
-    };
+    }
 }
