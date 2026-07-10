@@ -1,24 +1,67 @@
+using System.Text.Json;
 using AppFactory.Mobile.Models;
+using Microsoft.Maui.Storage;
 
 namespace AppFactory.Mobile.Services;
 
 public sealed class FavoritesService
 {
-    private readonly List<FavoriteEntry> _entries = new();
+    private const string StorageKey = "appfactory:favorites:v2";
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 
     public Task AddAsync(FavoriteEntry entry)
     {
-        if (_entries.Any(x => x.ProjectId == entry.ProjectId && x.ResultId == entry.ResultId))
+        var entries = Load().ToList();
+        if (entries.Any(x =>
+                string.Equals(x.ProjectId, entry.ProjectId, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(x.ResultId, entry.ResultId, StringComparison.OrdinalIgnoreCase)))
         {
             return Task.CompletedTask;
         }
 
-        _entries.Insert(0, entry);
+        entries.Insert(0, entry);
+        Save(entries);
         return Task.CompletedTask;
     }
 
-    public Task<IReadOnlyList<FavoriteEntry>> GetAllAsync()
+    public Task RemoveAsync(string entryId)
     {
-        return Task.FromResult<IReadOnlyList<FavoriteEntry>>(_entries);
+        var entries = Load().Where(x => !string.Equals(x.Id, entryId, StringComparison.OrdinalIgnoreCase)).ToArray();
+        Save(entries);
+        return Task.CompletedTask;
+    }
+
+    public Task<IReadOnlyList<FavoriteEntry>> GetAllAsync() =>
+        Task.FromResult<IReadOnlyList<FavoriteEntry>>(Load());
+
+    public Task ClearAsync()
+    {
+        Preferences.Default.Remove(StorageKey);
+        return Task.CompletedTask;
+    }
+
+    private static IReadOnlyList<FavoriteEntry> Load()
+    {
+        var json = Preferences.Default.Get(StorageKey, string.Empty);
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            return Array.Empty<FavoriteEntry>();
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<List<FavoriteEntry>>(json, JsonOptions)
+                   ?? Array.Empty<FavoriteEntry>();
+        }
+        catch (JsonException)
+        {
+            Preferences.Default.Remove(StorageKey);
+            return Array.Empty<FavoriteEntry>();
+        }
+    }
+
+    private static void Save(IEnumerable<FavoriteEntry> entries)
+    {
+        Preferences.Default.Set(StorageKey, JsonSerializer.Serialize(entries, JsonOptions));
     }
 }
