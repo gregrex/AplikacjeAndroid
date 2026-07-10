@@ -45,6 +45,7 @@ public sealed class ProductionReadinessTests
             "docs/quality/RULE_ENGINE_V2.md",
             "docs/quality/BUILD_PROFILES.md",
             "docs/quality/IMAGE_ANALYSIS_V1.md",
+            "docs/quality/LOCAL_AI_ON_DEVICE.md",
             "tools/quality/run-quality-checks.ps1",
             "tools/quality/sync-runtime-packs.ps1",
             "tools/quality/write-project-quality-report.ps1",
@@ -172,6 +173,29 @@ public sealed class ProductionReadinessTests
         Assert.Contains("barber-translator", enabled);
         Assert.Contains("zmywarka-diagnosta", enabled);
         Assert.Contains("silikon-fuga-fix", enabled);
+    }
+
+    [Fact]
+    public void AudioAnalysisPolicy_CoversExpectedProjectsOnly()
+    {
+        var policies = new AudioAnalysisPolicyService();
+        var enabled = policies.GetEnabledProjectIds();
+
+        Assert.Equal(3, enabled.Count);
+        Assert.Contains("zmywarka-diagnosta", enabled);
+        Assert.Contains("pies-trener-7dni", enabled);
+        Assert.Contains("kot-bawi-sie", enabled);
+    }
+
+    [Fact]
+    public void LocalAiModelCatalog_HasVisionAndAudioProfiles()
+    {
+        var catalog = new LocalAiModelCatalogService();
+
+        Assert.NotNull(catalog.FindByModality("image"));
+        Assert.NotNull(catalog.FindByModality("audio"));
+        Assert.Contains(catalog.GetAll(), x => x.ModelId == "local-vision-v1");
+        Assert.Contains(catalog.GetAll(), x => x.ModelId == "local-audio-v1");
     }
 
     [Fact]
