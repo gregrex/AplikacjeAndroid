@@ -17,6 +17,8 @@ public sealed class HistoryEntry
     public string ProjectId { get; set; } = string.Empty;
     public string CategoryId { get; set; } = string.Empty;
     public string ResultId { get; set; } = string.Empty;
+    public string FreeResultId { get; set; } = string.Empty;
+    public string PremiumResultId { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
 
@@ -24,6 +26,9 @@ public sealed class FavoriteEntry
 {
     public string Id { get; set; } = Guid.NewGuid().ToString("N");
     public string ProjectId { get; set; } = string.Empty;
+    public string CategoryId { get; set; } = string.Empty;
     public string ResultId { get; set; } = string.Empty;
+    public string FreeResultId { get; set; } = string.Empty;
+    public string PremiumResultId { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
