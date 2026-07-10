@@ -29,7 +29,7 @@ public sealed partial class ProjectProductionScenariosTests
                 continue;
             }
 
-            var ids = matches.Select(match => match.Groups[1].Value).ToArray();
+            var ids = matches.Cast<Match>().Select(match => match.Groups[1].Value).ToArray();
             var expectedIds = new[] { "01", "02", "03", "04", "05" };
             if (!ids.SequenceEqual(expectedIds))
             {
