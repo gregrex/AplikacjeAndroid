@@ -27,6 +27,7 @@ else
             <p class="result-kicker">Ostatnie wyniki</p>
             <h2>@_entries.Count zapisanych pozycji</h2>
         </div>
+        <button class="button ghost" @onclick="ClearHistory">Wyczyść historię</button>
     </div>
 
     <div class="project-grid">
@@ -72,5 +73,11 @@ else
         var freeId = string.IsNullOrWhiteSpace(entry.FreeResultId) ? entry.ResultId : entry.FreeResultId;
         var premiumId = string.IsNullOrWhiteSpace(entry.PremiumResultId) ? freeId : entry.PremiumResultId;
         Nav.NavigateTo($"/result/{entry.CategoryId}/{freeId}/{premiumId}");
+    }
+
+    private async Task ClearHistory()
+    {
+        await History.ClearAsync();
+        _entries = Array.Empty<HistoryEntry>();
     }
 }
