@@ -73,7 +73,7 @@ public sealed class ImageAnalysisServiceTests
     }
 
     [Fact]
-    public async Task AnalyzeAsync_ReturnsMockSuggestions_ForEnabledProject()
+    public async Task AnalyzeAsync_BlocksWhenLocalModelIsNotConfiguredOrVerified()
     {
         var service = CreateService();
 
@@ -86,29 +86,17 @@ public sealed class ImageAnalysisServiceTests
             SizeBytes = 1024
         });
 
-        Assert.True(result.IsAccepted);
+        Assert.False(result.IsAccepted);
         Assert.True(result.IsEnabled);
         Assert.True(result.IsSafetySensitive);
-        Assert.Contains(result.SuggestedAnswers, x => x.QuestionId == "material" && x.Value == "cotton");
-        Assert.Contains(result.Warnings, x => x.Contains("podpowiedzi", StringComparison.OrdinalIgnoreCase));
+        Assert.Contains("model obrazu", result.Summary, StringComparison.OrdinalIgnoreCase);
     }
 
-    [Fact]
-    public async Task AnalyzeAsync_ReturnsSafetyWarning_ForSafetySensitiveProject()
+    private static ImageAnalysisService CreateService()
     {
-        var service = CreateService();
-
-        var result = await service.AnalyzeAsync(new ImageAnalysisRequest
-        {
-            ProjectId = "zmywarka-diagnosta",
-            ContentType = "image/webp",
-            SizeBytes = 2048
-        });
-
-        Assert.True(result.IsSafetySensitive);
-        Assert.Contains(result.Warnings, x => x.Contains("safety-sensitive", StringComparison.OrdinalIgnoreCase) || x.Contains("ostrożności", StringComparison.OrdinalIgnoreCase));
+        var catalog = new LocalAiModelCatalogService();
+        var store = new LocalAiModelStore(modelDirectory: Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N")));
+        var provider = new OnDeviceImageAnalysisProvider(catalog, store, new LocalVisionInferenceEngine());
+        return new ImageAnalysisService(new ImageAnalysisPolicyService(), provider);
     }
-
-    private static ImageAnalysisService CreateService() =>
-        new(new ImageAnalysisPolicyService(), new MockImageAnalysisProvider());
 }
