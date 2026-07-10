@@ -2,9 +2,9 @@
 
 ## Cel
 
-Image Analysis v1 dodaje wspólną, bezpieczną warstwę analizy obrazu dla projektów AppFactory.
+Image Analysis v1 dodaje wspólną warstwę lokalnej analizy obrazu dla projektów AppFactory.
 
-Wersja v1 nie wysyła zdjęć do realnego dostawcy AI. Używa `MockImageAnalysisProvider`, żeby przygotować architekturę, testy i UX bez ryzyka prywatności oraz bez zależności od chmury.
+Wersja v1 używa `OnDeviceImageAnalysisProvider`. Provider nie zwraca sztucznego wyniku: wymaga pobranego i zweryfikowanego lokalnego modelu obrazu. Jeśli model nie jest gotowy, analiza jest blokowana czytelnym komunikatem.
 
 ## Zakres v1
 
@@ -16,7 +16,9 @@ Dodano:
 - `ImageAnalysisProjectPolicy`,
 - `ImageAnalysisPolicyService`,
 - `IImageAnalysisProvider`,
-- `MockImageAnalysisProvider`,
+- `OnDeviceImageAnalysisProvider`,
+- `ILocalVisionInferenceEngine`,
+- `LocalVisionInferenceEngine`,
 - `ImageAnalysisService`.
 
 Te elementy istnieją w:
@@ -72,22 +74,31 @@ Domyślny limit:
 5 MB
 ```
 
+## Model lokalny
+
+Model obrazu jest opisany w `LocalAiModelCatalogService` jako:
+
+```text
+local-vision-v1
+```
+
+Do działania produkcyjnego trzeba skonfigurować:
+
+- `DownloadUrl`,
+- `Sha256`,
+- rozmiar modelu,
+- natywną implementację `ILocalVisionInferenceEngine` dla Android runtime.
+
 ## UX
 
-Na stronie kategorii projektów z włączoną analizą obrazu pokazuje się karta `Image Analysis v1`.
+Na stronie kategorii projektów z włączoną analizą obrazu pokazuje się karta `Local AI image`.
 
 Komunikat mówi jasno, że:
 
 - analiza obrazu jest opcjonalna,
-- wersja v1 używa mock providera,
+- wynik jest podpowiedzią do formularza,
 - użytkownik nadal potwierdza odpowiedzi ręcznie,
 - w projektach safety-sensitive zdjęcie nie zastępuje oceny ryzyka.
-
-## Zasada produktu
-
-Analiza obrazu ma sugerować odpowiedzi do formularza, ale nie może automatycznie decydować za użytkownika.
-
-To jest szczególnie ważne w projektach technicznych, domowych i safety-sensitive.
 
 ## Testy
 
@@ -103,16 +114,8 @@ Testy sprawdzają:
 - odrzucenie projektu bez image analysis,
 - odrzucenie złego typu pliku,
 - odrzucenie za dużego pliku,
-- mock sugestie dla projektu z włączoną analizą,
-- warning dla projektu safety-sensitive.
+- blokadę, gdy lokalny model nie jest skonfigurowany albo zweryfikowany.
 
 ## Następny krok
 
-Po zielonym CI można dodać realnego providera:
-
-```text
-CloudImageAnalysisProvider
-OnDeviceImageAnalysisProvider
-```
-
-Provider produkcyjny musi spełnić ten sam kontrakt `IImageAnalysisProvider` i przechodzić te same testy bezpieczeństwa.
+Podłączyć natywny runtime inferencji obrazu w `LocalVisionInferenceEngine` oraz skonfigurować URL i SHA256 modelu `local-vision-v1`.
