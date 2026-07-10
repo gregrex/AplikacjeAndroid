@@ -1,154 +1,133 @@
 # Status jakości projektów AppFactory
 
-## Data kontroli
-
-Etap jakościowy rozpoczęty po domknięciu 20 projektów MVP.
-
 ## Status produkcyjny
 
 Aktualny status repo: **production-ready candidate**.
 
-Nie oznaczam jeszcze jako final `production-ready`, dopóki nie przejdzie lokalny `dotnet test`, skrypt jakości albo workflow GitHub Actions `Quality Checks`.
+Repo ma komplet danych, testów strukturalnych i scenariuszy akceptacyjnych. Finalny status `production-ready` wymaga zielonego CI oraz wykonania scenariuszy na Androidzie.
 
 ## Zakres katalogu
 
-Katalog aplikacji obejmuje 20 projektów.
+Katalog obejmuje 20 projektów.
 
-## Wykonane w etapie jakościowym
+## Scenariusze produkcyjne
 
-### Dokumentacja
+Dla każdego projektu dodano:
 
-Dodano dokumenty jakości, produkcji, build profiles, image analysis oraz local on-device AI:
+```text
+projects/<projectId>/tests/production-scenarios.md
+```
 
-- `docs/quality/IMAGE_ANALYSIS_V1.md`,
-- `docs/quality/LOCAL_AI_ON_DEVICE.md`.
+Każdy plik ma dokładnie pięć scenariuszy `SCN-01`–`SCN-05` zawierających:
 
-### CI
+- cel,
+- numerowane kroki,
+- oczekiwany wynik,
+- opis pokrycia.
 
-Dodano `.github/workflows/quality-checks.yml`.
+Łączne pokrycie:
 
-### Testy globalne i produkcyjne
+- **20 projektów**,
+- **5 scenariuszy na projekt**,
+- **100 scenariuszy produkcyjnych**.
 
-Dodano testy danych, reguł, produkcji, build profiles, stanu wyniku, analizy obrazu, analizy dźwięku, wejścia tensorowego i pobierania modeli:
+Raport:
 
-- `tests/AppFactory.Mobile.Tests/ImageAnalysisServiceTests.cs`,
-- `tests/AppFactory.Mobile.Tests/AudioAnalysisServiceTests.cs`,
-- `tests/AppFactory.Mobile.Tests/LocalAiModelStoreTests.cs`,
-- `tests/AppFactory.Mobile.Tests/LocalAiInputTensorFactoryTests.cs`.
+```text
+docs/quality/PROJECT_SCENARIO_COVERAGE.md
+```
 
-### Local AI on device
+Automatyczny gate:
 
-Wybrano runtime:
+```text
+tests/AppFactory.Mobile.Tests/ProjectProductionScenariosTests.cs
+```
+
+sprawdza:
+
+- istnienie pliku dla każdego projektu,
+- dokładnie pięć scenariuszy,
+- identyfikatory `SCN-01`–`SCN-05`,
+- sekcje `Cel`, `Kroki`, `Oczekiwany wynik`, `Pokrycie`,
+- minimum dwa kroki na scenariusz,
+- scenariusz `local-vision-v1` + ONNX dla projektów obrazowych,
+- scenariusz `local-audio-v1` + ONNX dla projektów dźwiękowych.
+
+Generator raportu `write-project-quality-report.ps1` pokazuje osobną kolumnę pokrycia pięciu scenariuszy.
+
+## Testy globalne i produkcyjne
+
+Repo zawiera między innymi:
+
+- `AllProjectsQualityTests.cs`,
+- `RuleReasonsQualityTests.cs`,
+- `ProductionReadinessTests.cs`,
+- `ProjectProductionScenariosTests.cs`,
+- `RuleEngineServiceTests.cs`,
+- `MatchInfoParserTests.cs`,
+- `ResultNavigationStateServiceTests.cs`,
+- `BuildProfileServiceTests.cs`,
+- `ImageAnalysisServiceTests.cs`,
+- `AudioAnalysisServiceTests.cs`,
+- `LocalAiModelStoreTests.cs`,
+- `LocalAiInputTensorFactoryTests.cs`.
+
+## Local AI on device
+
+Wybrany runtime:
 
 ```text
 Microsoft.ML.OnnxRuntime
 ```
 
-Pakiet dodano do:
+Pakiet jest w projektach Core i Mobile.
 
-- `src/AppFactory.Core/AppFactory.Core.csproj`,
-- `src/AppFactory.Mobile/AppFactory.Mobile.csproj`.
+Warstwa lokalnego AI obejmuje:
 
-Dodano lokalną warstwę AI dla telefonu:
-
-- `LocalAiModelProfile`,
-- `LocalAiModelStatus`,
-- `LocalAiModelDownloadResult`,
 - `LocalAiModelCatalogService`,
 - `LocalAiModelStore`,
 - `OnnxModelRunner`,
-- `LocalAiInputTensorFactory`.
-
-`LocalAiModelStore` obsługuje status, pobieranie, zapis lokalny, weryfikację SHA256 i usunięcie pliku przy błędnym hash.
-
-### Obraz lokalnie
-
-Ścieżka obrazu używa teraz:
-
+- `LocalAiInputTensorFactory`,
 - `OnDeviceImageAnalysisProvider`,
-- `ILocalVisionInferenceEngine`,
 - `LocalVisionInferenceEngine`,
-- `OnnxModelRunner`.
-
-Mock provider obrazu został usunięty z Core i Mobile. Provider obrazu wymaga pobranego i zweryfikowanego modelu `local-vision-v1`.
-
-`LocalVisionInferenceEngine` uruchamia model ONNX i mapuje score'y na sugestie odpowiedzi dla projektów obrazowych.
-
-### Dźwięk lokalnie
-
-Dodano rozpoznawanie dźwięku jako osobny moduł:
-
-- `AudioAnalysisRequest`,
-- `AudioAnalysisResult`,
-- `AudioAnalysisProjectPolicy`,
-- `AudioAnalysisPolicyService`,
-- `IAudioAnalysisProvider`,
 - `OnDeviceAudioAnalysisProvider`,
-- `ILocalAudioInferenceEngine`,
-- `LocalAudioInferenceEngine`,
-- `AudioAnalysisService`,
-- `OnnxModelRunner`.
+- `LocalAudioInferenceEngine`.
 
-Włączone projekty audio:
-
-- `zmywarka-diagnosta`,
-- `pies-trener-7dni`,
-- `kot-bawi-sie`.
-
-Provider dźwięku wymaga pobranego i zweryfikowanego modelu `local-audio-v1`.
-
-`LocalAudioInferenceEngine` uruchamia model ONNX i mapuje score'y na sugestie odpowiedzi dla projektów audio.
-
-### Wejście modelu v1
-
-Aktualny kontrakt wejścia ONNX:
+Aktualny kontrakt wejścia:
 
 ```text
 input: float32[1,1,1,256]
 ```
 
-`LocalAiInputTensorFactory` czyta lokalny plik obrazu lub audio i buduje znormalizowany tensor z bajtów pliku.
+Modele `local-vision-v1` i `local-audio-v1` wymagają skonfigurowania adresu pobierania, SHA256 i docelowych etykiet klas.
 
-### UI
+## Pozostałe wykonane elementy
 
-Dodano:
+- komplet source i runtime dla 20 projektów,
+- `reason` dla wszystkich reguł,
+- parytet wyników PL/EN/UK,
+- build profiles dla katalogu i osobnych aplikacji,
+- CI `Quality Checks`,
+- wyszukiwarka i filtrowanie katalogu,
+- ulepszony quiz,
+- stan wyniku poza query string,
+- alternatywne rekomendacje,
+- historia i ulubione,
+- UI pobierania lokalnych modeli.
 
-- sekcję pobierania modeli lokalnych w `Settings.razor`,
-- kartę `Local AI image` w `Categories.razor`,
-- kartę `Local AI audio` w `Categories.razor`.
+## Weryfikacja wymagana przed publikacją
 
-### Build profile per aplikacja
+1. Uruchomić:
 
-Dodano modele, serwis, raport i generator build profiles. Każdy projekt ma stabilny `ApplicationId`.
+```powershell
+pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport
+```
 
-### UX katalogu, kategorii i quizu
-
-Dodano wyszukiwarkę aplikacji, filtr typu doświadczenia, licznik projektów, postęp quizu, powrót do poprzedniego pytania, reset quizu i powrót z wyniku do quizu.
-
-### Result navigation state
-
-Dodano `ResultNavigationStateService`. Quiz zapisuje metadane dopasowania w serwisie stanu, a ekran wyniku odczytuje je z serwisu. Query string parser został jako fallback.
-
-### Dane projektów
-
-Dodano `reason` w źródle i runtime dla wszystkich 20 projektów.
-
-Wyrównano `plama-ratownik` source/runtime.
-
-## Znane ryzyka przed statusem produkcyjnym
-
-- Pełna weryfikacja wymaga lokalnego uruchomienia testów lub przejścia workflow CI.
-- Modele `local-vision-v1` i `local-audio-v1` mają profile, ale wymagają skonfigurowania `DownloadUrl` i `Sha256`.
-- Aktualne wejście modelu jest neutralne. Dla wysokiej jakości rozpoznawania trzeba dobrać docelowe modele, etykiety i preprocesory.
-
-## Następne kroki techniczne
-
-1. Skonfigurować `DownloadUrl` i `Sha256` dla modeli.
-2. Podstawić realne modele ONNX zgodne z wejściem `input: float32[1,1,1,256]` albo dodać dedykowane preprocesory pod wybrane modele.
-3. Dodać etykiety klas dla obrazu i audio.
-4. Uruchomić testy na Androidzie.
-5. Uruchomić `pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport` albo poczekać na workflow CI.
+2. Wykonać 100 scenariuszy na emulatorze lub urządzeniu Android.
+3. Zapisać PASS/FAIL dla każdego scenariusza.
+4. Naprawić wszystkie błędy krytyczne i wysokie.
+5. Skonfigurować docelowe modele ONNX lub wyłączyć funkcje Local AI w buildzie publikacyjnym do czasu gotowości modeli.
 
 ## Uwagi
 
-Nie uruchamiałem lokalnie `dotnet test`, bo pracuję przez GitHub connector. Weryfikacja kompilacji wymaga lokalnego `dotnet test`, `pwsh ./tools/quality/run-quality-checks.ps1` albo przejścia workflow CI.
+Nie uruchamiałem lokalnie `dotnet test`, ponieważ zmiany wykonuję przez GitHub connector. Dostępne wywołanie workflow dla sprawdzanego commita nie zostało zwrócone przez connector, więc nie oznaczam testów jako wykonanych.
