@@ -50,11 +50,12 @@ $lines.Add("")
 $lines.Add("- Projekty w katalogu: $($catalogIds.Count)")
 $lines.Add("- Foldery w `projects`: $($projectIds.Count)")
 $lines.Add("- Unikalne ID do kontroli: $($allIds.Count)")
+$lines.Add("- Wymagane scenariusze produkcyjne: 5 na projekt")
 $lines.Add("")
 $lines.Add("## Tabela kontroli")
 $lines.Add("")
-$lines.Add("| Projekt | W katalogu | Folder source | Data source | Runtime | Theme | Marketing | Manual tests | Uwagi |")
-$lines.Add("|---|---:|---:|---:|---:|---:|---:|---:|---|")
+$lines.Add("| Projekt | W katalogu | Folder source | Data source | Runtime | Theme | Marketing | Manual tests | 5 scenariuszy | Uwagi |")
+$lines.Add("|---|---:|---:|---:|---:|---:|---:|---:|---:|---|")
 
 foreach ($projectId in $allIds) {
     $notes = New-Object System.Collections.Generic.List[string]
@@ -69,6 +70,20 @@ foreach ($projectId in $allIds) {
     $hasTheme = (Test-Path (Join-Path $sourceDir "theme.json")) -and (Test-Path (Join-Path $runtimeDir "theme.json"))
     $hasMarketing = Test-Path (Join-Path (Join-Path $sourceDir "marketing") "store-listing.pl.md")
     $hasManualTests = Test-Path (Join-Path (Join-Path $sourceDir "tests") "manual-tests.md")
+    $scenarioPath = Join-Path (Join-Path $sourceDir "tests") "production-scenarios.md"
+    $hasProductionScenarios = $false
+
+    if (Test-Path $scenarioPath) {
+        $scenarioContent = Get-Content -Raw -Path $scenarioPath
+        $scenarioCount = [regex]::Matches($scenarioContent, '(?m)^## SCN-\d{2}\s+—\s+.+$').Count
+        $hasProductionScenarios = $scenarioCount -eq 5
+        if (-not $hasProductionScenarios) {
+            $notes.Add("expected 5 production scenarios, found $scenarioCount")
+        }
+    }
+    else {
+        $notes.Add("missing production scenarios")
+    }
 
     $dataOk = $true
     $runtimeOk = $true
@@ -95,7 +110,7 @@ foreach ($projectId in $allIds) {
         $notes.Add("OK")
     }
 
-    $lines.Add("| `$projectId` | $(ToMark $inCatalog) | $(ToMark $hasSourceDir) | $(ToMark ($hasDataDir -and $dataOk)) | $(ToMark ($hasRuntimeDir -and $runtimeOk)) | $(ToMark $hasTheme) | $(ToMark $hasMarketing) | $(ToMark $hasManualTests) | $($notes -join '; ') |")
+    $lines.Add("| `$projectId` | $(ToMark $inCatalog) | $(ToMark $hasSourceDir) | $(ToMark ($hasDataDir -and $dataOk)) | $(ToMark ($hasRuntimeDir -and $runtimeOk)) | $(ToMark $hasTheme) | $(ToMark $hasMarketing) | $(ToMark $hasManualTests) | $(ToMark $hasProductionScenarios) | $($notes -join '; ') |")
 }
 
 $lines.Add("")
