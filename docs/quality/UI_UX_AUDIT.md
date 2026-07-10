@@ -61,22 +61,33 @@ Dodano lub przebudowano:
 - podanie czasu nagrania,
 - skopiowanie pliku do cache aplikacji,
 - przekazanie `LocalFilePath` do serwisu analizy,
-- pokazanie wyniku, confidence i ostrzeżeń.
+- pokazanie wyniku, confidence i ostrzeżeń,
+- przekazanie sugestii do quizu,
+- ręczne zatwierdzenie sugestii przed zmianą odpowiedzi.
 
 ### Historia i ulubione
 
-Wpisy przechowują teraz pełną trasę wyniku:
+Wpisy przechowują pełną trasę wyniku:
 
 - `ProjectId`,
 - `CategoryId`,
 - `FreeResultId`,
 - `PremiumResultId`.
 
-Historia i ulubione mają akcję ponownego otwarcia wyniku.
+Historia i ulubione:
+
+- zapisują dane lokalnie przez `Preferences`,
+- przetrzymują restart aplikacji,
+- pozwalają ponownie otworzyć wynik,
+- mają akcje czyszczenia,
+- ulubione mają akcję usunięcia pojedynczego wpisu.
 
 ### Kopiowanie
 
-Kopiowanie działa nie tylko dla `vinted-olx-opis`, ale również dla `barber-translator` przez wspólny `ProjectResultView`.
+Kopiowanie działa dla:
+
+- `vinted-olx-opis`,
+- `barber-translator`.
 
 ### Szydełko
 
