@@ -5,6 +5,7 @@ public sealed class AudioAnalysisRequest
     public string ProjectId { get; init; } = string.Empty;
     public string CategoryId { get; init; } = string.Empty;
     public string FileName { get; init; } = string.Empty;
+    public string LocalFilePath { get; init; } = string.Empty;
     public string ContentType { get; init; } = string.Empty;
     public long SizeBytes { get; init; }
     public TimeSpan Duration { get; init; }
@@ -25,8 +26,7 @@ public sealed class AudioAnalysisResult
 public sealed class AudioAnswerSuggestion
 {
     public string QuestionId { get; init; } = string.Empty;
-    public string Value { get; init; }
-        = string.Empty;
+    public string Value { get; init; } = string.Empty;
     public double Confidence { get; init; }
     public string Reason { get; init; } = string.Empty;
 }
