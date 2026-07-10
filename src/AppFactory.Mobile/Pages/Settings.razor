@@ -3,53 +3,83 @@
 @inject LocalAiModelCatalogService ModelCatalog
 @inject LocalAiModelStore ModelStore
 
-<h1>Ustawienia</h1>
+<section class="hero-card">
+    <div class="hero-icon" aria-hidden="true">⚙</div>
+    <p class="result-kicker">Konfiguracja urządzenia</p>
+    <h1>Ustawienia</h1>
+    <p>Język wyników, lokalne modele AI i informacje o prywatności.</p>
+</section>
 
-<div class="card">
-    <h3>Język</h3>
-    <p>Aktywny język: <strong>@Language.CurrentLanguage</strong></p>
+<section class="card">
+    <div class="section-heading">
+        <div>
+            <p class="result-kicker">Język</p>
+            <h2>Aktywny: @Language.CurrentLanguage.ToUpperInvariant()</h2>
+        </div>
+        <span aria-hidden="true">🌐</span>
+    </div>
 
-    <div>
+    <div class="chip-row">
         @foreach (var language in Language.GetSupportedLanguages())
         {
-            <p>
-                <button class="button" @onclick="() => SetLanguage(language.Code)">
-                    @language.NativeName (@language.Code)
-                </button>
-            </p>
+            <button class="button @(Language.CurrentLanguage == language.Code ? string.Empty : "ghost")" @onclick="() => SetLanguage(language.Code)">
+                @language.NativeName
+            </button>
         }
     </div>
 
-    <p class="muted">Lista obejmuje języki krajów Unii Europejskiej oraz ukraiński. Jeżeli pełne tłumaczenie wyników nie istnieje, aplikacja użyje fallbacku do EN, a potem PL.</p>
-</div>
+    <p class="muted small">Pełne wyniki są obecnie dostępne w PL, EN i UK. Dla pozostałych ustawień aplikacja używa jawnego fallbacku do EN, a następnie PL.</p>
+</section>
 
-<div class="card">
-    <h3>Lokalne AI na telefonie</h3>
-    <p>Modele obrazu i dźwięku są pobierane na urządzenie i używane lokalnie. Jeśli URL albo SHA256 modelu nie są skonfigurowane, pobieranie jest zablokowane.</p>
+<section class="card">
+    <div class="section-heading">
+        <div>
+            <p class="result-kicker">Local AI</p>
+            <h2>Modele na telefonie</h2>
+        </div>
+        <span aria-hidden="true">◫</span>
+    </div>
+    <p>Modele są pobierane na urządzenie, weryfikowane przez SHA256 i używane lokalnie. Brak poprawnego URL lub sumy kontrolnej blokuje pobieranie.</p>
 
-    @foreach (var model in _models)
-    {
-        var status = _statuses[model.ModelId];
-        <section class="card">
-            <p class="result-kicker">@model.Modality</p>
-            <h4>@model.ModelId</h4>
-            <p class="muted">Wersja: @model.Version | Plik: @model.FileName</p>
-            <p>Status: @status.Message</p>
-            <p class="muted">Ścieżka lokalna: @status.LocalPath</p>
-            <button class="button" disabled="@(!status.IsConfigured || _isDownloading)" @onclick="() => DownloadModel(model)">Pobierz / odśwież model</button>
-        </section>
-    }
+    <div class="project-grid">
+        @foreach (var model in _models)
+        {
+            var status = _statuses[model.ModelId];
+            <article class="project-card">
+                <div class="project-icon" aria-hidden="true">@(model.Modality == "image" ? "🖼️" : "🎙️")</div>
+                <p class="result-kicker">@model.Modality</p>
+                <h3>@model.ModelId</h3>
+                <p class="muted small">Wersja @model.Version · @model.FileName</p>
+                <div class="chip-row">
+                    <span class="chip">@(status.IsConfigured ? "Skonfigurowany" : "Brak konfiguracji")</span>
+                    <span class="chip">@(status.IsVerified ? "Zweryfikowany" : "Niezweryfikowany")</span>
+                </div>
+                <p class="@(status.IsVerified ? "status-success" : "muted small")">@status.Message</p>
+                <button class="button block" disabled="@(!status.IsConfigured || _isDownloading)" @onclick="() => DownloadModel(model)">
+                    @(status.IsDownloaded ? "Pobierz ponownie" : "Pobierz model")
+                </button>
+            </article>
+        }
+    </div>
 
     @if (!string.IsNullOrWhiteSpace(_downloadMessage))
     {
-        <p class="muted">@_downloadMessage</p>
+        <div class="ai-result">
+            <p>@_downloadMessage</p>
+        </div>
     }
-</div>
+</section>
 
-<div class="card">
-    <h3>Prywatność</h3>
-    <p>Aplikacja działa lokalnie bez własnego serwera. Dane użytkownika w MVP są przechowywane tylko lokalnie.</p>
-</div>
+<section class="card">
+    <div class="section-heading">
+        <div>
+            <p class="result-kicker">Prywatność</p>
+            <h2>Dane pozostają lokalnie</h2>
+        </div>
+        <span aria-hidden="true">🔒</span>
+    </div>
+    <p>Historia, ulubione, narzędzia i pliki robocze są obsługiwane lokalnie. Panel AI korzysta z lokalnego pliku i lokalnego modelu ONNX.</p>
+</section>
 
 @code {
     private IReadOnlyList<LocalAiModelProfile> _models = Array.Empty<LocalAiModelProfile>();
@@ -72,11 +102,20 @@
         _isDownloading = true;
         _downloadMessage = $"Pobieram model {model.ModelId}...";
 
-        var result = await ModelStore.DownloadAsync(model);
-        _downloadMessage = result.Message;
-
-        RefreshModels();
-        _isDownloading = false;
+        try
+        {
+            var result = await ModelStore.DownloadAsync(model);
+            _downloadMessage = result.Message;
+            RefreshModels();
+        }
+        catch (Exception ex)
+        {
+            _downloadMessage = $"Pobieranie nie powiodło się: {ex.Message}";
+        }
+        finally
+        {
+            _isDownloading = false;
+        }
     }
 
     private void RefreshModels()
