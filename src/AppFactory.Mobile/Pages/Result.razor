@@ -10,12 +10,21 @@
 @inject ResultNavigationStateService ResultNavigationState
 @inject NavigationManager Nav
 
-<h1>Wynik</h1>
-<p class="muted">Projekt: @ProjectContext.CurrentProjectId | Język wybrany: @Language.CurrentLanguage | Język wyników: @_loadedResultLanguage</p>
+<section class="hero-card">
+    <div class="hero-icon" aria-hidden="true">@_uiProfile.Icon</div>
+    <p class="result-kicker">Krok 3 · @_uiProfile.Badge</p>
+    <h1>@_uiProfile.ResultHeading</h1>
+    <p>Wynik został dobrany lokalnie na podstawie odpowiedzi i reguł projektu.</p>
+</section>
 
 @if (_freeResult is null)
 {
-    <div class="card">@_uiProfile.EmptyStateText</div>
+    <div class="empty-state">
+        <div class="empty-state-icon" aria-hidden="true">!</div>
+        <h2>Nie udało się wczytać wyniku</h2>
+        <p class="muted">@_uiProfile.EmptyStateText</p>
+        <a class="button" href="/quiz/@CategoryId">Wróć do quizu</a>
+    </div>
 }
 else
 {
@@ -24,35 +33,46 @@ else
     @if (_matchInfo.HasAnyInfo)
     {
         <section class="card">
+            <p class="result-kicker">Przejrzyste dopasowanie</p>
             <h3>Dlaczego taki wynik?</h3>
+            <p>@(!string.IsNullOrWhiteSpace(_matchInfo.Reason) ? _matchInfo.Reason : "Wynik został dobrany na podstawie odpowiedzi z formularza i najlepiej dopasowanej reguły.")</p>
 
-            @if (!string.IsNullOrWhiteSpace(_matchInfo.Reason))
-            {
-                <p>@_matchInfo.Reason</p>
-            }
-            else
-            {
-                <p>Wynik został dobrany na podstawie odpowiedzi z formularza i najlepiej dopasowanej reguły.</p>
-            }
-
-            <p class="muted">Reguła: @_matchInfo.RuleId | Punkty dopasowania: @_matchInfo.Score</p>
+            <div class="metric-grid">
+                <div class="metric">
+                    <span class="muted small">Reguła</span>
+                    <strong>@_matchInfo.RuleId</strong>
+                </div>
+                <div class="metric">
+                    <span class="muted small">Punkty</span>
+                    <strong>@_matchInfo.Score</strong>
+                </div>
+                <div class="metric">
+                    <span class="muted small">Język</span>
+                    <strong>@_loadedResultLanguage.ToUpperInvariant()</strong>
+                </div>
+            </div>
 
             @if (_matchInfo.MatchedConditions.Count > 0)
             {
                 <h4>Dopasowane odpowiedzi</h4>
-                <ul>
+                <div class="chip-row">
                     @foreach (var condition in _matchInfo.MatchedConditions)
                     {
-                        <li>@condition</li>
+                        <span class="chip">@condition</span>
                     }
-                </ul>
+                </div>
             }
         </section>
     }
 
     @if (!_premiumUnlocked)
     {
-        <button class="button secondary" @onclick="UnlockPremium">@_uiProfile.PrimaryActionLabel</button>
+        <section class="card">
+            <p class="result-kicker">Pełna wersja</p>
+            <h3>Więcej kroków i materiałów</h3>
+            <p class="muted">Odblokowanie pokazuje pełną instrukcję, potrzebne rzeczy, czego unikać i alternatywne rekomendacje.</p>
+            <button class="button secondary block" @onclick="UnlockPremium">@_uiProfile.PrimaryActionLabel</button>
+        </section>
     }
     else if (_premiumResult is not null)
     {
@@ -61,33 +81,44 @@ else
         @if (_alternativeResults.Count > 0)
         {
             <section class="card">
+                <p class="result-kicker">Inne dopasowania</p>
                 <h3>Alternatywne rekomendacje</h3>
-                <p class="muted">Inne wyniki, które również pasowały do części odpowiedzi. Możesz przełączyć pełną rekomendację bez ponownego przechodzenia quizu.</p>
-                <ul>
+                <p class="muted">Możesz zmienić pełną rekomendację bez ponownego przechodzenia quizu.</p>
+                <div class="project-grid">
                     @foreach (var alternative in _alternativeResults)
                     {
-                        <li>
-                            <strong>@alternative.Title</strong><br />
-                            <span>@alternative.Summary</span><br />
+                        <article class="project-card">
+                            <div class="project-icon" aria-hidden="true">↗</div>
+                            <h3>@alternative.Title</h3>
+                            <p>@alternative.Summary</p>
                             @if (_premiumResult.Id == alternative.Id)
                             {
-                                <span class="muted">Aktualnie wybrana rekomendacja</span>
+                                <span class="status-success">Aktualnie wybrana</span>
                             }
                             else
                             {
-                                <button class="button secondary" @onclick="() => SelectAlternative(alternative.Id)">Pokaż tę alternatywę</button>
+                                <button class="button ghost" @onclick="() => SelectAlternative(alternative.Id)">Wybierz alternatywę</button>
                             }
-                        </li>
+                        </article>
                     }
-                </ul>
+                </div>
             </section>
         }
     }
 
-    <p>
-        <button class="button" @onclick="AddFavorite">@_uiProfile.SecondaryActionLabel</button>
-        <button class="button secondary" @onclick="BackToQuiz">Wróć do quizu</button>
-    </p>
+    <section class="card">
+        <p class="result-kicker">Dalsze akcje</p>
+        <div class="action-grid">
+            <button class="button" @onclick="AddFavorite">@_uiProfile.SecondaryActionLabel</button>
+            <button class="button ghost" @onclick="BackToQuiz">Wróć do quizu</button>
+            <a class="button ghost" href="/history">Otwórz historię</a>
+            <a class="button ghost" href="/favorites">Otwórz ulubione</a>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(_actionStatus))
+        {
+            <p class="status-success">@_actionStatus</p>
+        }
+    </section>
 }
 
 @code {
@@ -100,6 +131,7 @@ else
     private readonly List<ResultDefinition> _alternativeResults = new();
     private bool _premiumUnlocked;
     private string _loadedResultLanguage = "pl";
+    private string _actionStatus = string.Empty;
     private ProjectUiProfile _uiProfile = new();
     private MatchInfo _matchInfo = new();
 
@@ -132,13 +164,16 @@ else
         {
             ProjectId = ProjectContext.CurrentProjectId,
             CategoryId = CategoryId,
-            ResultId = FreeResultId
+            ResultId = FreeResultId,
+            FreeResultId = FreeResultId,
+            PremiumResultId = PremiumResultId
         });
     }
 
     private async Task UnlockPremium()
     {
         _premiumUnlocked = await Ads.ShowRewardedAsync("result_full_instruction");
+        _actionStatus = _premiumUnlocked ? "Pełna rekomendacja została odblokowana." : "Nie udało się odblokować pełnej rekomendacji.";
     }
 
     private void SelectAlternative(string resultId)
@@ -147,16 +182,25 @@ else
         if (alternative is not null)
         {
             _premiumResult = alternative;
+            _actionStatus = $"Wybrano alternatywę: {alternative.Title}.";
         }
     }
 
     private async Task AddFavorite()
     {
+        var selectedPremiumId = _premiumUnlocked ? _premiumResult?.Id ?? PremiumResultId : PremiumResultId;
+        var selectedResultId = _premiumUnlocked ? selectedPremiumId : FreeResultId;
+
         await Favorites.AddAsync(new FavoriteEntry
         {
             ProjectId = ProjectContext.CurrentProjectId,
-            ResultId = _premiumUnlocked ? _premiumResult?.Id ?? PremiumResultId : FreeResultId
+            CategoryId = CategoryId,
+            ResultId = selectedResultId,
+            FreeResultId = FreeResultId,
+            PremiumResultId = selectedPremiumId
         });
+
+        _actionStatus = "Wynik zapisano w ulubionych.";
     }
 
     private void BackToQuiz()
