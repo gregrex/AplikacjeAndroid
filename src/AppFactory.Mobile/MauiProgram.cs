@@ -37,6 +37,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<ClipboardExportService>();
         builder.Services.AddSingleton<ResultNavigationStateService>();
         builder.Services.AddSingleton<BuildProfileService>();
+        builder.Services.AddSingleton<ProjectToolStateService>();
+        builder.Services.AddSingleton<LocalMediaInputService>();
         builder.Services.AddSingleton<LocalAiModelCatalogService>();
         builder.Services.AddSingleton<LocalAiModelStore>();
         builder.Services.AddSingleton<OnnxModelRunner>();
