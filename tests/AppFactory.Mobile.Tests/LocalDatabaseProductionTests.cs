@@ -54,6 +54,22 @@ public sealed class LocalDatabaseProductionTests
         Assert.Contains("JsonSerializer.Deserialize", favorites);
     }
 
+    [Fact]
+    public void Database_IsRegisteredAndHealthIsVisibleInSettings()
+    {
+        var root = GetRepoRoot();
+        var mobile = Path.Combine(root, "src", "AppFactory.Mobile");
+        var program = File.ReadAllText(Path.Combine(mobile, "MauiProgram.cs"));
+        var settings = File.ReadAllText(Path.Combine(mobile, "Pages", "Settings.razor"));
+
+        Assert.Contains("AddSingleton<LocalDatabaseService>", program);
+        Assert.Contains("SQLite na urządzeniu", settings);
+        Assert.Contains("Database.GetHealthAsync", settings);
+        Assert.Contains("SchemaVersion", settings);
+        Assert.Contains("HistoryCount", settings);
+        Assert.Contains("FavoritesCount", settings);
+    }
+
     private static string GetRepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
