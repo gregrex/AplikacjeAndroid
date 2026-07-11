@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppFactory.Persistence\AppFactory.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <MauiAsset Include="wwwroot\projects\**\*.json" LogicalName="projects\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
