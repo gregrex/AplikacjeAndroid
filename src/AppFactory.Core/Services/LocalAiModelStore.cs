@@ -48,8 +48,10 @@ public sealed class LocalAiModelStore
         Directory.CreateDirectory(_modelDirectory);
         var path = GetLocalPath(profile);
         await using var source = await _httpClient.GetStreamAsync(profile.DownloadUrl, cancellationToken);
-        await using var target = File.Create(path);
-        await source.CopyToAsync(target, cancellationToken);
+        await using (var target = File.Create(path))
+        {
+            await source.CopyToAsync(target, cancellationToken);
+        }
 
         var verified = VerifySha256(path, profile.Sha256);
         if (!verified)
