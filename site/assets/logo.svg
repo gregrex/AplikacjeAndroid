@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">AppFactory Pomocniki</title>
+  <defs>
+    <linearGradient id="bg" x1="64" y1="32" x2="448" y2="480"><stop stop-color="#172554"/><stop offset=".5" stop-color="#0F172A"/><stop offset="1" stop-color="#020617"/></linearGradient>
+    <linearGradient id="b" x1="112" y1="96" x2="240" y2="224"><stop stop-color="#38BDF8"/><stop offset="1" stop-color="#2563EB"/></linearGradient>
+    <linearGradient id="v" x1="272" y1="96" x2="400" y2="224"><stop stop-color="#A78BFA"/><stop offset="1" stop-color="#7C3AED"/></linearGradient>
+    <linearGradient id="g" x1="112" y1="256" x2="400" y2="400"><stop stop-color="#34D399"/><stop offset="1" stop-color="#0D9488"/></linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect x="112" y="96" width="128" height="128" rx="36" fill="url(#b)"/>
+  <rect x="272" y="96" width="128" height="128" rx="36" fill="url(#v)"/>
+  <rect x="112" y="256" width="288" height="144" rx="40" fill="url(#g)"/>
+  <path d="M186 336L222 278H290L326 336" fill="none" stroke="#fff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M208 316H304" stroke="#fff" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="176" cy="160" r="17" fill="#fff"/>
+  <path d="M336 132L345 151L364 160L345 169L336 188L327 169L308 160L327 151L336 132Z" fill="#fff"/>
+</svg>
