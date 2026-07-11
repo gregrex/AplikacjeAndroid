@@ -49,13 +49,29 @@ pwsh ./tools/quality/sync-runtime-packs.ps1
 
 ## 3. Testy jakości
 
-Przed statusem produkcyjnym uruchom:
+Podstawowy gate:
 
 ```powershell
 pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport
 ```
 
-Testy muszą przejść bez błędów.
+Pełna lokalna sesja:
+
+```powershell
+pwsh ./tools/quality/run-local-test-plan.ps1 -RestoreWorkloads -IncludeReleaseBuild -WriteReport
+```
+
+Testy muszą przejść bez błędów. Logi lokalnej sesji trafiają do:
+
+```text
+artifacts/local-test/<timestamp>
+```
+
+Szczegółowy plan:
+
+```text
+docs/quality/LOCAL_TEST_PLAN.md
+```
 
 Workflow GitHub Actions:
 
@@ -65,7 +81,33 @@ Workflow GitHub Actions:
 
 uruchamia testy jakości na push, pull request i ręczne wywołanie.
 
-## 4. UX wyniku
+## 4. Lokalna baza danych
+
+Rosnące kolekcje muszą korzystać z SQLite:
+
+- historia wyników,
+- ulubione wyniki,
+- wersja schematu.
+
+Małe ustawienia mogą pozostać w `Preferences`.
+
+Wymagania:
+
+- schemat ma jawny numer wersji,
+- baza inicjalizuje się przy pierwszym użyciu,
+- historia jest sortowana i ograniczona do 100 wpisów,
+- ulubione są deduplikowane,
+- istnieje migracja wcześniejszych danych JSON z `Preferences`,
+- testy `AppDatabaseTests` przechodzą,
+- migracja została sprawdzona na urządzeniu bez czyszczenia danych.
+
+Dokumentacja:
+
+```text
+docs/quality/LOCAL_DATABASE.md
+```
+
+## 5. UX wyniku
 
 Każdy projekt musi poprawnie współpracować z ekranem wyniku:
 
@@ -74,9 +116,10 @@ Każdy projekt musi poprawnie współpracować z ekranem wyniku:
 - sekcja `Dlaczego taki wynik?`,
 - widoczna reguła i punkty dopasowania,
 - widoczne dopasowane odpowiedzi,
-- alternatywne rekomendacje, jeśli silnik reguł je zwróci.
+- alternatywne rekomendacje, jeśli silnik reguł je zwróci,
+- zapisany wynik można ponownie otworzyć z historii i ulubionych.
 
-## 5. Marketing, manual QA i scenariusze użycia
+## 6. Marketing, manual QA i scenariusze użycia
 
 Każdy projekt musi mieć:
 
@@ -101,20 +144,21 @@ Manual QA i scenariusze produkcyjne powinny łącznie obejmować:
 - odblokowanie premium,
 - zapis do ulubionych,
 - zapis w historii,
+- restart procesu i odtworzenie danych,
 - zmianę języka PL/EN/UK,
 - przypadek default/fallback,
 - bezpieczeństwo domenowe,
 - Local AI image/audio dla projektów, które mają je włączone.
 
-Automatyczny gate:
+Automatyczne gate'y:
 
 ```text
 tests/AppFactory.Mobile.Tests/ProjectProductionScenariosTests.cs
+tests/AppFactory.Mobile.Tests/ScenarioImplementationAuditTests.cs
+tests/AppFactory.Mobile.Tests/AllProjectRuleReachabilityTests.cs
 ```
 
-sprawdza komplet pięciu scenariuszy oraz pokrycie ONNX dla projektów obrazu i dźwięku.
-
-## 6. Bezpieczeństwo domenowe
+## 7. Bezpieczeństwo domenowe
 
 Dla projektów technicznych i domowych wymagane są bezpieczne fallbacki:
 
@@ -122,25 +166,50 @@ Dla projektów technicznych i domowych wymagane są bezpieczne fallbacki:
 - ostrzeżenia przy zalaniu, dymie, zapachu spalenizny, pleśni, niepewnym mocowaniu lub dużym obciążeniu,
 - brak zachęty do używania przypadkowej chemii albo mieszania środków.
 
-## 7. Status produkcyjny projektu
+## 8. Wykonanie testów na Androidzie
+
+Przed wydaniem trzeba wykonać:
+
+- smoke test wspólnego UI,
+- 100 scenariuszy produkcyjnych,
+- test nowej instalacji SQLite,
+- test migracji `Preferences -> SQLite`,
+- test offline,
+- test odmowy uprawnień,
+- test FilePicker,
+- test systemowego przycisku Wstecz,
+- test obrotu ekranu i wznowienia aplikacji,
+- test Local AI albo jawne wyłączenie AI w buildzie wydaniowym.
+
+Wyniki zapisuje się w:
+
+```text
+docs/quality/SCENARIO_EXECUTION_TRACKER.md
+```
+
+## 9. Status produkcyjny projektu
 
 Projekt można oznaczyć jako produkcyjny dopiero gdy:
 
-- przechodzi testy jakości,
+- przechodzi wszystkie testy automatyczne,
+- Android Debug i Release build przechodzą,
 - ma komplet danych source i runtime,
 - ma `reason` dla każdej reguły,
 - ma PL/EN/UK parytet wyników,
 - ma manual QA,
 - ma dokładnie pięć kompletnych scenariuszy produkcyjnych,
+- wszystkie jego scenariusze mają status `PASS`,
+- baza SQLite i migracja zostały potwierdzone,
 - ma listing marketingowy,
+- nie ma otwartych defektów krytycznych ani wysokich,
 - nie ma znanych blokujących ryzyk w `QUALITY_STATUS.md`.
 
-## 8. Następne rozszerzenia
+## 10. Następne rozszerzenia
 
 Po uzyskaniu stabilnego statusu jakości można przygotować:
 
-- osobne build profile per projekt,
-- osobne nazwy aplikacji i ikony,
+- testy UI automatyzowane na emulatorze,
+- screenshot tests dla ekranów wyników,
+- backup/eksport danych użytkownika,
 - osobne store listingi EN/UK,
-- automatyczny raport pokrycia projektów,
-- testy UI/snapshoty dla ekranu wyniku.
+- telemetrykę awarii z zachowaniem prywatności.
