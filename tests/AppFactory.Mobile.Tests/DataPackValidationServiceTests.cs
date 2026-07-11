@@ -12,7 +12,7 @@ public sealed class DataPackValidationServiceTests
 
         var categories = new List<CategoryDefinition>
         {
-            new() { Id = "coffee", NameKey = "stain.coffee" }
+            new() { Id = "coffee", NameKey = "stain.coffee", Icon = "coffee" }
         };
 
         var questions = new List<QuestionDefinition>
