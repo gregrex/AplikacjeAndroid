@@ -4,7 +4,7 @@
 
 Aktualny status repo: **production-ready candidate**.
 
-Kod zawiera komplet danych, scenariuszy, profili UI/UX, lokalną bazę SQLite i automatyczne gate'y implementacji. Finalny status `production-ready` wymaga zielonego CI oraz wykonania scenariuszy na Androidzie.
+Kod zawiera komplet danych, scenariuszy, profili UI/UX, lokalną bazę SQLite, lokalne logi diagnostyczne i automatyczne gate'y implementacji. Finalny status `production-ready` wymaga zielonego CI oraz wykonania scenariuszy na Androidzie.
 
 ## Zakres katalogu
 
@@ -87,6 +87,69 @@ Dokumentacja:
 docs/quality/LOCAL_DATABASE.md
 ```
 
+## Lokalne logi i diagnostyka
+
+Dodano provider `Microsoft.Extensions.Logging` zapisujący lokalne pliki JSONL.
+
+Polityka:
+
+- Debug od poziomu `Debug`,
+- Release od poziomu `Information`,
+- retencja 7 dni,
+- maksymalnie 12 plików,
+- maksymalnie 2 MB na plik,
+- identyfikator sesji w każdym wpisie,
+- automatyczne maskowanie e-maili, tokenów, haseł, sekretów i Bearer,
+- brak automatycznej wysyłki.
+
+Rejestrowane są między innymi:
+
+- start aplikacji i wersja buildu,
+- nieobsłużone wyjątki .NET i Android,
+- migracje SQLite,
+- zapis i czyszczenie historii oraz ulubionych,
+- wybór obrazu lub audio,
+- tworzenie paczki diagnostycznej.
+
+Ekran:
+
+```text
+Ustawienia -> Logi i diagnostyka
+```
+
+Pozwala:
+
+- zobaczyć ostatnie 100 wpisów,
+- zapisać `LOCAL_TEST_MARKER`,
+- sprawdzić stan SQLite,
+- wyczyścić logi,
+- ręcznie udostępnić ZIP z manifestem urządzenia i logami.
+
+Awaryjne pobranie z buildu Debug:
+
+```powershell
+pwsh ./tools/quality/pull-android-diagnostics.ps1 -CreateZip
+```
+
+Skrypt zbiera prywatne logi przez `adb run-as`, logcat, dumpsys package i metadane urządzenia do:
+
+```text
+artifacts/device-diagnostics/<timestamp>
+```
+
+Testy:
+
+```text
+tests/AppFactory.Mobile.Tests/LocalLogStoreTests.cs
+tests/AppFactory.Mobile.Tests/DiagnosticsProductionTests.cs
+```
+
+Dokumentacja:
+
+```text
+docs/quality/LOCAL_LOGGING.md
+```
+
 ## Scenariusze produkcyjne
 
 Dla każdego projektu istnieje:
@@ -161,7 +224,7 @@ Zalecane pierwsze uruchomienie:
 pwsh ./tools/quality/run-local-test-plan.ps1 -RestoreWorkloads -IncludeReleaseBuild -WriteReport
 ```
 
-Runner zapisuje logi, pliki TRX i podsumowanie w:
+Runner zapisuje logi, pliki TRX, osobny przebieg testów logowania, logcat i podsumowanie w:
 
 ```text
 artifacts/local-test/<timestamp>
@@ -170,24 +233,27 @@ artifacts/local-test/<timestamp>
 Tracker wykonania został rozszerzony o:
 
 - dane urządzenia i buildu,
+- identyfikator sesji logów,
+- testy logowania i eksportu,
 - automatyczne gate'y,
 - testy SQLite i migracji,
 - macierz 100 scenariuszy,
 - regresję końcową,
-- tabelę defektów.
+- tabelę defektów z dowodami diagnostycznymi.
 
 ## Weryfikacja wymagana przed publikacją
 
 1. Uruchomić lokalny runner testów.
 2. Naprawić pierwszy błąd kompilacji albo testu.
 3. Wykonać smoke test na Androidzie.
-4. Wykonać test nowej bazy i migracji `Preferences -> SQLite`.
-5. Wykonać 100 scenariuszy na emulatorze lub urządzeniu.
-6. Zapisać PASS/FAIL dla każdego scenariusza.
-7. Sprawdzić FilePicker, klawiaturę, safe-area, systemowy back i długie tłumaczenia.
-8. Naprawić wszystkie błędy krytyczne i wysokie.
-9. Skonfigurować docelowe modele ONNX albo wyłączyć funkcje AI w buildzie publikacyjnym do czasu gotowości modeli.
+4. Potwierdzić `LOCAL_TEST_MARKER`, eksport ZIP i pobranie przez ADB.
+5. Wykonać test nowej bazy i migracji `Preferences -> SQLite`.
+6. Wykonać 100 scenariuszy na emulatorze lub urządzeniu.
+7. Zapisać PASS/FAIL wraz z czasem i identyfikatorem sesji logów.
+8. Sprawdzić FilePicker, klawiaturę, safe-area, systemowy back i długie tłumaczenia.
+9. Naprawić wszystkie błędy krytyczne i wysokie.
+10. Skonfigurować docelowe modele ONNX albo wyłączyć funkcje AI w buildzie publikacyjnym do czasu gotowości modeli.
 
 ## Uwagi
 
-Nie uruchamiałem lokalnie `dotnet test`, ponieważ zmiany wykonuję przez GitHub connector. Kompilacja SQLite, Android build i migracja danych wymagają teraz potwierdzenia podczas Twojej lokalnej sesji testowej.
+Nie uruchamiałem lokalnie `dotnet test`, ponieważ zmiany wykonuję przez GitHub connector. Kompilacja logowania, SQLite, Android build, eksport ZIP i pobieranie logów przez ADB wymagają teraz potwierdzenia podczas Twojej lokalnej sesji testowej.
