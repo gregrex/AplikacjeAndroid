@@ -42,6 +42,7 @@ else
         <div class="inline-actions" style="margin-top:16px">
             <button class="button" disabled="@_isBusy" @onclick="ShareLogsAsync">Eksportuj i udostępnij ZIP</button>
             <button class="button ghost" disabled="@_isBusy" @onclick="WriteMarkerAsync">Zapisz znacznik testowy</button>
+            <button class="button ghost" disabled="@_isBusy" @onclick="WriteExceptionAsync">Zapisz testowy wyjątek</button>
             <button class="button ghost" disabled="@_isBusy" @onclick="RefreshAsync">Odśwież</button>
             <button class="button danger" disabled="@_isBusy" @onclick="ClearLogsAsync">Wyczyść logi</button>
         </div>
@@ -147,6 +148,16 @@ else
         });
     }
 
+    private async Task WriteExceptionAsync()
+    {
+        await RunAsync(async () =>
+        {
+            Diagnostics.WriteHandledTestException();
+            _status = await Diagnostics.GetStatusAsync();
+            _message = "Kontrolowany wyjątek DIAGNOSTICS_TEST_EXCEPTION zapisano ze stack trace.";
+        });
+    }
+
     private async Task ShareLogsAsync()
     {
         await RunAsync(async () =>
@@ -162,7 +173,7 @@ else
         {
             Diagnostics.ClearLogs();
             _status = await Diagnostics.GetStatusAsync();
-            _message = "Logi zostały wyczyszczone.";
+            _message = "Poprzednie logi zostały wyczyszczone; pozostawiono nowy wpis audytowy.";
         });
     }
 
