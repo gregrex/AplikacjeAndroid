@@ -1,7 +1,6 @@
 @page "/result/{CategoryId}/{FreeResultId}/{PremiumResultId}"
 @inject ProjectDataService ProjectData
 @inject ResultService ResultService
-@inject MockAdService Ads
 @inject HistoryService History
 @inject FavoritesService Favorites
 @inject LanguageService Language
@@ -65,17 +64,14 @@ else
         </section>
     }
 
-    @if (!_premiumUnlocked)
+    @if (_premiumResult is not null)
     {
         <section class="card">
-            <p class="result-kicker">Pełna wersja</p>
-            <h3>Więcej kroków i materiałów</h3>
-            <p class="muted">Odblokowanie pokazuje pełną instrukcję, potrzebne rzeczy, czego unikać i alternatywne rekomendacje.</p>
-            <button class="button secondary block" @onclick="UnlockPremium">@_uiProfile.PrimaryActionLabel</button>
+            <p class="result-kicker">Pełna rekomendacja</p>
+            <h3>Wszystkie kroki są dostępne</h3>
+            <p class="muted">Wersja 1.0 nie wymaga reklamy ani płatności. Otrzymujesz pełną instrukcję, potrzebne rzeczy i ostrzeżenia.</p>
         </section>
-    }
-    else if (_premiumResult is not null)
-    {
+
         <ProjectResultView ProjectId="@ProjectContext.CurrentProjectId" Result="@_premiumResult" ShowPremiumBlocks="true" />
 
         @if (_alternativeResults.Count > 0)
@@ -129,7 +125,6 @@ else
     private ResultDefinition? _freeResult;
     private ResultDefinition? _premiumResult;
     private readonly List<ResultDefinition> _alternativeResults = new();
-    private bool _premiumUnlocked;
     private string _loadedResultLanguage = "pl";
     private string _actionStatus = string.Empty;
     private ProjectUiProfile _uiProfile = new();
@@ -164,16 +159,10 @@ else
         {
             ProjectId = ProjectContext.CurrentProjectId,
             CategoryId = CategoryId,
-            ResultId = FreeResultId,
+            ResultId = _premiumResult?.Id ?? FreeResultId,
             FreeResultId = FreeResultId,
             PremiumResultId = PremiumResultId
         });
-    }
-
-    private async Task UnlockPremium()
-    {
-        _premiumUnlocked = await Ads.ShowRewardedAsync("result_full_instruction");
-        _actionStatus = _premiumUnlocked ? "Pełna rekomendacja została odblokowana." : "Nie udało się odblokować pełnej rekomendacji.";
     }
 
     private void SelectAlternative(string resultId)
@@ -188,19 +177,18 @@ else
 
     private async Task AddFavorite()
     {
-        var selectedPremiumId = _premiumUnlocked ? _premiumResult?.Id ?? PremiumResultId : PremiumResultId;
-        var selectedResultId = _premiumUnlocked ? selectedPremiumId : FreeResultId;
+        var selectedPremiumId = _premiumResult?.Id ?? PremiumResultId;
 
         await Favorites.AddAsync(new FavoriteEntry
         {
             ProjectId = ProjectContext.CurrentProjectId,
             CategoryId = CategoryId,
-            ResultId = selectedResultId,
+            ResultId = selectedPremiumId,
             FreeResultId = FreeResultId,
             PremiumResultId = selectedPremiumId
         });
 
-        _actionStatus = "Wynik zapisano w ulubionych.";
+        _actionStatus = "Pełny wynik zapisano w ulubionych.";
     }
 
     private void BackToQuiz()
