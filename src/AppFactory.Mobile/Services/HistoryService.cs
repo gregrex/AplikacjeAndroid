@@ -1,57 +1,105 @@
 using System.Text.Json;
 using AppFactory.Mobile.Models;
+using AppFactory.Persistence.Entities;
 using Microsoft.Maui.Storage;
 
 namespace AppFactory.Mobile.Services;
 
 public sealed class HistoryService
 {
-    private const string StorageKey = "appfactory:history:v2";
+    private const string LegacyStorageKey = "appfactory:history:v2";
+    private const string MigrationFlagKey = "appfactory:history:sqlite-migrated:v1";
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 
-    public Task AddAsync(HistoryEntry entry)
+    private readonly LocalDatabaseService _databaseService;
+    private readonly SemaphoreSlim _migrationLock = new(1, 1);
+
+    public HistoryService(LocalDatabaseService databaseService)
     {
-        var entries = Load().ToList();
-        entries.RemoveAll(x =>
-            string.Equals(x.ProjectId, entry.ProjectId, StringComparison.OrdinalIgnoreCase)
-            && string.Equals(x.CategoryId, entry.CategoryId, StringComparison.OrdinalIgnoreCase)
-            && string.Equals(x.ResultId, entry.ResultId, StringComparison.OrdinalIgnoreCase));
-        entries.Insert(0, entry);
-        Save(entries.Take(100));
-        return Task.CompletedTask;
+        _databaseService = databaseService;
     }
 
-    public Task<IReadOnlyList<HistoryEntry>> GetAllAsync() =>
-        Task.FromResult<IReadOnlyList<HistoryEntry>>(Load());
-
-    public Task ClearAsync()
+    public async Task AddAsync(HistoryEntry entry)
     {
-        Preferences.Default.Remove(StorageKey);
-        return Task.CompletedTask;
+        await EnsureReadyAsync();
+        await _databaseService.Database.AddHistoryAsync(ToRecord(entry));
     }
 
-    private static IReadOnlyList<HistoryEntry> Load()
+    public async Task<IReadOnlyList<HistoryEntry>> GetAllAsync()
     {
-        var json = Preferences.Default.Get(StorageKey, string.Empty);
-        if (string.IsNullOrWhiteSpace(json))
+        await EnsureReadyAsync();
+        var records = await _databaseService.Database.GetHistoryAsync();
+        return records.Select(ToEntry).ToArray();
+    }
+
+    public async Task ClearAsync()
+    {
+        await EnsureReadyAsync();
+        await _databaseService.Database.ClearHistoryAsync();
+    }
+
+    private async Task EnsureReadyAsync()
+    {
+        await _databaseService.InitializeAsync();
+        if (Preferences.Default.Get(MigrationFlagKey, false))
         {
-            return Array.Empty<HistoryEntry>();
+            return;
         }
 
+        await _migrationLock.WaitAsync();
         try
         {
-            var entries = JsonSerializer.Deserialize<List<HistoryEntry>>(json, JsonOptions);
-            return entries is null ? Array.Empty<HistoryEntry>() : entries;
+            if (Preferences.Default.Get(MigrationFlagKey, false))
+            {
+                return;
+            }
+
+            var json = Preferences.Default.Get(LegacyStorageKey, string.Empty);
+            if (!string.IsNullOrWhiteSpace(json))
+            {
+                try
+                {
+                    var entries = JsonSerializer.Deserialize<List<HistoryEntry>>(json, JsonOptions)
+                                  ?? new List<HistoryEntry>();
+                    foreach (var entry in entries.OrderBy(x => x.CreatedAt))
+                    {
+                        await _databaseService.Database.AddHistoryAsync(ToRecord(entry));
+                    }
+                }
+                catch (JsonException)
+                {
+                    // Corrupt legacy data is discarded instead of blocking the application startup.
+                }
+            }
+
+            Preferences.Default.Remove(LegacyStorageKey);
+            Preferences.Default.Set(MigrationFlagKey, true);
         }
-        catch (JsonException)
+        finally
         {
-            Preferences.Default.Remove(StorageKey);
-            return Array.Empty<HistoryEntry>();
+            _migrationLock.Release();
         }
     }
 
-    private static void Save(IEnumerable<HistoryEntry> entries)
+    private static HistoryRecord ToRecord(HistoryEntry entry) => new()
     {
-        Preferences.Default.Set(StorageKey, JsonSerializer.Serialize(entries, JsonOptions));
-    }
+        Id = string.IsNullOrWhiteSpace(entry.Id) ? Guid.NewGuid().ToString("N") : entry.Id,
+        ProjectId = entry.ProjectId,
+        CategoryId = entry.CategoryId,
+        ResultId = entry.ResultId,
+        FreeResultId = entry.FreeResultId,
+        PremiumResultId = entry.PremiumResultId,
+        CreatedAtUtcTicks = entry.CreatedAt.ToUniversalTime().Ticks
+    };
+
+    private static HistoryEntry ToEntry(HistoryRecord record) => new()
+    {
+        Id = record.Id,
+        ProjectId = record.ProjectId,
+        CategoryId = record.CategoryId,
+        ResultId = record.ResultId,
+        FreeResultId = record.FreeResultId,
+        PremiumResultId = record.PremiumResultId,
+        CreatedAt = new DateTime(record.CreatedAtUtcTicks, DateTimeKind.Utc)
+    };
 }
