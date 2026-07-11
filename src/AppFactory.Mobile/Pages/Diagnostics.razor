@@ -1,0 +1,204 @@
+@page "/diagnostics"
+@inject DiagnosticsExportService Diagnostics
+
+<section class="hero-card">
+    <div class="hero-icon" aria-hidden="true">🧾</div>
+    <p class="result-kicker">Testy lokalne</p>
+    <h1>Logi i diagnostyka</h1>
+    <p>Logi pozostają na urządzeniu. Paczka ZIP jest udostępniana wyłącznie po ręcznym kliknięciu.</p>
+</section>
+
+@if (_status is null)
+{
+    <div class="empty-state">
+        <div class="empty-state-icon" aria-hidden="true">…</div>
+        <h2>Ładowanie diagnostyki</h2>
+        <p class="muted">Odczytuję logi i stan lokalnej bazy danych.</p>
+    </div>
+}
+else
+{
+    <section class="card">
+        <p class="result-kicker">Bieżąca sesja</p>
+        <div class="metric-grid">
+            <div class="metric">
+                <span class="muted small">Sesja</span>
+                <strong>@ShortSessionId</strong>
+            </div>
+            <div class="metric">
+                <span class="muted small">Pliki logów</span>
+                <strong>@_status.Logs.FileCount</strong>
+            </div>
+            <div class="metric">
+                <span class="muted small">Rozmiar</span>
+                <strong>@FormatBytes(_status.Logs.TotalSizeBytes)</strong>
+            </div>
+            <div class="metric">
+                <span class="muted small">Schemat DB</span>
+                <strong>@(_status.Database?.SchemaVersion.ToString() ?? "-")</strong>
+            </div>
+        </div>
+
+        <div class="inline-actions" style="margin-top:16px">
+            <button class="button" disabled="@_isBusy" @onclick="ShareLogsAsync">Eksportuj i udostępnij ZIP</button>
+            <button class="button ghost" disabled="@_isBusy" @onclick="WriteMarkerAsync">Zapisz znacznik testowy</button>
+            <button class="button ghost" disabled="@_isBusy" @onclick="RefreshAsync">Odśwież</button>
+            <button class="button danger" disabled="@_isBusy" @onclick="ClearLogsAsync">Wyczyść logi</button>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_message))
+        {
+            <p class="@(_isError ? "status-error" : "status-success")">@_message</p>
+        }
+    </section>
+
+    <section class="card">
+        <div class="section-heading">
+            <div>
+                <p class="result-kicker">SQLite</p>
+                <h2>Stan danych lokalnych</h2>
+            </div>
+            <span aria-hidden="true">🗄️</span>
+        </div>
+
+        @if (_status.Database is null)
+        {
+            <p class="status-error">Nie można odczytać bazy: @_status.DatabaseError</p>
+        }
+        else
+        {
+            <div class="metric-grid">
+                <div class="metric">
+                    <span class="muted small">Stan</span>
+                    <strong>@(_status.Database.IsReady ? "Gotowa" : "Błąd")</strong>
+                </div>
+                <div class="metric">
+                    <span class="muted small">Historia</span>
+                    <strong>@_status.Database.HistoryCount</strong>
+                </div>
+                <div class="metric">
+                    <span class="muted small">Ulubione</span>
+                    <strong>@_status.Database.FavoritesCount</strong>
+                </div>
+            </div>
+        }
+    </section>
+
+    <section class="card">
+        <div class="section-heading">
+            <div>
+                <p class="result-kicker">Ostatnie wpisy</p>
+                <h2>Podgląd logu JSONL</h2>
+            </div>
+            <span class="muted small">maks. 100 linii</span>
+        </div>
+
+        @if (_status.Tail.Count == 0)
+        {
+            <div class="empty-state">
+                <div class="empty-state-icon" aria-hidden="true">∅</div>
+                <p class="muted">Nie ma jeszcze wpisów. Dodaj znacznik testowy lub wykonaj akcję w aplikacji.</p>
+            </div>
+        }
+        else
+        {
+            <pre class="log-viewer">@string.Join(Environment.NewLine, _status.Tail)</pre>
+        }
+    </section>
+
+    <section class="safety-card">
+        <p class="result-kicker">Prywatność</p>
+        <h3>Sprawdź paczkę przed wysłaniem</h3>
+        <p>Tokeny, sekrety i adresy e-mail są automatycznie maskowane. Logi nie są wysyłane do serwera i wymagają ręcznego eksportu.</p>
+    </section>
+}
+
+@code {
+    private DiagnosticsStatus? _status;
+    private bool _isBusy;
+    private bool _isError;
+    private string _message = string.Empty;
+
+    private string ShortSessionId => _status?.Logs.SessionId.Length >= 8
+        ? _status.Logs.SessionId[..8]
+        : _status?.Logs.SessionId ?? "-";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshAsync();
+    }
+
+    private async Task RefreshAsync()
+    {
+        await RunAsync(async () =>
+        {
+            _status = await Diagnostics.GetStatusAsync();
+            _message = "Stan diagnostyki został odświeżony.";
+        });
+    }
+
+    private async Task WriteMarkerAsync()
+    {
+        await RunAsync(async () =>
+        {
+            Diagnostics.WriteTestMarker();
+            _status = await Diagnostics.GetStatusAsync();
+            _message = "Znacznik LOCAL_TEST_MARKER zapisano w logu.";
+        });
+    }
+
+    private async Task ShareLogsAsync()
+    {
+        await RunAsync(async () =>
+        {
+            await Diagnostics.ShareBundleAsync();
+            _message = "Paczka diagnostyczna została przygotowana do udostępnienia.";
+        });
+    }
+
+    private async Task ClearLogsAsync()
+    {
+        await RunAsync(async () =>
+        {
+            Diagnostics.ClearLogs();
+            _status = await Diagnostics.GetStatusAsync();
+            _message = "Logi zostały wyczyszczone.";
+        });
+    }
+
+    private async Task RunAsync(Func<Task> action)
+    {
+        _isBusy = true;
+        _isError = false;
+        _message = string.Empty;
+
+        try
+        {
+            await action();
+        }
+        catch (Exception ex)
+        {
+            _isError = true;
+            _message = $"Operacja diagnostyczna nie powiodła się: {ex.Message}";
+        }
+        finally
+        {
+            _isBusy = false;
+        }
+    }
+
+    private static string FormatBytes(long bytes)
+    {
+        if (bytes < 1024)
+        {
+            return $"{bytes} B";
+        }
+
+        if (bytes < 1024 * 1024)
+        {
+            return $"{bytes / 1024d:0.0} KB";
+        }
+
+        return $"{bytes / 1024d / 1024d:0.0} MB";
+    }
+}
