@@ -4,7 +4,7 @@
 
 Aktualny status repo: **production-ready candidate**.
 
-Kod zawiera komplet danych, scenariuszy, profili UI/UX i automatycznych gate'ów implementacji. Finalny status `production-ready` wymaga zielonego CI oraz wykonania scenariuszy na Androidzie.
+Kod zawiera komplet danych, scenariuszy, profili UI/UX, lokalną bazę SQLite i automatyczne gate'y implementacji. Finalny status `production-ready` wymaga zielonego CI oraz wykonania scenariuszy na Androidzie.
 
 ## Zakres katalogu
 
@@ -43,10 +43,48 @@ Raport:
 docs/quality/UI_UX_AUDIT.md
 ```
 
-Gate:
+## Lokalna baza danych
+
+Dodano osobny projekt:
 
 ```text
-tests/AppFactory.Mobile.Tests/UiUxProductionTests.cs
+src/AppFactory.Persistence/AppFactory.Persistence.csproj
+```
+
+Pakiet:
+
+```text
+sqlite-net-pcl 1.9.172
+```
+
+SQLite przechowuje:
+
+- historię wyników,
+- ulubione wyniki,
+- wersję schematu.
+
+Historia jest deduplikowana, sortowana i ograniczona do 100 rekordów. Ulubione są deduplikowane oraz można je usuwać pojedynczo lub czyścić w całości.
+
+`HistoryService` i `FavoritesService` wykonują migrację wcześniejszych list JSON z `Preferences`.
+
+W ustawieniach aplikacji widoczny jest health check bazy:
+
+- stan,
+- wersja schematu,
+- liczba wpisów historii,
+- liczba ulubionych.
+
+Testy:
+
+```text
+tests/AppFactory.Mobile.Tests/AppDatabaseTests.cs
+tests/AppFactory.Mobile.Tests/LocalDatabaseProductionTests.cs
+```
+
+Dokumentacja:
+
+```text
+docs/quality/LOCAL_DATABASE.md
 ```
 
 ## Scenariusze produkcyjne
@@ -90,47 +128,6 @@ Każdy scenariusz jest mapowany na wymagane capabilities:
 
 Test sprawdza dowody implementacji w faktycznych stronach, usługach, danych i politykach projektu.
 
-## Naprawione luki scenariuszy
-
-### Local AI
-
-Dodano rzeczywisty wybór lokalnego zdjęcia i nagrania przez `LocalMediaInputService` oraz `LocalAiPanel`.
-
-Sugestie AI są przenoszone do quizu przez `AiSuggestionStateService`. Quiz pokazuje przycisk `Użyj tej sugestii`; odpowiedź trafia do formularza dopiero po ręcznym zatwierdzeniu.
-
-### Historia i ulubione
-
-Wpisy przechowują pełną trasę wyniku:
-
-- projekt,
-- kategorię,
-- wynik free,
-- wynik premium.
-
-Historia i ulubione:
-
-- zapisują dane lokalnie przez `Preferences`,
-- pozostają po restarcie aplikacji,
-- pozwalają ponownie otworzyć wynik,
-- obsługują czyszczenie list,
-- ulubione obsługują usunięcie pojedynczej pozycji.
-
-### Kopiowanie
-
-Wspólna akcja kopiowania działa dla:
-
-- `vinted-olx-opis`,
-- `barber-translator`.
-
-### Szydełko
-
-Dodano:
-
-- licznik rzędów,
-- zwiększanie, zmniejszanie i reset,
-- lokalny zapis przez `Preferences`,
-- notatki robótki.
-
 ## Local AI on device
 
 Runtime:
@@ -149,20 +146,48 @@ input: float32[1,1,1,256]
 
 Modele `local-vision-v1` i `local-audio-v1` wymagają skonfigurowania adresu pobierania, SHA256 i docelowych etykiet klas.
 
-## Weryfikacja wymagana przed publikacją
+## Plan testów lokalnych
 
-1. Uruchomić:
+Dodano:
 
-```powershell
-pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport
+```text
+docs/quality/LOCAL_TEST_PLAN.md
+tools/quality/run-local-test-plan.ps1
 ```
 
-2. Wykonać 100 scenariuszy na emulatorze lub urządzeniu Android.
-3. Zapisać PASS/FAIL dla każdego scenariusza.
-4. Sprawdzić FilePicker, klawiaturę, safe-area, systemowy back i długie tłumaczenia.
-5. Naprawić wszystkie błędy krytyczne i wysokie.
-6. Skonfigurować docelowe modele ONNX albo wyłączyć funkcje AI w buildzie publikacyjnym do czasu gotowości modeli.
+Zalecane pierwsze uruchomienie:
+
+```powershell
+pwsh ./tools/quality/run-local-test-plan.ps1 -RestoreWorkloads -IncludeReleaseBuild -WriteReport
+```
+
+Runner zapisuje logi, pliki TRX i podsumowanie w:
+
+```text
+artifacts/local-test/<timestamp>
+```
+
+Tracker wykonania został rozszerzony o:
+
+- dane urządzenia i buildu,
+- automatyczne gate'y,
+- testy SQLite i migracji,
+- macierz 100 scenariuszy,
+- regresję końcową,
+- tabelę defektów.
+
+## Weryfikacja wymagana przed publikacją
+
+1. Uruchomić lokalny runner testów.
+2. Naprawić pierwszy błąd kompilacji albo testu.
+3. Wykonać smoke test na Androidzie.
+4. Wykonać test nowej bazy i migracji `Preferences -> SQLite`.
+5. Wykonać 100 scenariuszy na emulatorze lub urządzeniu.
+6. Zapisać PASS/FAIL dla każdego scenariusza.
+7. Sprawdzić FilePicker, klawiaturę, safe-area, systemowy back i długie tłumaczenia.
+8. Naprawić wszystkie błędy krytyczne i wysokie.
+9. Skonfigurować docelowe modele ONNX albo wyłączyć funkcje AI w buildzie publikacyjnym do czasu gotowości modeli.
 
 ## Uwagi
 
-Nie uruchamiałem lokalnie `dotnet test`, ponieważ zmiany wykonuję przez GitHub connector. Dla ostatniego sprawdzonego commita GitHub nie zwrócił żadnych statusów CI, więc kompilacja i testy nie są jeszcze potwierdzone. Wygląd na fizycznym urządzeniu również nie został potwierdzony w tej sesji.
+Nie uruchamiałem lokalnie `dotnet test`, ponieważ zmiany wykonuję przez GitHub connector. Kompilacja SQLite, Android build i migracja danych wymagają teraz potwierdzenia podczas Twojej lokalnej sesji testowej.
