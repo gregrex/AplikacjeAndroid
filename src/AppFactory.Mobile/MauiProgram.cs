@@ -43,10 +43,10 @@ public static class MauiProgram
         builder.Logging.AddProvider(new LocalFileLoggerProvider(localLogStore));
         builder.Logging.SetMinimumLevel(localMinimumLevel);
 
+        builder.Services.AddSingleton<AppFeatureFlags>();
         builder.Services.AddSingleton<ProjectDataService>();
         builder.Services.AddSingleton<RuleEngineService>();
         builder.Services.AddSingleton<ResultService>();
-        builder.Services.AddSingleton<MockAdService>();
         builder.Services.AddSingleton<LocalDatabaseService>();
         builder.Services.AddSingleton<HistoryService>();
         builder.Services.AddSingleton<FavoritesService>();
