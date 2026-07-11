@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Devices;
 using Microsoft.Maui.Storage;
 
@@ -5,15 +6,22 @@ namespace AppFactory.Mobile.Services;
 
 public sealed class LocalMediaInputService
 {
+    private readonly ILogger<LocalMediaInputService> _logger;
+
+    public LocalMediaInputService(ILogger<LocalMediaInputService> logger)
+    {
+        _logger = logger;
+    }
+
     public Task<LocalMediaFile?> PickImageAsync(CancellationToken cancellationToken = default) =>
-        PickAndCacheAsync(new PickOptions
+        PickAndCacheAsync("image", new PickOptions
         {
             PickerTitle = "Wybierz zdjęcie do analizy",
             FileTypes = FilePickerFileType.Images
         }, cancellationToken);
 
     public Task<LocalMediaFile?> PickAudioAsync(CancellationToken cancellationToken = default) =>
-        PickAndCacheAsync(new PickOptions
+        PickAndCacheAsync("audio", new PickOptions
         {
             PickerTitle = "Wybierz nagranie do analizy",
             FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
@@ -25,11 +33,13 @@ public sealed class LocalMediaInputService
             })
         }, cancellationToken);
 
-    private static async Task<LocalMediaFile?> PickAndCacheAsync(PickOptions options, CancellationToken cancellationToken)
+    private async Task<LocalMediaFile?> PickAndCacheAsync(string modality, PickOptions options, CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Opening local media picker. Modality={Modality}", modality);
         var selected = await FilePicker.Default.PickAsync(options);
         if (selected is null)
         {
+            _logger.LogInformation("Local media picker cancelled. Modality={Modality}", modality);
             return null;
         }
 
@@ -42,11 +52,19 @@ public sealed class LocalMediaInputService
         await source.CopyToAsync(target, cancellationToken);
 
         var info = new FileInfo(cachedPath);
+        var contentType = NormalizeContentType(selected.ContentType, extension);
+        _logger.LogInformation(
+            "Local media cached. Modality={Modality} Extension={Extension} ContentType={ContentType} SizeBytes={SizeBytes}",
+            modality,
+            extension,
+            contentType,
+            info.Length);
+
         return new LocalMediaFile
         {
             FileName = selected.FileName,
             LocalFilePath = cachedPath,
-            ContentType = NormalizeContentType(selected.ContentType, extension),
+            ContentType = contentType,
             SizeBytes = info.Length
         };
     }
