@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1024" y2="500" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#172554"/>
+      <stop offset="0.48" stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#052E2B"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="translate(790 210) rotate(90) scale(260)">
+      <stop stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#38BDF8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="blue" x1="704" y1="112" x2="824" y2="232"><stop stop-color="#38BDF8"/><stop offset="1" stop-color="#2563EB"/></linearGradient>
+    <linearGradient id="violet" x1="840" y1="112" x2="960" y2="232"><stop stop-color="#A78BFA"/><stop offset="1" stop-color="#7C3AED"/></linearGradient>
+    <linearGradient id="green" x1="704" y1="248" x2="960" y2="384"><stop stop-color="#34D399"/><stop offset="1" stop-color="#0D9488"/></linearGradient>
+  </defs>
+  <rect width="1024" height="500" fill="url(#bg)"/>
+  <rect width="1024" height="500" fill="url(#glow)"/>
+  <circle cx="80" cy="60" r="130" fill="#7C3AED" fill-opacity="0.12"/>
+  <circle cx="560" cy="490" r="220" fill="#0D9488" fill-opacity="0.12"/>
+
+  <text x="96" y="174" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="62" font-weight="700">AppFactory</text>
+  <text x="96" y="236" fill="#38BDF8" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700">Pomocniki</text>
+  <text x="96" y="304" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="27">20 praktycznych narzędzi w jednej aplikacji</text>
+  <text x="96" y="352" fill="#94A3B8" font-family="Arial, Helvetica, sans-serif" font-size="22">Dom • styl • hobby • codzienne diagnozy</text>
+
+  <g transform="translate(620 28)">
+    <rect x="38" y="38" width="338" height="338" rx="84" fill="#020617" fill-opacity="0.72" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="2"/>
+    <rect x="82" y="78" width="112" height="112" rx="32" fill="url(#blue)"/>
+    <rect x="214" y="78" width="112" height="112" rx="32" fill="url(#violet)"/>
+    <rect x="82" y="210" width="244" height="124" rx="36" fill="url(#green)"/>
+    <path d="M134 282L165 232H243L274 282" fill="none" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M153 264H255" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round"/>
+    <circle cx="138" cy="134" r="15" fill="#FFFFFF"/>
+    <path d="M270 108L278 126L296 134L278 142L270 160L262 142L244 134L262 126L270 108Z" fill="#FFFFFF"/>
+  </g>
+</svg>
