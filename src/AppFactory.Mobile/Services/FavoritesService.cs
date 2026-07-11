@@ -1,67 +1,111 @@
 using System.Text.Json;
 using AppFactory.Mobile.Models;
+using AppFactory.Persistence.Entities;
 using Microsoft.Maui.Storage;
 
 namespace AppFactory.Mobile.Services;
 
 public sealed class FavoritesService
 {
-    private const string StorageKey = "appfactory:favorites:v2";
+    private const string LegacyStorageKey = "appfactory:favorites:v2";
+    private const string MigrationFlagKey = "appfactory:favorites:sqlite-migrated:v1";
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 
-    public Task AddAsync(FavoriteEntry entry)
+    private readonly LocalDatabaseService _databaseService;
+    private readonly SemaphoreSlim _migrationLock = new(1, 1);
+
+    public FavoritesService(LocalDatabaseService databaseService)
     {
-        var entries = Load().ToList();
-        if (entries.Any(x =>
-                string.Equals(x.ProjectId, entry.ProjectId, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(x.ResultId, entry.ResultId, StringComparison.OrdinalIgnoreCase)))
+        _databaseService = databaseService;
+    }
+
+    public async Task AddAsync(FavoriteEntry entry)
+    {
+        await EnsureReadyAsync();
+        await _databaseService.Database.AddFavoriteAsync(ToRecord(entry));
+    }
+
+    public async Task RemoveAsync(string entryId)
+    {
+        await EnsureReadyAsync();
+        await _databaseService.Database.RemoveFavoriteAsync(entryId);
+    }
+
+    public async Task<IReadOnlyList<FavoriteEntry>> GetAllAsync()
+    {
+        await EnsureReadyAsync();
+        var records = await _databaseService.Database.GetFavoritesAsync();
+        return records.Select(ToEntry).ToArray();
+    }
+
+    public async Task ClearAsync()
+    {
+        await EnsureReadyAsync();
+        await _databaseService.Database.ClearFavoritesAsync();
+    }
+
+    private async Task EnsureReadyAsync()
+    {
+        await _databaseService.InitializeAsync();
+        if (Preferences.Default.Get(MigrationFlagKey, false))
         {
-            return Task.CompletedTask;
+            return;
         }
 
-        entries.Insert(0, entry);
-        Save(entries);
-        return Task.CompletedTask;
-    }
-
-    public Task RemoveAsync(string entryId)
-    {
-        var entries = Load().Where(x => !string.Equals(x.Id, entryId, StringComparison.OrdinalIgnoreCase)).ToArray();
-        Save(entries);
-        return Task.CompletedTask;
-    }
-
-    public Task<IReadOnlyList<FavoriteEntry>> GetAllAsync() =>
-        Task.FromResult<IReadOnlyList<FavoriteEntry>>(Load());
-
-    public Task ClearAsync()
-    {
-        Preferences.Default.Remove(StorageKey);
-        return Task.CompletedTask;
-    }
-
-    private static IReadOnlyList<FavoriteEntry> Load()
-    {
-        var json = Preferences.Default.Get(StorageKey, string.Empty);
-        if (string.IsNullOrWhiteSpace(json))
-        {
-            return Array.Empty<FavoriteEntry>();
-        }
-
+        await _migrationLock.WaitAsync();
         try
         {
-            var entries = JsonSerializer.Deserialize<List<FavoriteEntry>>(json, JsonOptions);
-            return entries is null ? Array.Empty<FavoriteEntry>() : entries;
+            if (Preferences.Default.Get(MigrationFlagKey, false))
+            {
+                return;
+            }
+
+            var json = Preferences.Default.Get(LegacyStorageKey, string.Empty);
+            if (!string.IsNullOrWhiteSpace(json))
+            {
+                try
+                {
+                    var entries = JsonSerializer.Deserialize<List<FavoriteEntry>>(json, JsonOptions)
+                                  ?? new List<FavoriteEntry>();
+                    foreach (var entry in entries.OrderBy(x => x.CreatedAt))
+                    {
+                        await _databaseService.Database.AddFavoriteAsync(ToRecord(entry));
+                    }
+                }
+                catch (JsonException)
+                {
+                    // Corrupt legacy data is discarded instead of blocking the application startup.
+                }
+            }
+
+            Preferences.Default.Remove(LegacyStorageKey);
+            Preferences.Default.Set(MigrationFlagKey, true);
         }
-        catch (JsonException)
+        finally
         {
-            Preferences.Default.Remove(StorageKey);
-            return Array.Empty<FavoriteEntry>();
+            _migrationLock.Release();
         }
     }
 
-    private static void Save(IEnumerable<FavoriteEntry> entries)
+    private static FavoriteRecord ToRecord(FavoriteEntry entry) => new()
     {
-        Preferences.Default.Set(StorageKey, JsonSerializer.Serialize(entries, JsonOptions));
-    }
+        Id = string.IsNullOrWhiteSpace(entry.Id) ? Guid.NewGuid().ToString("N") : entry.Id,
+        ProjectId = entry.ProjectId,
+        CategoryId = entry.CategoryId,
+        ResultId = entry.ResultId,
+        FreeResultId = entry.FreeResultId,
+        PremiumResultId = entry.PremiumResultId,
+        CreatedAtUtcTicks = entry.CreatedAt.ToUniversalTime().Ticks
+    };
+
+    private static FavoriteEntry ToEntry(FavoriteRecord record) => new()
+    {
+        Id = record.Id,
+        ProjectId = record.ProjectId,
+        CategoryId = record.CategoryId,
+        ResultId = record.ResultId,
+        FreeResultId = record.FreeResultId,
+        PremiumResultId = record.PremiumResultId,
+        CreatedAt = new DateTime(record.CreatedAtUtcTicks, DateTimeKind.Utc)
+    };
 }
