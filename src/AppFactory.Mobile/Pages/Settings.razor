@@ -4,12 +4,13 @@
 @inject LocalAiModelCatalogService ModelCatalog
 @inject LocalAiModelStore ModelStore
 @inject LocalDatabaseService Database
+@inject AppFeatureFlags Features
 
 <section class="hero-card">
     <div class="hero-icon" aria-hidden="true">⚙</div>
     <p class="result-kicker">Konfiguracja urządzenia</p>
     <h1>Ustawienia</h1>
-    <p>Język wyników, lokalna baza danych, logi diagnostyczne, modele AI i informacje o prywatności.</p>
+    <p>Język wyników, dane lokalne, diagnostyka, prywatność i pomoc.</p>
 </section>
 
 <section class="card">
@@ -84,58 +85,63 @@
         </div>
         <span aria-hidden="true">🧾</span>
     </div>
-    <p>Podglądaj ostatnie wpisy, dodaj znacznik testowy oraz ręcznie wyeksportuj logi razem z informacjami o urządzeniu i stanie SQLite.</p>
+    <p>Możesz samodzielnie sprawdzić stan danych i ręcznie wyeksportować logi, gdy zgłaszasz problem. Nic nie jest wysyłane automatycznie.</p>
     <a class="button block" href="/diagnostics">Otwórz logi i diagnostykę</a>
 </section>
 
-<section class="card">
-    <div class="section-heading">
-        <div>
-            <p class="result-kicker">Local AI</p>
-            <h2>Modele na telefonie</h2>
+@if (Features.LocalAiEnabled)
+{
+    <section class="card">
+        <div class="section-heading">
+            <div>
+                <p class="result-kicker">Local AI</p>
+                <h2>Modele na telefonie</h2>
+            </div>
+            <span aria-hidden="true">◫</span>
         </div>
-        <span aria-hidden="true">◫</span>
-    </div>
-    <p>Modele są pobierane na urządzenie, weryfikowane przez SHA256 i używane lokalnie. Brak poprawnego URL lub sumy kontrolnej blokuje pobieranie.</p>
+        <p>Modele są pobierane na urządzenie, weryfikowane przez SHA256 i używane lokalnie.</p>
 
-    <div class="project-grid">
-        @foreach (var model in _models)
+        <div class="project-grid">
+            @foreach (var model in _models)
+            {
+                var status = _statuses[model.ModelId];
+                <article class="project-card">
+                    <div class="project-icon" aria-hidden="true">@(model.Modality == "image" ? "🖼️" : "🎙️")</div>
+                    <p class="result-kicker">@model.Modality</p>
+                    <h3>@model.ModelId</h3>
+                    <p class="muted small">Wersja @model.Version · @model.FileName</p>
+                    <div class="chip-row">
+                        <span class="chip">@(status.IsConfigured ? "Skonfigurowany" : "Brak konfiguracji")</span>
+                        <span class="chip">@(status.IsVerified ? "Zweryfikowany" : "Niezweryfikowany")</span>
+                    </div>
+                    <p class="@(status.IsVerified ? "status-success" : "muted small")">@status.Message</p>
+                    <button class="button block" disabled="@(!status.IsConfigured || _isDownloading)" @onclick="() => DownloadModel(model)">
+                        @(status.IsDownloaded ? "Pobierz ponownie" : "Pobierz model")
+                    </button>
+                </article>
+            }
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_downloadMessage))
         {
-            var status = _statuses[model.ModelId];
-            <article class="project-card">
-                <div class="project-icon" aria-hidden="true">@(model.Modality == "image" ? "🖼️" : "🎙️")</div>
-                <p class="result-kicker">@model.Modality</p>
-                <h3>@model.ModelId</h3>
-                <p class="muted small">Wersja @model.Version · @model.FileName</p>
-                <div class="chip-row">
-                    <span class="chip">@(status.IsConfigured ? "Skonfigurowany" : "Brak konfiguracji")</span>
-                    <span class="chip">@(status.IsVerified ? "Zweryfikowany" : "Niezweryfikowany")</span>
-                </div>
-                <p class="@(status.IsVerified ? "status-success" : "muted small")">@status.Message</p>
-                <button class="button block" disabled="@(!status.IsConfigured || _isDownloading)" @onclick="() => DownloadModel(model)">
-                    @(status.IsDownloaded ? "Pobierz ponownie" : "Pobierz model")
-                </button>
-            </article>
+            <div class="ai-result"><p>@_downloadMessage</p></div>
         }
-    </div>
-
-    @if (!string.IsNullOrWhiteSpace(_downloadMessage))
-    {
-        <div class="ai-result">
-            <p>@_downloadMessage</p>
-        </div>
-    }
-</section>
+    </section>
+}
 
 <section class="card">
     <div class="section-heading">
         <div>
-            <p class="result-kicker">Prywatność</p>
-            <h2>Dane pozostają lokalnie</h2>
+            <p class="result-kicker">Prywatność i pomoc</p>
+            <h2>Masz kontrolę nad danymi</h2>
         </div>
         <span aria-hidden="true">🔒</span>
     </div>
-    <p>Historia i ulubione są przechowywane w lokalnej bazie SQLite. Logi są rotowane lokalnie, a tokeny, sekrety i adresy e-mail są maskowane. Eksport logów wymaga ręcznej akcji. Panel AI używa lokalnego pliku oraz lokalnego modelu ONNX.</p>
+    <p>Historia, ulubione i logi pozostają na urządzeniu. Wersja sklepowa 1.0 nie zawiera reklam, kont użytkowników ani aktywnej analizy zdjęć i dźwięku.</p>
+    <div class="action-grid">
+        <a class="button" href="/privacy">Polityka prywatności</a>
+        <a class="button ghost" href="/support">Pomoc i kontakt</a>
+    </div>
 </section>
 
 @code {
@@ -148,14 +154,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        RefreshModels();
+        if (Features.LocalAiEnabled)
+        {
+            RefreshModels();
+        }
         await RefreshDatabaseHealthAsync();
     }
 
-    private void SetLanguage(string language)
-    {
-        Language.SetLanguage(language);
-    }
+    private void SetLanguage(string language) => Language.SetLanguage(language);
 
     private async Task RefreshDatabaseHealthAsync()
     {
@@ -163,7 +169,7 @@
         {
             _databaseHealth = await Database.GetHealthAsync();
             _databaseMessage = _databaseHealth.IsReady
-                ? "Baza danych jest gotowa do testów."
+                ? "Baza danych działa poprawnie."
                 : "Baza danych nie zgłosiła poprawnej wersji schematu.";
         }
         catch (Exception ex)
@@ -177,7 +183,6 @@
     {
         _isDownloading = true;
         _downloadMessage = $"Pobieram model {model.ModelId}...";
-
         try
         {
             var result = await ModelStore.DownloadAsync(model);
