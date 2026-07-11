@@ -1,13 +1,15 @@
 @page "/settings"
+@using AppFactory.Persistence
 @inject LanguageService Language
 @inject LocalAiModelCatalogService ModelCatalog
 @inject LocalAiModelStore ModelStore
+@inject LocalDatabaseService Database
 
 <section class="hero-card">
     <div class="hero-icon" aria-hidden="true">⚙</div>
     <p class="result-kicker">Konfiguracja urządzenia</p>
     <h1>Ustawienia</h1>
-    <p>Język wyników, lokalne modele AI i informacje o prywatności.</p>
+    <p>Język wyników, lokalna baza danych, modele AI i informacje o prywatności.</p>
 </section>
 
 <section class="card">
@@ -29,6 +31,49 @@
     </div>
 
     <p class="muted small">Pełne wyniki są obecnie dostępne w PL, EN i UK. Dla pozostałych ustawień aplikacja używa jawnego fallbacku do EN, a następnie PL.</p>
+</section>
+
+<section class="card">
+    <div class="section-heading">
+        <div>
+            <p class="result-kicker">Lokalna baza</p>
+            <h2>SQLite na urządzeniu</h2>
+        </div>
+        <span aria-hidden="true">🗄️</span>
+    </div>
+
+    @if (_databaseHealth is null)
+    {
+        <p class="muted">Inicjalizacja bazy danych…</p>
+    }
+    else
+    {
+        <div class="metric-grid">
+            <div class="metric">
+                <span class="muted small">Stan</span>
+                <strong>@(_databaseHealth.IsReady ? "Gotowa" : "Błąd")</strong>
+            </div>
+            <div class="metric">
+                <span class="muted small">Schemat</span>
+                <strong>v@_databaseHealth.SchemaVersion</strong>
+            </div>
+            <div class="metric">
+                <span class="muted small">Historia</span>
+                <strong>@_databaseHealth.HistoryCount</strong>
+            </div>
+            <div class="metric">
+                <span class="muted small">Ulubione</span>
+                <strong>@_databaseHealth.FavoritesCount</strong>
+            </div>
+        </div>
+        <p class="muted small">Plik: @Path.GetFileName(_databaseHealth.DatabasePath)</p>
+        <button class="button ghost" @onclick="RefreshDatabaseHealthAsync">Odśwież stan bazy</button>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(_databaseMessage))
+    {
+        <p class="@(_databaseHealth?.IsReady == true ? "status-success" : "status-error")">@_databaseMessage</p>
+    }
 </section>
 
 <section class="card">
@@ -78,23 +123,42 @@
         </div>
         <span aria-hidden="true">🔒</span>
     </div>
-    <p>Historia, ulubione, narzędzia i pliki robocze są obsługiwane lokalnie. Panel AI korzysta z lokalnego pliku i lokalnego modelu ONNX.</p>
+    <p>Historia i ulubione są przechowywane w lokalnej bazie SQLite. Ustawienia i małe stany narzędzi korzystają z lokalnych `Preferences`. Panel AI używa lokalnego pliku oraz lokalnego modelu ONNX.</p>
 </section>
 
 @code {
     private IReadOnlyList<LocalAiModelProfile> _models = Array.Empty<LocalAiModelProfile>();
     private Dictionary<string, LocalAiModelStatus> _statuses = new(StringComparer.OrdinalIgnoreCase);
+    private AppDatabaseHealth? _databaseHealth;
     private bool _isDownloading;
     private string _downloadMessage = string.Empty;
+    private string _databaseMessage = string.Empty;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         RefreshModels();
+        await RefreshDatabaseHealthAsync();
     }
 
     private void SetLanguage(string language)
     {
         Language.SetLanguage(language);
+    }
+
+    private async Task RefreshDatabaseHealthAsync()
+    {
+        try
+        {
+            _databaseHealth = await Database.GetHealthAsync();
+            _databaseMessage = _databaseHealth.IsReady
+                ? "Baza danych jest gotowa do testów."
+                : "Baza danych nie zgłosiła poprawnej wersji schematu.";
+        }
+        catch (Exception ex)
+        {
+            _databaseHealth = null;
+            _databaseMessage = $"Nie udało się zainicjalizować bazy: {ex.Message}";
+        }
     }
 
     private async Task DownloadModel(LocalAiModelProfile model)
