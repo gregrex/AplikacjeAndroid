@@ -1,6 +1,7 @@
 using System.Text.Json;
 using AppFactory.Mobile.Models;
 using AppFactory.Mobile.Services;
+using AppFactory.Persistence;
 
 namespace AppFactory.Mobile.Tests;
 
@@ -46,19 +47,28 @@ public sealed class ProductionReadinessTests
             "docs/quality/BUILD_PROFILES.md",
             "docs/quality/IMAGE_ANALYSIS_V1.md",
             "docs/quality/LOCAL_AI_ON_DEVICE.md",
+            "docs/quality/LOCAL_DATABASE.md",
+            "docs/quality/LOCAL_TEST_PLAN.md",
             "docs/quality/PROJECT_SCENARIO_COVERAGE.md",
             "docs/quality/SCENARIO_EXECUTION_TRACKER.md",
             "docs/quality/UI_UX_AUDIT.md",
             "docs/quality/SCENARIO_IMPLEMENTATION_AUDIT.md",
+            "src/AppFactory.Persistence/AppFactory.Persistence.csproj",
+            "src/AppFactory.Persistence/AppDatabase.cs",
             "src/AppFactory.Mobile/Components/LocalAiPanel.razor",
             "src/AppFactory.Mobile/Pages/ProjectTools.razor",
+            "src/AppFactory.Mobile/Services/LocalDatabaseService.cs",
             "src/AppFactory.Mobile/Services/LocalMediaInputService.cs",
             "src/AppFactory.Mobile/Services/ProjectToolStateService.cs",
+            "tests/AppFactory.Mobile.Tests/AppDatabaseTests.cs",
+            "tests/AppFactory.Mobile.Tests/LocalDatabaseProductionTests.cs",
+            "tools/quality/run-local-test-plan.ps1",
             "tools/quality/run-quality-checks.ps1",
             "tools/quality/sync-runtime-packs.ps1",
             "tools/quality/write-project-quality-report.ps1",
             "tools/quality/write-build-profiles.ps1",
-            ".github/workflows/quality-checks.yml"
+            ".github/workflows/quality-checks.yml",
+            ".gitignore"
         };
 
         var missing = requiredFiles
@@ -67,6 +77,25 @@ public sealed class ProductionReadinessTests
             .ToArray();
 
         Assert.True(missing.Length == 0, "Missing production checklist infrastructure:" + Environment.NewLine + string.Join(Environment.NewLine, missing));
+    }
+
+    [Fact]
+    public void LocalDatabaseInfrastructure_UsesSQLiteAndVersionedSchema()
+    {
+        var root = GetRepoRoot();
+        var persistenceProject = File.ReadAllText(Path.Combine(root, "src", "AppFactory.Persistence", "AppFactory.Persistence.csproj"));
+        var mobileProject = File.ReadAllText(Path.Combine(root, "src", "AppFactory.Mobile", "AppFactory.Mobile.csproj"));
+        var historyService = File.ReadAllText(Path.Combine(root, "src", "AppFactory.Mobile", "Services", "HistoryService.cs"));
+        var favoritesService = File.ReadAllText(Path.Combine(root, "src", "AppFactory.Mobile", "Services", "FavoritesService.cs"));
+
+        Assert.Contains("sqlite-net-pcl", persistenceProject, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("AppFactory.Persistence.csproj", mobileProject, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("Database.AddHistoryAsync", historyService);
+        Assert.Contains("Database.AddFavoriteAsync", favoritesService);
+        Assert.Contains("MigrationFlagKey", historyService);
+        Assert.Contains("MigrationFlagKey", favoritesService);
+        Assert.True(AppDatabase.CurrentSchemaVersion > 0);
+        Assert.Equal(100, AppDatabase.MaxHistoryEntries);
     }
 
     [Fact]
