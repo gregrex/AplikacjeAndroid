@@ -1,0 +1,135 @@
+{
+  "packageName": "pl.gbcom.appfactory",
+  "defaultLocale": "pl-PL",
+  "category": "TOOLS",
+  "contactEmail": "gbosko@gbcom.pl",
+  "privacyPolicyUrl": "https://gregrex.github.io/AplikacjeAndroid/privacy/",
+  "supportUrl": "https://gregrex.github.io/AplikacjeAndroid/support/",
+  "locales": {
+    "pl-PL": {
+      "title": "AppFactory Pomocniki",
+      "shortDescription": "20 praktycznych pomocników do domu, stylu, hobby i codziennych problemów",
+      "fullDescription": "AppFactory Pomocniki łączy 20 praktycznych narzędzi w jednej aplikacji. Wybierz temat, odpowiedz na kilka prostych pytań i otrzymaj dopasowaną rekomendację krok po kroku.\n\nZnajdziesz tu pomoc przy plamach, prostych naprawach, Wi‑Fi, zmywarce, pakowaniu, stylizacji, fryzurach, rysunku, szydełku, zakwasie i wielu innych codziennych sytuacjach.\n\nHistoria i ulubione są przechowywane lokalnie. Wersja 1.0 działa bez konta, reklam i zewnętrznej analityki.\n\nPorady mają charakter pomocniczy. W sytuacji zagrożenia przerwij działanie i skontaktuj się z odpowiednim specjalistą."
+    },
+    "en-US": {
+      "title": "AppFactory Helpers",
+      "shortDescription": "20 practical helpers for home, style, hobbies and everyday problems",
+      "fullDescription": "AppFactory Helpers brings 20 practical tools together in one app. Choose a topic, answer a few simple questions and receive a tailored step-by-step recommendation.\n\nGet help with stains, simple home tasks, Wi‑Fi, dishwashers, packing, outfits, hairstyles, drawing, crochet, sourdough and many other everyday situations.\n\nHistory and favorites are stored locally. Version 1.0 works without an account, ads or third-party analytics.\n\nThe guidance is informational. Stop and contact a qualified professional whenever a situation may be unsafe."
+    },
+    "uk-UA": {
+      "title": "AppFactory Помічники",
+      "shortDescription": "20 практичних помічників для дому, стилю, хобі та щоденних проблем",
+      "fullDescription": "AppFactory Помічники об’єднує 20 практичних інструментів в одному застосунку. Оберіть тему, дайте відповідь на кілька простих запитань і отримайте персоналізовану покрокову рекомендацію.\n\nЗастосунок допомагає з плямами, простими домашніми роботами, Wi‑Fi, посудомийною машиною, пакуванням, одягом, зачісками, малюванням, в’язанням гачком, закваскою та іншими щоденними ситуаціями.\n\nІсторія та обране зберігаються локально. Версія 1.0 працює без облікового запису, реклами та зовнішньої аналітики.\n\nПоради мають інформаційний характер. У небезпечній ситуації припиніть роботу та зверніться до фахівця."
+    },
+    "bg-BG": {
+      "title": "AppFactory Помощници",
+      "shortDescription": "20 практични помощника за дома, стила, хобитата и ежедневните проблеми",
+      "fullDescription": "AppFactory Помощници събира 20 практични инструмента в едно приложение. Изберете тема, отговорете на няколко лесни въпроса и получете подходяща препоръка стъпка по стъпка.\n\nЩе намерите помощ за петна, лесни домашни задачи, Wi‑Fi, съдомиялна, опаковане, облекло, прически, рисуване, плетене на една кука, квас и други ежедневни ситуации.\n\nИсторията и любимите се пазят локално. Версия 1.0 работи без профил, реклами и външна аналитика.\n\nСъветите са информационни. При опасност прекратете работата и потърсете квалифициран специалист."
+    },
+    "hr-HR": {
+      "title": "AppFactory Pomagači",
+      "shortDescription": "20 praktičnih pomagača za dom, stil, hobije i svakodnevne probleme",
+      "fullDescription": "AppFactory Pomagači okuplja 20 praktičnih alata u jednoj aplikaciji. Odaberite temu, odgovorite na nekoliko jednostavnih pitanja i primite prilagođenu preporuku korak po korak.\n\nPronađite pomoć za mrlje, jednostavne kućne zadatke, Wi‑Fi, perilicu posuđa, pakiranje, odjeću, frizure, crtanje, kukičanje, kiselo tijesto i druge svakodnevne situacije.\n\nPovijest i favoriti čuvaju se lokalno. Verzija 1.0 radi bez računa, oglasa i vanjske analitike.\n\nSavjeti su informativni. U opasnoj situaciji prekinite rad i obratite se stručnjaku."
+    },
+    "cs-CZ": {
+      "title": "AppFactory Pomocníci",
+      "shortDescription": "20 praktických pomocníků pro domov, styl, koníčky a běžné problémy",
+      "fullDescription": "AppFactory Pomocníci spojuje 20 praktických nástrojů v jedné aplikaci. Vyberte téma, odpovězte na několik jednoduchých otázek a získejte přizpůsobené doporučení krok za krokem.\n\nNajdete pomoc se skvrnami, jednoduchými domácími úkoly, Wi‑Fi, myčkou, balením, oblečením, účesy, kreslením, háčkováním, kváskem a dalšími každodenními situacemi.\n\nHistorie a oblíbené položky se ukládají místně. Verze 1.0 funguje bez účtu, reklam a externí analytiky.\n\nDoporučení jsou informativní. V nebezpečné situaci práci přerušte a kontaktujte odborníka."
+    },
+    "da-DK": {
+      "title": "AppFactory Hjælpere",
+      "shortDescription": "20 praktiske hjælpere til hjem, stil, hobbyer og hverdagens problemer",
+      "fullDescription": "AppFactory Hjælpere samler 20 praktiske værktøjer i én app. Vælg et emne, besvar nogle få enkle spørgsmål, og få en tilpasset trinvis anbefaling.\n\nFå hjælp til pletter, enkle opgaver i hjemmet, Wi‑Fi, opvaskemaskine, pakning, tøj, frisurer, tegning, hækling, surdej og mange andre hverdagssituationer.\n\nHistorik og favoritter gemmes lokalt. Version 1.0 fungerer uden konto, annoncer og ekstern analyse.\n\nVejledningen er informativ. Stop og kontakt en kvalificeret fagperson, hvis situationen kan være farlig."
+    },
+    "de-DE": {
+      "title": "AppFactory Helfer",
+      "shortDescription": "20 praktische Helfer für Haushalt, Stil, Hobbys und Alltagsprobleme",
+      "fullDescription": "AppFactory Helfer vereint 20 praktische Werkzeuge in einer App. Thema auswählen, einige einfache Fragen beantworten und eine passende Schritt-für-Schritt-Empfehlung erhalten.\n\nDie App hilft bei Flecken, einfachen Haushaltsaufgaben, WLAN, Geschirrspülern, Verpacken, Kleidung, Frisuren, Zeichnen, Häkeln, Sauerteig und vielen weiteren Alltagssituationen.\n\nVerlauf und Favoriten werden lokal gespeichert. Version 1.0 funktioniert ohne Konto, Werbung und externe Analyse.\n\nDie Hinweise dienen nur zur Information. Bei möglichen Gefahren Arbeit beenden und eine qualifizierte Fachkraft kontaktieren."
+    },
+    "el-GR": {
+      "title": "AppFactory Βοηθοί",
+      "shortDescription": "20 πρακτικοί βοηθοί για σπίτι, στυλ, χόμπι και καθημερινά προβλήματα",
+      "fullDescription": "Το AppFactory Βοηθοί συγκεντρώνει 20 πρακτικά εργαλεία σε μία εφαρμογή. Επιλέξτε θέμα, απαντήστε σε λίγες απλές ερωτήσεις και λάβετε προσαρμοσμένη πρόταση βήμα προς βήμα.\n\nΒρείτε βοήθεια για λεκέδες, απλές εργασίες σπιτιού, Wi‑Fi, πλυντήριο πιάτων, συσκευασία, ρούχα, χτενίσματα, σχέδιο, βελονάκι, προζύμι και άλλες καθημερινές καταστάσεις.\n\nΤο ιστορικό και τα αγαπημένα αποθηκεύονται τοπικά. Η έκδοση 1.0 λειτουργεί χωρίς λογαριασμό, διαφημίσεις ή εξωτερικά analytics.\n\nΟι οδηγίες είναι ενημερωτικές. Σε επικίνδυνη κατάσταση σταματήστε και επικοινωνήστε με ειδικό."
+    },
+    "es-ES": {
+      "title": "AppFactory Ayudantes",
+      "shortDescription": "20 ayudantes prácticos para hogar, estilo, aficiones y problemas diarios",
+      "fullDescription": "AppFactory Ayudantes reúne 20 herramientas prácticas en una sola aplicación. Elige un tema, responde unas preguntas sencillas y recibe una recomendación personalizada paso a paso.\n\nEncuentra ayuda para manchas, tareas domésticas sencillas, Wi‑Fi, lavavajillas, embalaje, ropa, peinados, dibujo, ganchillo, masa madre y muchas otras situaciones cotidianas.\n\nEl historial y los favoritos se guardan localmente. La versión 1.0 funciona sin cuenta, anuncios ni analítica externa.\n\nLa orientación es informativa. Detente y contacta con un profesional cualificado si la situación puede ser peligrosa."
+    },
+    "et-EE": {
+      "title": "AppFactory Abilised",
+      "shortDescription": "20 praktilist abilist kodu, stiili, hobide ja igapäevaprobleemide jaoks",
+      "fullDescription": "AppFactory Abilised koondab 20 praktilist tööriista ühte rakendusse. Vali teema, vasta mõnele lihtsale küsimusele ja saa kohandatud samm-sammuline soovitus.\n\nAbi leidub plekkide, lihtsate kodutööde, Wi‑Fi, nõudepesumasina, pakkimise, riietuse, soengute, joonistamise, heegeldamise, juuretise ja muude igapäevaste olukordade jaoks.\n\nAjalugu ja lemmikud salvestatakse kohapeal. Versioon 1.0 töötab ilma konto, reklaamide ja välise analüütikata.\n\nJuhised on informatiivsed. Ohtlikus olukorras lõpeta tegevus ja pöördu spetsialisti poole."
+    },
+    "fi-FI": {
+      "title": "AppFactory Apurit",
+      "shortDescription": "20 käytännöllistä apuria kotiin, tyyliin, harrastuksiin ja arkeen",
+      "fullDescription": "AppFactory Apurit kokoaa 20 käytännöllistä työkalua yhteen sovellukseen. Valitse aihe, vastaa muutamaan helppoon kysymykseen ja saat mukautetun vaiheittaisen suosituksen.\n\nSaat apua tahroihin, kodin pieniin tehtäviin, Wi‑Fiin, astianpesukoneeseen, pakkaamiseen, pukeutumiseen, kampauksiin, piirtämiseen, virkkaukseen, hapanjuureen ja moniin muihin arjen tilanteisiin.\n\nHistoria ja suosikit tallennetaan paikallisesti. Versio 1.0 toimii ilman tiliä, mainoksia tai ulkoista analytiikkaa.\n\nOhjeet ovat yleisluonteisia. Keskeytä työ ja ota yhteys ammattilaiseen, jos tilanne voi olla vaarallinen."
+    },
+    "fr-FR": {
+      "title": "AppFactory Assistants",
+      "shortDescription": "20 assistants pratiques pour la maison, le style, les loisirs et le quotidien",
+      "fullDescription": "AppFactory Assistants réunit 20 outils pratiques dans une seule application. Choisissez un sujet, répondez à quelques questions simples et recevez une recommandation personnalisée étape par étape.\n\nTrouvez de l’aide pour les taches, les petits travaux, le Wi‑Fi, le lave-vaisselle, l’emballage, les tenues, les coiffures, le dessin, le crochet, le levain et de nombreuses situations quotidiennes.\n\nL’historique et les favoris sont stockés localement. La version 1.0 fonctionne sans compte, publicité ni analyse externe.\n\nLes conseils sont informatifs. Arrêtez-vous et contactez un professionnel qualifié en cas de danger possible."
+    },
+    "ga-IE": {
+      "title": "AppFactory Cúntóirí",
+      "shortDescription": "20 cúntóir praiticiúil don bhaile, don stíl, do chaitheamh aimsire agus don saol",
+      "fullDescription": "Cuireann AppFactory Cúntóirí 20 uirlis phraiticiúla le chéile in aon aip amháin. Roghnaigh ábhar, freagair cúpla ceist shimplí agus faigh moladh céim ar chéim atá curtha in oiriúint duit.\n\nFaigh cabhair le smál, tascanna simplí sa bhaile, Wi‑Fi, miasniteoirí, pacáil, éadaí, stíleanna gruaige, líníocht, cróiseáil, taos géar agus cásanna laethúla eile.\n\nStóráiltear stair agus ceanáin go háitiúil. Oibríonn leagan 1.0 gan chuntas, fógraí ná anailísíocht sheachtrach.\n\nIs eolas ginearálta atá sa treoir. Stop agus déan teagmháil le gairmí cáilithe má tá baol ann."
+    },
+    "hu-HU": {
+      "title": "AppFactory Segítők",
+      "shortDescription": "20 praktikus segítő otthonra, stílushoz, hobbikhoz és mindennapi gondokhoz",
+      "fullDescription": "Az AppFactory Segítők 20 praktikus eszközt egyesít egyetlen alkalmazásban. Válassz témát, válaszolj néhány egyszerű kérdésre, és kapj személyre szabott, lépésről lépésre követhető ajánlást.\n\nSegítséget találsz foltokhoz, egyszerű otthoni feladatokhoz, Wi‑Fihez, mosogatógéphez, csomagoláshoz, öltözködéshez, frizurákhoz, rajzoláshoz, horgoláshoz, kovászhoz és más hétköznapi helyzetekhez.\n\nAz előzmények és kedvencek helyben tárolódnak. Az 1.0 verzió fiók, reklám és külső analitika nélkül működik.\n\nAz útmutatás tájékoztató jellegű. Veszély esetén állj meg, és fordulj szakemberhez."
+    },
+    "it-IT": {
+      "title": "AppFactory Assistenti",
+      "shortDescription": "20 assistenti pratici per casa, stile, hobby e problemi quotidiani",
+      "fullDescription": "AppFactory Assistenti riunisce 20 strumenti pratici in un’unica app. Scegli un argomento, rispondi a poche domande semplici e ricevi un consiglio personalizzato passo dopo passo.\n\nTrova aiuto per macchie, piccoli lavori domestici, Wi‑Fi, lavastoviglie, imballaggi, abbigliamento, acconciature, disegno, uncinetto, lievito madre e molte altre situazioni quotidiane.\n\nCronologia e preferiti vengono salvati localmente. La versione 1.0 funziona senza account, pubblicità o analisi esterne.\n\nLe indicazioni sono informative. Interrompi l’attività e contatta un professionista qualificato se la situazione può essere pericolosa."
+    },
+    "lt-LT": {
+      "title": "AppFactory Pagalbininkai",
+      "shortDescription": "20 praktinių pagalbininkų namams, stiliui, pomėgiams ir kasdienai",
+      "fullDescription": "AppFactory Pagalbininkai sujungia 20 praktiškų įrankių vienoje programėlėje. Pasirinkite temą, atsakykite į kelis paprastus klausimus ir gaukite pritaikytą rekomendaciją žingsnis po žingsnio.\n\nČia rasite pagalbos dėl dėmių, paprastų namų darbų, Wi‑Fi, indaplovės, pakavimo, aprangos, šukuosenų, piešimo, nėrimo, raugo ir kitų kasdienių situacijų.\n\nIstorija ir parankiniai saugomi vietoje. 1.0 versija veikia be paskyros, reklamų ir išorinės analitikos.\n\nPatarimai yra informaciniai. Kilus pavojui sustokite ir kreipkitės į kvalifikuotą specialistą."
+    },
+    "lv-LV": {
+      "title": "AppFactory Palīgi",
+      "shortDescription": "20 praktiski palīgi mājai, stilam, vaļaspriekiem un ikdienas problēmām",
+      "fullDescription": "AppFactory Palīgi apvieno 20 praktiskus rīkus vienā lietotnē. Izvēlieties tēmu, atbildiet uz dažiem vienkāršiem jautājumiem un saņemiet pielāgotu ieteikumu soli pa solim.\n\nAtrodiet palīdzību traipiem, vienkāršiem mājas darbiem, Wi‑Fi, trauku mazgājamajai mašīnai, iepakošanai, apģērbam, frizūrām, zīmēšanai, tamborēšanai, ieraugam un citām ikdienas situācijām.\n\nVēsture un izlase tiek glabāta lokāli. Versija 1.0 darbojas bez konta, reklāmām un ārējas analītikas.\n\nIeteikumi ir informatīvi. Bīstamā situācijā pārtrauciet darbu un sazinieties ar speciālistu."
+    },
+    "mt-MT": {
+      "title": "AppFactory Għajnuniet",
+      "shortDescription": "20 għajnuna prattika għad-dar, stil, passatempi u problemi ta’ kuljum",
+      "fullDescription": "AppFactory Għajnuniet jiġbor 20 għodda prattika f’app waħda. Agħżel suġġett, wieġeb ftit mistoqsijiet sempliċi u rċievi rakkomandazzjoni personalizzata pass pass.\n\nSib għajnuna għal tbajja’, xogħlijiet sempliċi fid-dar, Wi‑Fi, magna tal-platti, ippakkjar, ħwejjeġ, xagħar, tpinġija, ganċ, għaġina qarsa u sitwazzjonijiet oħra ta’ kuljum.\n\nL-istorja u l-favoriti jinħażnu lokalment. Il-verżjoni 1.0 taħdem mingħajr kont, reklami jew analitika esterna.\n\nIl-gwida hija informattiva. Waqqaf u ikkuntattja professjonist kwalifikat jekk is-sitwazzjoni tista’ tkun perikoluża."
+    },
+    "nl-NL": {
+      "title": "AppFactory Helpers",
+      "shortDescription": "20 praktische helpers voor huis, stijl, hobby’s en dagelijkse problemen",
+      "fullDescription": "AppFactory Helpers brengt 20 praktische hulpmiddelen samen in één app. Kies een onderwerp, beantwoord een paar eenvoudige vragen en ontvang een aangepaste aanbeveling in duidelijke stappen.\n\nKrijg hulp bij vlekken, eenvoudige klussen, Wi‑Fi, vaatwassers, inpakken, kleding, kapsels, tekenen, haken, zuurdesem en veel andere dagelijkse situaties.\n\nGeschiedenis en favorieten worden lokaal opgeslagen. Versie 1.0 werkt zonder account, advertenties of externe analytics.\n\nDe informatie is algemeen. Stop en neem contact op met een gekwalificeerde professional als een situatie onveilig kan zijn."
+    },
+    "pt-PT": {
+      "title": "AppFactory Ajudantes",
+      "shortDescription": "20 ajudantes práticos para casa, estilo, passatempos e problemas diários",
+      "fullDescription": "AppFactory Ajudantes reúne 20 ferramentas práticas numa única aplicação. Escolha um tema, responda a algumas perguntas simples e receba uma recomendação personalizada passo a passo.\n\nEncontre ajuda para nódoas, tarefas simples em casa, Wi‑Fi, máquina de lavar loiça, embalamento, roupa, penteados, desenho, crochet, massa mãe e muitas outras situações do dia a dia.\n\nO histórico e os favoritos são guardados localmente. A versão 1.0 funciona sem conta, anúncios ou análise externa.\n\nAs orientações são informativas. Pare e contacte um profissional qualificado se a situação puder ser perigosa."
+    },
+    "ro-RO": {
+      "title": "AppFactory Ajutoare",
+      "shortDescription": "20 de ajutoare practice pentru casă, stil, hobby-uri și probleme zilnice",
+      "fullDescription": "AppFactory Ajutoare reunește 20 de instrumente practice într-o singură aplicație. Alege un subiect, răspunde la câteva întrebări simple și primește o recomandare personalizată pas cu pas.\n\nGăsești ajutor pentru pete, sarcini simple în casă, Wi‑Fi, mașina de spălat vase, ambalare, ținute, coafuri, desen, croșetat, maia și multe alte situații cotidiene.\n\nIstoricul și favoritele sunt stocate local. Versiunea 1.0 funcționează fără cont, reclame sau analiză externă.\n\nRecomandările sunt informative. Oprește-te și contactează un specialist calificat dacă situația poate fi periculoasă."
+    },
+    "sk-SK": {
+      "title": "AppFactory Pomocníci",
+      "shortDescription": "20 praktických pomocníkov pre domácnosť, štýl, koníčky a bežné problémy",
+      "fullDescription": "AppFactory Pomocníci spája 20 praktických nástrojov v jednej aplikácii. Vyberte tému, odpovedzte na niekoľko jednoduchých otázok a získajte prispôsobené odporúčanie krok za krokom.\n\nNájdete pomoc so škvrnami, jednoduchými domácimi úlohami, Wi‑Fi, umývačkou, balením, oblečením, účesmi, kreslením, háčkovaním, kváskom a ďalšími každodennými situáciami.\n\nHistória a obľúbené položky sa ukladajú lokálne. Verzia 1.0 funguje bez účtu, reklám a externej analytiky.\n\nOdporúčania sú informačné. V nebezpečnej situácii prácu prerušte a kontaktujte odborníka."
+    },
+    "sl-SI": {
+      "title": "AppFactory Pomočniki",
+      "shortDescription": "20 praktičnih pomočnikov za dom, slog, hobije in vsakdanje težave",
+      "fullDescription": "AppFactory Pomočniki združuje 20 praktičnih orodij v eni aplikaciji. Izberite temo, odgovorite na nekaj preprostih vprašanj in prejmite prilagojeno priporočilo po korakih.\n\nPoiščite pomoč pri madežih, preprostih domačih opravilih, omrežju Wi‑Fi, pomivalnem stroju, pakiranju, oblačilih, pričeskah, risanju, kvačkanju, kislem testu in drugih vsakdanjih situacijah.\n\nZgodovina in priljubljeni so shranjeni lokalno. Različica 1.0 deluje brez računa, oglasov in zunanje analitike.\n\nNavodila so informativna. V nevarni situaciji prenehajte in se obrnite na usposobljenega strokovnjaka."
+    },
+    "sv-SE": {
+      "title": "AppFactory Hjälpare",
+      "shortDescription": "20 praktiska hjälpare för hem, stil, hobbyer och vardagsproblem",
+      "fullDescription": "AppFactory Hjälpare samlar 20 praktiska verktyg i en enda app. Välj ett ämne, svara på några enkla frågor och få en anpassad rekommendation steg för steg.\n\nFå hjälp med fläckar, enkla hemuppgifter, Wi‑Fi, diskmaskiner, packning, kläder, frisyrer, teckning, virkning, surdeg och många andra vardagssituationer.\n\nHistorik och favoriter sparas lokalt. Version 1.0 fungerar utan konto, annonser eller extern analys.\n\nVägledningen är informativ. Avbryt och kontakta en kvalificerad yrkesperson om situationen kan vara farlig."
+    }
+  }
+}
