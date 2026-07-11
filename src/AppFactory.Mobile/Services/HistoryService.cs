@@ -1,6 +1,7 @@
 using System.Text.Json;
 using AppFactory.Mobile.Models;
 using AppFactory.Persistence.Entities;
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Storage;
 
 namespace AppFactory.Mobile.Services;
@@ -12,23 +13,31 @@ public sealed class HistoryService
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 
     private readonly LocalDatabaseService _databaseService;
+    private readonly ILogger<HistoryService> _logger;
     private readonly SemaphoreSlim _migrationLock = new(1, 1);
 
-    public HistoryService(LocalDatabaseService databaseService)
+    public HistoryService(LocalDatabaseService databaseService, ILogger<HistoryService> logger)
     {
         _databaseService = databaseService;
+        _logger = logger;
     }
 
     public async Task AddAsync(HistoryEntry entry)
     {
         await EnsureReadyAsync();
         await _databaseService.Database.AddHistoryAsync(ToRecord(entry));
+        _logger.LogInformation(
+            "History entry saved. Project={ProjectId} Category={CategoryId} Result={ResultId}",
+            entry.ProjectId,
+            entry.CategoryId,
+            entry.ResultId);
     }
 
     public async Task<IReadOnlyList<HistoryEntry>> GetAllAsync()
     {
         await EnsureReadyAsync();
         var records = await _databaseService.Database.GetHistoryAsync();
+        _logger.LogDebug("History loaded. Count={Count}", records.Count);
         return records.Select(ToEntry).ToArray();
     }
 
@@ -36,6 +45,7 @@ public sealed class HistoryService
     {
         await EnsureReadyAsync();
         await _databaseService.Database.ClearHistoryAsync();
+        _logger.LogInformation("History cleared by user.");
     }
 
     private async Task EnsureReadyAsync()
@@ -54,6 +64,7 @@ public sealed class HistoryService
                 return;
             }
 
+            var migratedCount = 0;
             var json = Preferences.Default.Get(LegacyStorageKey, string.Empty);
             if (!string.IsNullOrWhiteSpace(json))
             {
@@ -64,16 +75,18 @@ public sealed class HistoryService
                     foreach (var entry in entries.OrderBy(x => x.CreatedAt))
                     {
                         await _databaseService.Database.AddHistoryAsync(ToRecord(entry));
+                        migratedCount++;
                     }
                 }
-                catch (JsonException)
+                catch (JsonException ex)
                 {
-                    // Corrupt legacy data is discarded instead of blocking the application startup.
+                    _logger.LogWarning(ex, "Legacy history JSON was corrupt and has been discarded.");
                 }
             }
 
             Preferences.Default.Remove(LegacyStorageKey);
             Preferences.Default.Set(MigrationFlagKey, true);
+            _logger.LogInformation("History migration to SQLite completed. MigratedCount={MigratedCount}", migratedCount);
         }
         finally
         {
