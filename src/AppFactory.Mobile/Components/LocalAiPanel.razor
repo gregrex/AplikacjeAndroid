@@ -5,8 +5,9 @@
 @inject ImageAnalysisService ImageAnalysis
 @inject AudioAnalysisService AudioAnalysis
 @inject AiSuggestionStateService SuggestionState
+@inject AppFeatureFlags Features
 
-@if (_imagePolicy.IsEnabled || _audioPolicy.IsEnabled)
+@if (Features.LocalAiEnabled && (_imagePolicy.IsEnabled || _audioPolicy.IsEnabled))
 {
     <section class="ai-card">
         <p class="result-kicker">Local AI na urządzeniu</p>
