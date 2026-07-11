@@ -8,11 +8,24 @@
     <SingleProject>true</SingleProject>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <ApplicationTitle>AppFactory</ApplicationTitle>
+    <ApplicationTitle>AppFactory Pomocniki</ApplicationTitle>
     <ApplicationId>pl.gbcom.appfactory</ApplicationId>
-    <ApplicationDisplayVersion>0.1.0</ApplicationDisplayVersion>
+    <ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
     <ApplicationVersion>1</ApplicationVersion>
     <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+    <AndroidTargetSdkVersion>35</AndroidTargetSdkVersion>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <EnableLocalAiRelease>false</EnableLocalAiRelease>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <AndroidPackageFormats>aab</AndroidPackageFormats>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(EnableLocalAiRelease)' == 'true'">
+    <DefineConstants>$(DefineConstants);LOCAL_AI_RELEASE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +37,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppFactory.Persistence\AppFactory.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#0B1220" />
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#0B1220" BaseSize="128,128" />
   </ItemGroup>
 
   <ItemGroup>
