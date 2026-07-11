@@ -9,7 +9,7 @@
     <div class="hero-icon" aria-hidden="true">⚙</div>
     <p class="result-kicker">Konfiguracja urządzenia</p>
     <h1>Ustawienia</h1>
-    <p>Język wyników, lokalna baza danych, modele AI i informacje o prywatności.</p>
+    <p>Język wyników, lokalna baza danych, logi diagnostyczne, modele AI i informacje o prywatności.</p>
 </section>
 
 <section class="card">
@@ -79,6 +79,18 @@
 <section class="card">
     <div class="section-heading">
         <div>
+            <p class="result-kicker">Diagnostyka</p>
+            <h2>Logi lokalne i paczka ZIP</h2>
+        </div>
+        <span aria-hidden="true">🧾</span>
+    </div>
+    <p>Podglądaj ostatnie wpisy, dodaj znacznik testowy oraz ręcznie wyeksportuj logi razem z informacjami o urządzeniu i stanie SQLite.</p>
+    <a class="button block" href="/diagnostics">Otwórz logi i diagnostykę</a>
+</section>
+
+<section class="card">
+    <div class="section-heading">
+        <div>
             <p class="result-kicker">Local AI</p>
             <h2>Modele na telefonie</h2>
         </div>
@@ -123,7 +135,7 @@
         </div>
         <span aria-hidden="true">🔒</span>
     </div>
-    <p>Historia i ulubione są przechowywane w lokalnej bazie SQLite. Ustawienia i małe stany narzędzi korzystają z lokalnych `Preferences`. Panel AI używa lokalnego pliku oraz lokalnego modelu ONNX.</p>
+    <p>Historia i ulubione są przechowywane w lokalnej bazie SQLite. Logi są rotowane lokalnie, a tokeny, sekrety i adresy e-mail są maskowane. Eksport logów wymaga ręcznej akcji. Panel AI używa lokalnego pliku oraz lokalnego modelu ONNX.</p>
 </section>
 
 @code {
