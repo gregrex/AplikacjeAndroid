@@ -27,6 +27,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<RuleEngineService>();
         builder.Services.AddSingleton<ResultService>();
         builder.Services.AddSingleton<MockAdService>();
+        builder.Services.AddSingleton<LocalDatabaseService>();
         builder.Services.AddSingleton<HistoryService>();
         builder.Services.AddSingleton<FavoritesService>();
         builder.Services.AddSingleton<LanguageService>();
