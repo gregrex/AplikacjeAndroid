@@ -1,5 +1,7 @@
 using AppFactory.Mobile.Services;
+using AppFactory.Persistence.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Storage;
 
 namespace AppFactory.Mobile;
 
@@ -19,9 +21,27 @@ public static class MauiProgram
         builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
+        const LogLevel localMinimumLevel = LogLevel.Debug;
         builder.Services.AddBlazorWebViewDeveloperTools();
         builder.Logging.AddDebug();
+#else
+        const LogLevel localMinimumLevel = LogLevel.Information;
 #endif
+
+        var localLogStore = new LocalLogStore(
+            Path.Combine(FileSystem.AppDataDirectory, "logs"),
+            new LocalLogOptions
+            {
+                MinimumLevel = localMinimumLevel,
+                RetentionDays = 7,
+                MaxFiles = 12,
+                MaxFileSizeBytes = 2 * 1024 * 1024
+            });
+
+        builder.Services.AddSingleton(localLogStore);
+        builder.Services.AddSingleton<DiagnosticsExportService>();
+        builder.Logging.AddProvider(new LocalFileLoggerProvider(localLogStore));
+        builder.Logging.SetMinimumLevel(localMinimumLevel);
 
         builder.Services.AddSingleton<ProjectDataService>();
         builder.Services.AddSingleton<RuleEngineService>();
