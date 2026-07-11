@@ -12,8 +12,11 @@ Uzupełnij przed rozpoczęciem:
 - Wersja Androida:
 - Rozdzielczość i orientacja:
 - Wersja aplikacji:
+- Identyfikator sesji logów:
 - Modele Local AI: `READY` / `NOT_CONFIGURED` / `BLOCKED`
-- Katalog logów: `artifacts/local-test/<timestamp>`
+- Katalog logów automatycznych: `artifacts/local-test/<timestamp>`
+- Katalog diagnostyki urządzenia: `artifacts/device-diagnostics/<timestamp>`
+- Nazwa paczki ZIP z aplikacji:
 
 ## Zasady
 
@@ -28,7 +31,10 @@ Każdy status `FAIL` lub `BLOCKED` musi mieć:
 
 - opis,
 - numer defektu albo blokera,
-- screenshot lub log,
+- dokładny czas zdarzenia,
+- identyfikator sesji logów,
+- paczkę diagnostyczną albo logcat,
+- screenshot lub nagranie,
 - informację, czy problem powtarza się po restarcie.
 
 ## Automatyczne gate'y
@@ -38,11 +44,33 @@ Każdy status `FAIL` lub `BLOCKED` musi mieć:
 | Restore | NOT_RUN | |
 | Wszystkie testy .NET | NOT_RUN | |
 | Testy SQLite | NOT_RUN | |
+| Testy lokalnego logowania | NOT_RUN | |
 | Testy osiągalności reguł | NOT_RUN | |
 | Testy scenariuszy i akcji | NOT_RUN | |
 | Android Debug build | NOT_RUN | |
 | Android Release build | NOT_RUN | |
+| ADB devices | NOT_RUN | |
+| Snapshot logcat | NOT_RUN | |
 | Smoke test | NOT_RUN | |
+
+## Logi i diagnostyka
+
+| Test | Status | Uwagi/defekt |
+| --- | --- | --- |
+| Ekran `Logi i diagnostyka` otwiera się | NOT_RUN | |
+| `LOCAL_TEST_MARKER` pojawia się w podglądzie | NOT_RUN | |
+| Plik JSONL ma poprawny format | NOT_RUN | |
+| E-mail i token są zamaskowane | NOT_RUN | |
+| Rotacja po przekroczeniu limitu pliku | NOT_RUN | |
+| Retencja i limit liczby plików | NOT_RUN | |
+| Eksport ZIP działa | NOT_RUN | |
+| Manifest zawiera build i urządzenie | NOT_RUN | |
+| Manifest zawiera health check SQLite | NOT_RUN | |
+| Eksport nie wymaga sieci | NOT_RUN | |
+| `pull-android-diagnostics.ps1` pobiera logi Debug | NOT_RUN | |
+| Skrypt zapisuje logcat i dumpsys | NOT_RUN | |
+| Crash lub wyjątek trafia do logu | NOT_RUN | |
+| Czyszczenie logów działa | NOT_RUN | |
 
 ## Lokalna baza SQLite
 
@@ -97,12 +125,13 @@ Każdy status `FAIL` lub `BLOCKED` musi mieć:
 | Powiększony tekst systemowy | NOT_RUN | |
 | Mała ilość miejsca | NOT_RUN | |
 | ONNX na urządzeniu | NOT_RUN | |
+| Eksport diagnostyki offline | NOT_RUN | |
 
 ## Podsumowanie defektów
 
-| ID | Priorytet | Projekt | Scenariusz | Status | Opis |
-| --- | --- | --- | --- | --- | --- |
-| | | | | | |
+| ID | Priorytet | Projekt | Scenariusz | Czas | Sesja logów | Dowód | Status | Opis |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| | | | | | | | | |
 
 ## Kryterium wydania
 
@@ -110,6 +139,7 @@ Wersja może otrzymać status `production-ready`, gdy:
 
 - wszystkie testy automatyczne są zielone,
 - Android Debug i Release build przechodzą,
+- testy logowania, eksportu ZIP i pobierania przez ADB mają `PASS`,
 - wszystkie 100 scenariuszy ma status `PASS`,
 - wszystkie testy SQLite, w tym migracja, mają `PASS`,
 - nie ma otwartych defektów krytycznych ani wysokich,
