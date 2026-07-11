@@ -8,6 +8,12 @@ public sealed class AppDatabase : IAsyncDisposable
     public const int CurrentSchemaVersion = 1;
     public const int MaxHistoryEntries = 100;
 
+    private static readonly Lazy<bool> NativeRuntime = new(() =>
+    {
+        SQLitePCL.Batteries_V2.Init();
+        return true;
+    }, LazyThreadSafetyMode.ExecutionAndPublication);
+
     private readonly SQLiteAsyncConnection _connection;
     private readonly SemaphoreSlim _initializationLock = new(1, 1);
     private bool _initialized;
@@ -26,7 +32,7 @@ public sealed class AppDatabase : IAsyncDisposable
             Directory.CreateDirectory(directory);
         }
 
-        SQLitePCL.Batteries_V2.Init();
+        _ = NativeRuntime.Value;
         _connection = new SQLiteAsyncConnection(
             databasePath,
             SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache);
