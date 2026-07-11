@@ -60,6 +60,18 @@ public sealed class DiagnosticsExportService
         _logger.LogInformation("LOCAL_TEST_MARKER session={SessionId} utc={TimestampUtc}", _logs.SessionId, DateTime.UtcNow);
     }
 
+    public void WriteHandledTestException()
+    {
+        try
+        {
+            throw new InvalidOperationException("DIAGNOSTICS_TEST_EXCEPTION");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Handled diagnostics test exception. Session={SessionId}", _logs.SessionId);
+        }
+    }
+
     public async Task<string> CreateBundleAsync(CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Creating local diagnostics bundle.");
