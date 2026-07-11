@@ -10,6 +10,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+$sessionStarted = Get-Date
 $resultsRoot = Join-Path $RepoRoot "artifacts\local-test\$timestamp"
 $summaryPath = Join-Path $resultsRoot "summary.md"
 $testProject = Join-Path $RepoRoot "tests\AppFactory.Mobile.Tests\AppFactory.Mobile.Tests.csproj"
@@ -22,7 +23,8 @@ function Write-Summary {
     $lines = New-Object System.Collections.Generic.List[string]
     $lines.Add("# AppFactory local test summary")
     $lines.Add("")
-    $lines.Add("- Started: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')")
+    $lines.Add("- Started: $($sessionStarted.ToString('yyyy-MM-dd HH:mm:ss'))")
+    $lines.Add("- Updated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')")
     $lines.Add("- Repository: `$RepoRoot`")
     $lines.Add("- Results: `$resultsRoot`")
     $lines.Add("")
@@ -144,7 +146,7 @@ Invoke-NativeStep -Name "tests-sqlite" -FilePath "dotnet" -Arguments @(
     "test", $testProject,
     "-c", "Release",
     "--no-restore",
-    "--filter", "AppDatabaseTests|LocalDatabaseProductionTests",
+    "--filter", "FullyQualifiedName~AppDatabaseTests|FullyQualifiedName~LocalDatabaseProductionTests",
     "--logger", "trx;LogFileName=sqlite-tests.trx",
     "--results-directory", $resultsRoot,
     "--verbosity", "minimal"
