@@ -50,7 +50,7 @@ public sealed class PlamaRatownikScenarioTests
             new() { QuestionId = "fresh", Value = "unknown" }
         };
 
-        var match = engine.Match("rust", answers, data.Rules);
+        var match = engine.Match("unknown-stain", answers, data.Rules);
         var free = resultService.FindResult(data.Results, match.FreeResultId);
         var premium = resultService.FindResult(data.Results, match.PremiumResultId);
 
