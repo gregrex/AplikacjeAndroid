@@ -4,7 +4,8 @@ param(
     [switch]$IncludeReleaseBuild,
     [switch]$WriteReport,
     [switch]$SyncRuntime,
-    [switch]$SkipAndroidBuild
+    [switch]$SkipAndroidBuild,
+    [switch]$SkipLogcat
 )
 
 $ErrorActionPreference = "Stop"
@@ -37,8 +38,9 @@ function Write-Summary {
     $lines.Add("## Manual next steps")
     $lines.Add("")
     $lines.Add("1. Run the Android smoke test from `docs/quality/LOCAL_TEST_PLAN.md`.")
-    $lines.Add("2. Update `docs/quality/SCENARIO_EXECUTION_TRACKER.md`.")
-    $lines.Add("3. Record defects for every FAIL or BLOCKED scenario.")
+    $lines.Add("2. Export the in-app diagnostics ZIP from Settings > Logi i diagnostyka.")
+    $lines.Add("3. Update `docs/quality/SCENARIO_EXECUTION_TRACKER.md`.")
+    $lines.Add("4. Record defects for every FAIL or BLOCKED scenario and attach logs.")
     Set-Content -Path $summaryPath -Value $lines -Encoding UTF8
 }
 
@@ -152,6 +154,16 @@ Invoke-NativeStep -Name "tests-sqlite" -FilePath "dotnet" -Arguments @(
     "--verbosity", "minimal"
 )
 
+Invoke-NativeStep -Name "tests-local-logging" -FilePath "dotnet" -Arguments @(
+    "test", $testProject,
+    "-c", "Release",
+    "--no-restore",
+    "--filter", "FullyQualifiedName~LocalLogStoreTests|FullyQualifiedName~DiagnosticsProductionTests",
+    "--logger", "trx;LogFileName=logging-tests.trx",
+    "--results-directory", $resultsRoot,
+    "--verbosity", "minimal"
+)
+
 if (-not $SkipAndroidBuild) {
     Invoke-NativeStep -Name "android-debug-build" -FilePath "dotnet" -Arguments @(
         "build", $mobileProject,
@@ -189,9 +201,23 @@ else {
 
 if (Get-Command adb -ErrorAction SilentlyContinue) {
     Invoke-NativeStep -Name "adb-devices" -FilePath "adb" -Arguments @("devices", "-l")
+
+    $adbState = (& adb get-state 2>$null | Out-String).Trim()
+    if (-not $SkipLogcat -and $adbState -eq "device") {
+        Invoke-NativeStep -Name "adb-logcat-snapshot" -FilePath "adb" -Arguments @(
+            "logcat", "-d", "-v", "threadtime", "-t", "2000"
+        )
+    }
+    elseif ($SkipLogcat) {
+        Add-SkippedStep -Name "adb-logcat-snapshot" -Reason "Disabled with -SkipLogcat."
+    }
+    else {
+        Add-SkippedStep -Name "adb-logcat-snapshot" -Reason "No connected Android device or emulator."
+    }
 }
 else {
     Add-SkippedStep -Name "adb-devices" -Reason "adb is not available in PATH."
+    Add-SkippedStep -Name "adb-logcat-snapshot" -Reason "adb is not available in PATH."
 }
 
 Write-Summary
