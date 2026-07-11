@@ -1,5 +1,8 @@
+using System.Diagnostics;
 using System.Security.Cryptography;
 using AppFactory.Mobile.Models;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace AppFactory.Mobile.Services;
 
@@ -7,11 +10,16 @@ public sealed class LocalAiModelStore
 {
     private readonly HttpClient _httpClient;
     private readonly string _modelDirectory;
+    private readonly ILogger<LocalAiModelStore> _logger;
 
-    public LocalAiModelStore(HttpClient? httpClient = null, string? modelDirectory = null)
+    public LocalAiModelStore(
+        HttpClient? httpClient = null,
+        string? modelDirectory = null,
+        ILogger<LocalAiModelStore>? logger = null)
     {
         _httpClient = httpClient ?? new HttpClient();
         _modelDirectory = modelDirectory ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "appfactory-models");
+        _logger = logger ?? NullLogger<LocalAiModelStore>.Instance;
     }
 
     public LocalAiModelStatus GetStatus(LocalAiModelProfile profile)
@@ -36,6 +44,7 @@ public sealed class LocalAiModelStore
     {
         if (!IsConfigured(profile))
         {
+            _logger.LogWarning("AI model download rejected because configuration is incomplete. ModelId={ModelId}", profile.ModelId);
             return new LocalAiModelDownloadResult
             {
                 ModelId = profile.ModelId,
@@ -47,23 +56,74 @@ public sealed class LocalAiModelStore
 
         Directory.CreateDirectory(_modelDirectory);
         var path = GetLocalPath(profile);
-        await using var source = await _httpClient.GetStreamAsync(profile.DownloadUrl, cancellationToken);
-        await using var target = File.Create(path);
-        await source.CopyToAsync(target, cancellationToken);
+        var temporaryPath = $"{path}.download";
+        var stopwatch = Stopwatch.StartNew();
+        var host = Uri.TryCreate(profile.DownloadUrl, UriKind.Absolute, out var uri) ? uri.Host : "unknown";
 
-        var verified = VerifySha256(path, profile.Sha256);
-        if (!verified)
+        TryDelete(temporaryPath);
+        _logger.LogInformation(
+            "AI model download started. ModelId={ModelId} Version={Version} Host={Host} ExpectedSizeBytes={ExpectedSizeBytes}",
+            profile.ModelId,
+            profile.Version,
+            host,
+            profile.SizeBytes);
+
+        try
         {
-            File.Delete(path);
+            await using var source = await _httpClient.GetStreamAsync(profile.DownloadUrl, cancellationToken);
+            await using (var target = File.Create(temporaryPath))
+            {
+                await source.CopyToAsync(target, cancellationToken);
+            }
+
+            var actualSize = new FileInfo(temporaryPath).Length;
+            var verified = VerifySha256(temporaryPath, profile.Sha256);
+            if (verified)
+            {
+                File.Move(temporaryPath, path, overwrite: true);
+            }
+            else
+            {
+                TryDelete(temporaryPath);
+            }
+
+            stopwatch.Stop();
+            _logger.LogInformation(
+                "AI model download completed. ModelId={ModelId} Verified={Verified} ActualSizeBytes={ActualSizeBytes} DurationMs={DurationMs}",
+                profile.ModelId,
+                verified,
+                actualSize,
+                stopwatch.ElapsedMilliseconds);
+
+            return new LocalAiModelDownloadResult
+            {
+                ModelId = profile.ModelId,
+                Success = verified,
+                LocalPath = path,
+                Message = verified ? "Model pobrany i zweryfikowany." : "Pobrany model nie przeszedł weryfikacji SHA256."
+            };
         }
-
-        return new LocalAiModelDownloadResult
+        catch (OperationCanceledException)
         {
-            ModelId = profile.ModelId,
-            Success = verified,
-            LocalPath = path,
-            Message = verified ? "Model pobrany i zweryfikowany." : "Pobrany model nie przeszedł weryfikacji SHA256."
-        };
+            stopwatch.Stop();
+            TryDelete(temporaryPath);
+            _logger.LogWarning(
+                "AI model download cancelled. ModelId={ModelId} DurationMs={DurationMs}",
+                profile.ModelId,
+                stopwatch.ElapsedMilliseconds);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+            TryDelete(temporaryPath);
+            _logger.LogError(
+                ex,
+                "AI model download failed. ModelId={ModelId} DurationMs={DurationMs}",
+                profile.ModelId,
+                stopwatch.ElapsedMilliseconds);
+            throw;
+        }
     }
 
     public string GetLocalPath(LocalAiModelProfile profile) => Path.Combine(_modelDirectory, profile.FileName);
@@ -84,5 +144,20 @@ public sealed class LocalAiModelStore
         var hash = SHA256.HashData(stream);
         var actual = Convert.ToHexString(hash).ToLowerInvariant();
         return string.Equals(actual, expectedSha256.ToLowerInvariant(), StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static void TryDelete(string path)
+    {
+        try
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
+        catch
+        {
+            // Cleanup failure is reported by the surrounding operation if it blocks progress.
+        }
     }
 }
