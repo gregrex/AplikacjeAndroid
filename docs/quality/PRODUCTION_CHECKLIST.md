@@ -107,7 +107,65 @@ Dokumentacja:
 docs/quality/LOCAL_DATABASE.md
 ```
 
-## 5. UX wyniku
+## 5. Logi i diagnostyka
+
+Aplikacja musi zapisywać lokalne logi JSONL z:
+
+- czasem UTC,
+- identyfikatorem sesji,
+- poziomem i kategorią,
+- `EventId`,
+- wiadomością,
+- typem i stack trace wyjątku.
+
+Polityka produkcyjna:
+
+- Debug loguje od poziomu `Debug`,
+- Release loguje od poziomu `Information`,
+- retencja wynosi 7 dni,
+- maksymalnie 12 plików,
+- maksymalnie 2 MB na plik,
+- tokeny, sekrety, hasła i e-maile są maskowane,
+- logi nie są wysyłane automatycznie,
+- eksport wymaga ręcznej akcji użytkownika.
+
+Aplikacja musi rejestrować minimum:
+
+- start i wersję buildu,
+- nieobsłużone wyjątki .NET i Android,
+- migrację SQLite,
+- zapis i czyszczenie historii oraz ulubionych,
+- wybór plików obrazu i audio,
+- tworzenie paczki diagnostycznej.
+
+Eksport w aplikacji:
+
+```text
+Ustawienia -> Logi i diagnostyka
+```
+
+Pobranie awaryjne z buildu Debug:
+
+```powershell
+pwsh ./tools/quality/pull-android-diagnostics.ps1 -CreateZip
+```
+
+Każdy defekt `FAIL` lub `BLOCKED` musi mieć:
+
+- identyfikator sesji,
+- dokładny czas zdarzenia,
+- paczkę ZIP albo logcat,
+- commit SHA i numer buildu,
+- urządzenie oraz wersję Androida,
+- screenshot lub nagranie ekranu.
+
+Dokumentacja:
+
+```text
+docs/quality/LOCAL_LOGGING.md
+```
+
+## 6. UX wyniku
 
 Każdy projekt musi poprawnie współpracować z ekranem wyniku:
 
@@ -119,7 +177,7 @@ Każdy projekt musi poprawnie współpracować z ekranem wyniku:
 - alternatywne rekomendacje, jeśli silnik reguł je zwróci,
 - zapisany wynik można ponownie otworzyć z historii i ulubionych.
 
-## 6. Marketing, manual QA i scenariusze użycia
+## 7. Marketing, manual QA i scenariusze użycia
 
 Każdy projekt musi mieć:
 
@@ -156,9 +214,11 @@ Automatyczne gate'y:
 tests/AppFactory.Mobile.Tests/ProjectProductionScenariosTests.cs
 tests/AppFactory.Mobile.Tests/ScenarioImplementationAuditTests.cs
 tests/AppFactory.Mobile.Tests/AllProjectRuleReachabilityTests.cs
+tests/AppFactory.Mobile.Tests/LocalLogStoreTests.cs
+tests/AppFactory.Mobile.Tests/DiagnosticsProductionTests.cs
 ```
 
-## 7. Bezpieczeństwo domenowe
+## 8. Bezpieczeństwo domenowe
 
 Dla projektów technicznych i domowych wymagane są bezpieczne fallbacki:
 
@@ -166,11 +226,14 @@ Dla projektów technicznych i domowych wymagane są bezpieczne fallbacki:
 - ostrzeżenia przy zalaniu, dymie, zapachu spalenizny, pleśni, niepewnym mocowaniu lub dużym obciążeniu,
 - brak zachęty do używania przypadkowej chemii albo mieszania środków.
 
-## 8. Wykonanie testów na Androidzie
+## 9. Wykonanie testów na Androidzie
 
 Przed wydaniem trzeba wykonać:
 
 - smoke test wspólnego UI,
+- test znacznika `LOCAL_TEST_MARKER`,
+- eksport ZIP z aplikacji,
+- pobranie logów przez ADB dla buildu Debug,
 - 100 scenariuszy produkcyjnych,
 - test nowej instalacji SQLite,
 - test migracji `Preferences -> SQLite`,
@@ -187,7 +250,7 @@ Wyniki zapisuje się w:
 docs/quality/SCENARIO_EXECUTION_TRACKER.md
 ```
 
-## 9. Status produkcyjny projektu
+## 10. Status produkcyjny projektu
 
 Projekt można oznaczyć jako produkcyjny dopiero gdy:
 
@@ -200,11 +263,12 @@ Projekt można oznaczyć jako produkcyjny dopiero gdy:
 - ma dokładnie pięć kompletnych scenariuszy produkcyjnych,
 - wszystkie jego scenariusze mają status `PASS`,
 - baza SQLite i migracja zostały potwierdzone,
+- eksport logów i zbieranie logcat zostały potwierdzone,
 - ma listing marketingowy,
 - nie ma otwartych defektów krytycznych ani wysokich,
 - nie ma znanych blokujących ryzyk w `QUALITY_STATUS.md`.
 
-## 10. Następne rozszerzenia
+## 11. Następne rozszerzenia
 
 Po uzyskaniu stabilnego statusu jakości można przygotować:
 
@@ -212,4 +276,4 @@ Po uzyskaniu stabilnego statusu jakości można przygotować:
 - screenshot tests dla ekranów wyników,
 - backup/eksport danych użytkownika,
 - osobne store listingi EN/UK,
-- telemetrykę awarii z zachowaniem prywatności.
+- opcjonalną telemetrykę opt-in z zachowaniem prywatności.
