@@ -1,11 +1,25 @@
 using AppFactory.Mobile.Models;
+using Microsoft.Extensions.Logging;
 
 namespace AppFactory.Mobile.Services;
 
 public sealed class RuleEngineService
 {
+    private readonly ILogger<RuleEngineService> _logger;
+
+    public RuleEngineService(ILogger<RuleEngineService> logger)
+    {
+        _logger = logger;
+    }
+
     public RuleMatch Match(string categoryId, IReadOnlyCollection<UserAnswer> answers, IReadOnlyCollection<RuleDefinition> rules)
     {
+        _logger.LogDebug(
+            "Rule matching started. Category={CategoryId} AnswerCount={AnswerCount} RuleCount={RuleCount}",
+            categoryId,
+            answers.Count,
+            rules.Count);
+
         var answerMap = answers
             .Where(x => !string.IsNullOrWhiteSpace(x.QuestionId))
             .GroupBy(x => x.QuestionId, StringComparer.OrdinalIgnoreCase)
@@ -17,6 +31,7 @@ public sealed class RuleEngineService
             .OrderByDescending(rule => rule.Score)
             .ToList();
 
+        var usedGlobalFallback = matchingRules.Count == 0;
         var best = matchingRules.FirstOrDefault()
                    ?? rules
                        .Where(rule => rule.CategoryId == "*" && rule.When.Count == 0)
@@ -25,6 +40,10 @@ public sealed class RuleEngineService
 
         if (best is null)
         {
+            _logger.LogError(
+                "Rule matching produced no result and no global fallback. Category={CategoryId} AnswerCount={AnswerCount}",
+                categoryId,
+                answerMap.Count);
             return new RuleMatch();
         }
 
@@ -32,6 +51,16 @@ public sealed class RuleEngineService
             .Where(rule => !string.Equals(rule.Id, best.Id, StringComparison.OrdinalIgnoreCase))
             .Take(3)
             .ToList();
+
+        _logger.LogInformation(
+            "Rule matched. Category={CategoryId} RuleId={RuleId} Score={Score} UsedGlobalFallback={UsedGlobalFallback} AlternativeCount={AlternativeCount} FreeResult={FreeResultId} PremiumResult={PremiumResultId}",
+            categoryId,
+            best.Id,
+            best.Score,
+            usedGlobalFallback,
+            alternatives.Count,
+            best.FreeResultId,
+            best.PremiumResultId);
 
         return new RuleMatch
         {
