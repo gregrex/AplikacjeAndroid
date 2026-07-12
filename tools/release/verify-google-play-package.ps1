@@ -18,29 +18,24 @@ function Require-File([string]$Path, [string]$Label) {
 }
 
 function Check-Image {
-    param(
-        [string]$Path,
-        [int]$ExpectedWidth,
-        [int]$ExpectedHeight,
-        [long]$MaxBytes = 0
-    )
+    param([string]$Path, [int]$ExpectedWidth, [int]$ExpectedHeight, [long]$MaxBytes = 0)
 
     if (-not (Require-File $Path "image")) { return }
 
-    if (-not $IsWindows) {
-        $warnings.Add("Image dimensions were not inspected because System.Drawing validation is Windows-only: $Path")
-        return
-    }
-
-    Add-Type -AssemblyName System.Drawing.Common
-    $image = [System.Drawing.Image]::FromFile($Path)
-    try {
-        if ($image.Width -ne $ExpectedWidth -or $image.Height -ne $ExpectedHeight) {
-            $errors.Add("Invalid image dimensions for $Path: $($image.Width)x$($image.Height), expected ${ExpectedWidth}x${ExpectedHeight}.")
+    if ($IsWindows) {
+        Add-Type -AssemblyName System.Drawing.Common
+        $image = [System.Drawing.Image]::FromFile($Path)
+        try {
+            if ($image.Width -ne $ExpectedWidth -or $image.Height -ne $ExpectedHeight) {
+                $errors.Add("Invalid image dimensions for $Path: $($image.Width)x$($image.Height), expected ${ExpectedWidth}x${ExpectedHeight}.")
+            }
+        }
+        finally {
+            $image.Dispose()
         }
     }
-    finally {
-        $image.Dispose()
+    else {
+        $warnings.Add("Image dimensions were not inspected because System.Drawing validation is Windows-only: $Path")
     }
 
     if ($MaxBytes -gt 0) {
@@ -51,15 +46,17 @@ function Check-Image {
     }
 }
 
-$icon = Join-Path $ArtifactsRoot "generated\app-icon-512.png"
-$feature = Join-Path $ArtifactsRoot "generated\feature-graphic-1024x500.png"
+$generatedRoot = Join-Path $ArtifactsRoot "generated"
 $metadataRoot = Join-Path $ArtifactsRoot "metadata\android"
 $releaseMetadata = Join-Path $ArtifactsRoot "metadata\release-metadata.json"
 $releaseRoot = Join-Path $ArtifactsRoot "release"
 $screenshotRoot = Join-Path $ArtifactsRoot "screenshots\final"
 
-Check-Image $icon 512 512 1MB
-Check-Image $feature 1024 500
+Check-Image (Join-Path $generatedRoot "app-icon-512.png") 512 512 1MB
+Check-Image (Join-Path $generatedRoot "feature-graphic-1024x500.png") 1024 500
+foreach ($locale in @("pl-PL", "en-US", "uk-UA")) {
+    Check-Image (Join-Path $generatedRoot "feature-graphic-$locale-1024x500.png") 1024 500
+}
 
 foreach ($locale in @("pl-PL", "en-US", "uk-UA")) {
     $localeRoot = Join-Path $metadataRoot $locale
