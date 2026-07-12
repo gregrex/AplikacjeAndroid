@@ -94,9 +94,12 @@ public sealed class UiUxProductionTests
         RequireFileTokens(errors, Path.Combine(mobile, "Pages", "Home.razor"), "project-grid", "Szukaj aplikacji", "Otwórz aplikację");
         RequireFileTokens(errors, Path.Combine(mobile, "Pages", "Categories.razor"), "LocalAiPanel", "category-grid", "/quiz/");
         RequireFileTokens(errors, Path.Combine(mobile, "Pages", "Quiz.razor"), "answer-button", "quiz-progress", "Pokaż wynik");
-        RequireFileTokens(errors, Path.Combine(mobile, "Pages", "Result.razor"), "Dlaczego taki wynik?", "UnlockPremium", "AddFavorite");
-        RequireFileTokens(errors, Path.Combine(mobile, "Components", "LocalAiPanel.razor"), "PickImageAsync", "PickAudioAsync", "AnalyzeAsync");
+        RequireFileTokens(errors, Path.Combine(mobile, "Pages", "Result.razor"), "Dlaczego taki wynik?", "Wszystkie kroki są dostępne", "AddFavorite");
+        RequireFileTokens(errors, Path.Combine(mobile, "Components", "LocalAiPanel.razor"), "Features.LocalAiEnabled", "PickImageAsync", "PickAudioAsync", "AnalyzeAsync");
         RequireFileTokens(errors, Path.Combine(mobile, "Pages", "ProjectTools.razor"), "Licznik rzędów", "SaveNotes", "ToolState");
+        RequireFileTokens(errors, Path.Combine(mobile, "Pages", "Settings.razor"), "/privacy", "/support", "Diagnostyka");
+        RequireFileTokens(errors, Path.Combine(mobile, "Pages", "Privacy.razor"), "Polityka prywatności", "gbosko@gbcom.pl");
+        RequireFileTokens(errors, Path.Combine(mobile, "Pages", "Support.razor"), "Wsparcie AppFactory", "gbosko@gbcom.pl");
 
         Assert.True(errors.Count == 0, string.Join(Environment.NewLine, errors));
     }
