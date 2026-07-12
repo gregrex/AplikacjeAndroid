@@ -2,13 +2,14 @@ param(
     [string]$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path,
     [string]$InputFile = (Join-Path $RepoRoot "marketing\google-play\listings.json"),
     [string]$LocalePlanFile = (Join-Path $RepoRoot "marketing\google-play\release-locales.json"),
+    [string]$ReleaseNotesFile = (Join-Path $RepoRoot "marketing\google-play\release-notes.json"),
     [string]$OutputDirectory = (Join-Path $RepoRoot "artifacts\google-play\metadata\android"),
     [switch]$IncludePlannedLocales
 )
 
 $ErrorActionPreference = "Stop"
 
-foreach ($required in @($InputFile, $LocalePlanFile)) {
+foreach ($required in @($InputFile, $LocalePlanFile, $ReleaseNotesFile)) {
     if (-not (Test-Path $required)) {
         throw "Required Google Play metadata file not found: $required"
     }
@@ -16,6 +17,7 @@ foreach ($required in @($InputFile, $LocalePlanFile)) {
 
 $data = Get-Content $InputFile -Raw -Encoding UTF8 | ConvertFrom-Json
 $localePlan = Get-Content $LocalePlanFile -Raw -Encoding UTF8 | ConvertFrom-Json
+$releaseNotes = Get-Content $ReleaseNotesFile -Raw -Encoding UTF8 | ConvertFrom-Json
 $errors = New-Object System.Collections.Generic.List[string]
 
 if ($data.locales.PSObject.Properties.Count -ne 25) {
@@ -49,6 +51,19 @@ foreach ($localeProperty in $data.locales.PSObject.Properties) {
     }
 }
 
+foreach ($locale in @($localePlan.releaseLocales)) {
+    $noteProperty = $releaseNotes.notes.PSObject.Properties[$locale]
+    if ($null -eq $noteProperty) {
+        $errors.Add("Release notes are missing for release locale: $locale")
+        continue
+    }
+
+    $note = [string]$noteProperty.Value
+    if ([string]::IsNullOrWhiteSpace($note) -or $note.Length -gt 500) {
+        $errors.Add("$locale release note must contain 1-500 characters; found $($note.Length).")
+    }
+}
+
 if ($errors.Count -gt 0) {
     throw "Google Play listing validation failed:`n$($errors -join [Environment]::NewLine)"
 }
@@ -73,6 +88,13 @@ foreach ($locale in $localesToExport) {
     Set-Content -Path (Join-Path $localeDirectory "title.txt") -Value $listing.title -Encoding UTF8 -NoNewline
     Set-Content -Path (Join-Path $localeDirectory "short_description.txt") -Value $listing.shortDescription -Encoding UTF8 -NoNewline
     Set-Content -Path (Join-Path $localeDirectory "full_description.txt") -Value $listing.fullDescription -Encoding UTF8 -NoNewline
+
+    $noteProperty = $releaseNotes.notes.PSObject.Properties[$locale]
+    if ($null -ne $noteProperty) {
+        $changelogDirectory = Join-Path $localeDirectory "changelogs"
+        New-Item -ItemType Directory -Force -Path $changelogDirectory | Out-Null
+        Set-Content -Path (Join-Path $changelogDirectory "$($releaseNotes.versionCode).txt") -Value ([string]$noteProperty.Value) -Encoding UTF8 -NoNewline
+    }
 }
 
 $metadata = [ordered]@{
@@ -82,6 +104,7 @@ $metadata = [ordered]@{
     contactEmail = $data.contactEmail
     privacyPolicyUrl = $data.privacyPolicyUrl
     supportUrl = $data.supportUrl
+    versionCode = $releaseNotes.versionCode
     preparedLocaleCount = $data.locales.PSObject.Properties.Count
     exportedLocaleCount = $localesToExport.Count
     exportedLocales = @($localesToExport)
