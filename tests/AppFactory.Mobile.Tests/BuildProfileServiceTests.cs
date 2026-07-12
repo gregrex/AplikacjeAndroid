@@ -13,8 +13,10 @@ public sealed class BuildProfileServiceTests
 
         Assert.True(profile.IsCatalogBuild);
         Assert.Equal("catalog", profile.ProjectId);
-        Assert.Equal("AppFactory", profile.ApplicationTitle);
+        Assert.Equal("AppFactory Pomocniki", profile.ApplicationTitle);
         Assert.Equal("pl.gbcom.appfactory", profile.ApplicationId);
+        Assert.Equal("1.0.0", profile.DisplayVersion);
+        Assert.Equal(1, profile.Version);
     }
 
     [Fact]
