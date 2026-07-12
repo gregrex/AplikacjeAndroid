@@ -8,8 +8,9 @@ public sealed class GooglePlayReleaseReadinessTests
     public void MobileProject_HasFinalGooglePlayIdentityAndPackaging()
     {
         var root = GetRepoRoot();
-        var projectPath = Path.Combine(root, "src", "AppFactory.Mobile", "AppFactory.Mobile.csproj");
-        var content = File.ReadAllText(projectPath);
+        var mobile = Path.Combine(root, "src", "AppFactory.Mobile");
+        var content = File.ReadAllText(Path.Combine(mobile, "AppFactory.Mobile.csproj"));
+        var manifest = File.ReadAllText(Path.Combine(mobile, "Platforms", "Android", "AndroidManifest.xml"));
 
         Assert.Contains("<ApplicationTitle>AppFactory Pomocniki</ApplicationTitle>", content);
         Assert.Contains("<ApplicationId>pl.gbcom.appfactory</ApplicationId>", content);
@@ -20,6 +21,8 @@ public sealed class GooglePlayReleaseReadinessTests
         Assert.Contains("<MauiIcon", content);
         Assert.Contains("<MauiSplashScreen", content);
         Assert.Contains("<EnableLocalAiRelease>false</EnableLocalAiRelease>", content);
+        Assert.Contains("android:allowBackup=\"false\"", manifest);
+        Assert.Contains("android:usesCleartextTraffic=\"false\"", manifest);
     }
 
     [Fact]
@@ -51,8 +54,8 @@ public sealed class GooglePlayReleaseReadinessTests
         Assert.Equal("pl.gbcom.appfactory", rootElement.GetProperty("packageName").GetString());
         Assert.Equal("pl-PL", rootElement.GetProperty("defaultLocale").GetString());
         Assert.Equal("TOOLS", rootElement.GetProperty("category").GetString());
-        Assert.StartsWith("https://", rootElement.GetProperty("privacyPolicyUrl").GetString());
-        Assert.StartsWith("https://", rootElement.GetProperty("supportUrl").GetString());
+        Assert.True((rootElement.GetProperty("privacyPolicyUrl").GetString() ?? string.Empty).StartsWith("https://", StringComparison.Ordinal));
+        Assert.True((rootElement.GetProperty("supportUrl").GetString() ?? string.Empty).StartsWith("https://", StringComparison.Ordinal));
 
         var expectedLocales = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -75,9 +78,34 @@ public sealed class GooglePlayReleaseReadinessTests
             Assert.InRange(title.Length, 1, 30);
             Assert.InRange(shortDescription.Length, 1, 80);
             Assert.InRange(fullDescription.Length, 1, 4000);
-            Assert.DoesNotContain("#1", shortDescription, StringComparison.OrdinalIgnoreCase);
-            Assert.DoesNotContain("best", shortDescription, StringComparison.OrdinalIgnoreCase);
+            Assert.False(shortDescription.Contains("#1", StringComparison.OrdinalIgnoreCase));
+            Assert.False(shortDescription.Contains("best", StringComparison.OrdinalIgnoreCase));
         }
+    }
+
+    [Fact]
+    public void FirstRelease_ExportsOnlyLanguagesWithCompleteInAppContent()
+    {
+        var root = GetRepoRoot();
+        var path = Path.Combine(root, "marketing", "google-play", "release-locales.json");
+        using var document = JsonDocument.Parse(File.ReadAllText(path));
+
+        var releaseLocales = document.RootElement.GetProperty("releaseLocales")
+            .EnumerateArray()
+            .Select(x => x.GetString() ?? string.Empty)
+            .ToArray();
+        var plannedLocales = document.RootElement.GetProperty("plannedLocales")
+            .EnumerateArray()
+            .Select(x => x.GetString() ?? string.Empty)
+            .ToArray();
+
+        Assert.Equal(new[] { "pl-PL", "en-US", "uk-UA" }, releaseLocales);
+        Assert.Equal(22, plannedLocales.Length);
+        Assert.Equal(25, releaseLocales.Concat(plannedLocales).Distinct(StringComparer.OrdinalIgnoreCase).Count());
+
+        var exporter = File.ReadAllText(Path.Combine(root, "tools", "release", "export-play-metadata.ps1"));
+        Assert.Contains("releaseLocales", exporter);
+        Assert.Contains("IncludePlannedLocales", exporter);
     }
 
     [Fact]
@@ -95,6 +123,8 @@ public sealed class GooglePlayReleaseReadinessTests
             ".github/workflows/pages.yml",
             ".github/workflows/release-aab.yml",
             "marketing/brand/BRAND_GUIDE.md",
+            "marketing/google-play/listings.json",
+            "marketing/google-play/release-locales.json",
             "marketing/google-play/source/store-icon.svg",
             "marketing/google-play/source/feature-graphic.svg",
             "marketing/google-play/SCREENSHOT_PLAN.md",
@@ -123,9 +153,9 @@ public sealed class GooglePlayReleaseReadinessTests
         var privacy = File.ReadAllText(Path.Combine(root, "site", "privacy", "index.html"));
         var dataSafety = File.ReadAllText(Path.Combine(root, "docs", "release", "DATA_SAFETY_DECLARATION.md"));
 
-        Assert.Contains("nie zawiera reklam", privacy, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("nie udostępnia analizy zdjęć ani dźwięku", privacy, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("nie są wysyłane automatycznie", privacy, StringComparison.OrdinalIgnoreCase);
+        Assert.True(privacy.Contains("nie zawiera reklam", StringComparison.OrdinalIgnoreCase));
+        Assert.True(privacy.Contains("nie udostępnia analizy zdjęć ani dźwięku", StringComparison.OrdinalIgnoreCase));
+        Assert.True(privacy.Contains("nie są wysyłane automatycznie", StringComparison.OrdinalIgnoreCase));
         Assert.Contains("AdsEnabled=false", dataSafety);
         Assert.Contains("EnableLocalAiRelease=false", dataSafety);
     }
