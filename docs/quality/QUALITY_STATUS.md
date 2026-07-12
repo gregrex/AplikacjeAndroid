@@ -1,259 +1,186 @@
-# Status jakości projektów AppFactory
+# Status jakości — AppFactory Pomocniki
 
-## Status produkcyjny
+## Status
 
-Aktualny status repo: **production-ready candidate**.
+Aktualny status repozytorium: **Google Play release candidate — wymagane wykonanie testów i czynności właściciela**.
 
-Kod zawiera komplet danych, scenariuszy, profili UI/UX, lokalną bazę SQLite, lokalne logi diagnostyczne i automatyczne gate'y implementacji. Finalny status `production-ready` wymaga zielonego CI oraz wykonania scenariuszy na Androidzie.
+Kod i dokumentacja zostały przygotowane dla jednej aplikacji:
 
-## Zakres katalogu
+- nazwa: `AppFactory Pomocniki`,
+- package ID: `pl.gbcom.appfactory`,
+- wersja: `1.0.0`,
+- version code: `1`,
+- Android target API: 35,
+- format Release: AAB,
+- 20 pomocników w jednym katalogu,
+- bez reklam, płatności i konta,
+- pełne rekomendacje dostępne bez blokady,
+- Local AI wyłączone w domyślnym Release 1.0.
 
-Katalog obejmuje 20 projektów.
+## Gotowe w kodzie
 
-## UI/UX wszystkich aplikacji
+### Dane i logika
 
-Każdy projekt ma dedykowany profil:
-
-- ikonę,
-- badge doświadczenia,
-- własny hero title i opis,
-- nagłówki kategorii, quizu i wyniku,
-- typ widoku wyniku,
-- etykiety akcji premium i zapisu,
-- konfigurację safety, kopiowania lub narzędzi specjalnych.
-
-Wspólny design system obejmuje:
-
-- sticky topbar,
-- dolną nawigację,
-- safe-area Android,
-- responsywne siatki,
-- gradientowe hero,
-- większe cele dotykowe,
-- progress quizu,
-- kafle odpowiedzi,
-- stany puste,
-- karty bezpieczeństwa,
-- warianty wyniku zależne od projektu,
-- `prefers-reduced-motion`.
-
-Raport:
-
-```text
-docs/quality/UI_UX_AUDIT.md
-```
-
-## Lokalna baza danych
-
-Dodano osobny projekt:
-
-```text
-src/AppFactory.Persistence/AppFactory.Persistence.csproj
-```
-
-Pakiet:
-
-```text
-sqlite-net-pcl 1.9.172
-```
-
-SQLite przechowuje:
-
-- historię wyników,
-- ulubione wyniki,
-- wersję schematu.
-
-Historia jest deduplikowana, sortowana i ograniczona do 100 rekordów. Ulubione są deduplikowane oraz można je usuwać pojedynczo lub czyścić w całości.
-
-`HistoryService` i `FavoritesService` wykonują migrację wcześniejszych list JSON z `Preferences`.
-
-W ustawieniach aplikacji widoczny jest health check bazy:
-
-- stan,
-- wersja schematu,
-- liczba wpisów historii,
-- liczba ulubionych.
-
-Testy:
-
-```text
-tests/AppFactory.Mobile.Tests/AppDatabaseTests.cs
-tests/AppFactory.Mobile.Tests/LocalDatabaseProductionTests.cs
-```
-
-Dokumentacja:
-
-```text
-docs/quality/LOCAL_DATABASE.md
-```
-
-## Lokalne logi i diagnostyka
-
-Dodano provider `Microsoft.Extensions.Logging` zapisujący lokalne pliki JSONL.
-
-Polityka:
-
-- Debug od poziomu `Debug`,
-- Release od poziomu `Information`,
-- retencja 7 dni,
-- maksymalnie 12 plików,
-- maksymalnie 2 MB na plik,
-- identyfikator sesji w każdym wpisie,
-- automatyczne maskowanie e-maili, tokenów, haseł, sekretów i Bearer,
-- brak automatycznej wysyłki.
-
-Rejestrowane są między innymi:
-
-- start aplikacji i wersja buildu,
-- nieobsłużone wyjątki .NET i Android,
-- migracje SQLite,
-- zapis i czyszczenie historii oraz ulubionych,
-- wybór obrazu lub audio,
-- tworzenie paczki diagnostycznej.
-
-Ekran:
-
-```text
-Ustawienia -> Logi i diagnostyka
-```
-
-Pozwala:
-
-- zobaczyć ostatnie 100 wpisów,
-- zapisać `LOCAL_TEST_MARKER`,
-- sprawdzić stan SQLite,
-- wyczyścić logi,
-- ręcznie udostępnić ZIP z manifestem urządzenia i logami.
-
-Awaryjne pobranie z buildu Debug:
-
-```powershell
-pwsh ./tools/quality/pull-android-diagnostics.ps1 -CreateZip
-```
-
-Skrypt zbiera prywatne logi przez `adb run-as`, logcat, dumpsys package i metadane urządzenia do:
-
-```text
-artifacts/device-diagnostics/<timestamp>
-```
-
-Testy:
-
-```text
-tests/AppFactory.Mobile.Tests/LocalLogStoreTests.cs
-tests/AppFactory.Mobile.Tests/DiagnosticsProductionTests.cs
-```
-
-Dokumentacja:
-
-```text
-docs/quality/LOCAL_LOGGING.md
-```
-
-## Scenariusze produkcyjne
-
-Dla każdego projektu istnieje:
-
-```text
-projects/<projectId>/tests/production-scenarios.md
-```
-
-Łączne pokrycie:
-
-- **20 projektów**,
-- **5 scenariuszy na projekt**,
-- **100 scenariuszy produkcyjnych**.
-
-Testy:
-
-```text
-tests/AppFactory.Mobile.Tests/ProjectProductionScenariosTests.cs
-tests/AppFactory.Mobile.Tests/AllProjectRuleReachabilityTests.cs
-tests/AppFactory.Mobile.Tests/ScenarioImplementationAuditTests.cs
-```
-
-## Audyt akcji i logiki biznesowej
-
-Każdy scenariusz jest mapowany na wymagane capabilities:
-
-- katalog i motyw,
-- quiz i silnik reguł,
-- wynik free/premium,
-- ulubione i historia,
-- języki PL/EN/UK,
-- fallback,
+- komplet source/runtime dla 20 pomocników,
+- reguły z wyjaśnieniem `reason`,
+- wyniki PL/EN/UK,
+- globalne fallbacki,
 - alternatywy,
-- kopiowanie,
-- Local AI image/audio,
-- trwałość danych,
-- safety,
-- narzędzia projektu.
+- 100 scenariuszy produkcyjnych,
+- automaty osiągalności reguł.
 
-Test sprawdza dowody implementacji w faktycznych stronach, usługach, danych i politykach projektu.
+### Interfejs
 
-## Local AI on device
+- katalog, wyszukiwanie i filtry,
+- dedykowane profile 20 pomocników,
+- kategorie i quiz z postępem,
+- pełny wynik i wyjaśnienie dopasowania,
+- historia oraz ulubione,
+- narzędzia projektowe,
+- polityka prywatności i pomoc,
+- responsywny design oraz safe-area.
 
-Runtime:
+### Dane lokalne
+
+- SQLite dla historii i ulubionych,
+- wersjonowanie schematu,
+- migracja z wcześniejszego JSON w `Preferences`,
+- health check w ustawieniach,
+- testy integracyjne bazy.
+
+### Diagnostyka
+
+- lokalne logi JSONL,
+- rotacja 7 dni / 12 plików / 2 MB,
+- maskowanie sekretów i e-maili,
+- rejestr wyjątków,
+- ręczny eksport ZIP,
+- collector ADB dla Debug,
+- przyciski testowego markera i wyjątku ukryte w Release.
+
+### Bezpieczna konfiguracja Release
+
+- usunięty `MockAdService`,
+- brak blokady reklamowej,
+- `AdsEnabled=false`,
+- `EnableLocalAiRelease=false`,
+- `android:allowBackup=false`,
+- `android:usesCleartextTraffic=false`,
+- marka, launcher icon i splash.
+
+## Pakiet Google Play przygotowany w repo
+
+### Marka i grafiki
 
 ```text
-Microsoft.ML.OnnxRuntime
+marketing/brand/BRAND_GUIDE.md
+marketing/google-play/source/store-icon.svg
+marketing/google-play/source/feature-graphic.svg
+tools/release/generate-play-graphics.ps1
 ```
 
-Warstwa obejmuje downloader, SHA256, lokalny model store, tensor input, provider obrazu, provider audio, FilePicker oraz ręczne zatwierdzanie sugestii w quizie.
+Generator przygotowuje:
 
-Aktualny kontrakt wejścia:
+- ikonę 512×512 PNG,
+- feature graphic 1024×500 PNG.
+
+Prawdziwe screenshoty finalnego buildu wykonuje się według:
 
 ```text
-input: float32[1,1,1,256]
+marketing/google-play/SCREENSHOT_PLAN.md
 ```
 
-Modele `local-vision-v1` i `local-audio-v1` wymagają skonfigurowania adresu pobierania, SHA256 i docelowych etykiet klas.
-
-## Plan testów lokalnych
-
-Dodano:
+### Listing
 
 ```text
-docs/quality/LOCAL_TEST_PLAN.md
-tools/quality/run-local-test-plan.ps1
+marketing/google-play/listings.json
+marketing/google-play/release-locales.json
+tools/release/export-play-metadata.ps1
 ```
 
-Zalecane pierwsze uruchomienie:
+Przygotowano teksty dla 24 języków urzędowych UE oraz ukraińskiego. Release 1.0 eksportuje wyłącznie `pl-PL`, `en-US` i `uk-UA`, ponieważ tylko te języki mają pełną treść wyników w aplikacji. Pozostałe zestawy pozostają materiałem planowanym.
+
+### Strona publiczna
+
+```text
+site/index.html
+site/privacy/index.html
+site/support/index.html
+site/terms/index.html
+.github/workflows/pages.yml
+```
+
+Docelowe adresy:
+
+- `https://gregrex.github.io/AplikacjeAndroid/`,
+- `https://gregrex.github.io/AplikacjeAndroid/privacy/`,
+- `https://gregrex.github.io/AplikacjeAndroid/support/`.
+
+Publikacja wymaga włączenia GitHub Pages z użyciem GitHub Actions.
+
+### Dokumenty Play Console
+
+```text
+docs/release/GOOGLE_PLAY_RELEASE_PLAN.md
+docs/release/PLAY_CONSOLE_CHECKLIST.md
+docs/release/DATA_SAFETY_DECLARATION.md
+docs/release/CONTENT_RATING_GUIDE.md
+docs/release/RELEASE_NOTES_1.0.0.md
+```
+
+### Podpis i AAB
+
+```text
+tools/release/create-upload-keystore.ps1
+tools/release/build-play-aab.ps1
+tools/release/prepare-google-play-package.ps1
+.github/workflows/release-aab.yml
+```
+
+Sekrety podpisu muszą znajdować się poza repozytorium albo w GitHub Actions Secrets.
+
+## Automatyczne gate’y
+
+```text
+tests/AppFactory.Mobile.Tests/ProductionReadinessTests.cs
+tests/AppFactory.Mobile.Tests/GooglePlayReleaseReadinessTests.cs
+tests/AppFactory.Mobile.Tests/ScenarioImplementationAuditTests.cs
+tests/AppFactory.Mobile.Tests/UiUxProductionTests.cs
+tests/AppFactory.Mobile.Tests/AppDatabaseTests.cs
+tests/AppFactory.Mobile.Tests/LocalLogStoreTests.cs
+```
+
+Pierwsze polecenie:
 
 ```powershell
 pwsh ./tools/quality/run-local-test-plan.ps1 -RestoreWorkloads -IncludeReleaseBuild -WriteReport
 ```
 
-Runner zapisuje logi, pliki TRX, osobny przebieg testów logowania, logcat i podsumowanie w:
+Przygotowanie paczki sklepu:
 
-```text
-artifacts/local-test/<timestamp>
+```powershell
+pwsh ./tools/release/prepare-google-play-package.ps1
 ```
 
-Tracker wykonania został rozszerzony o:
+## Wymagane potwierdzenia przed publikacją
 
-- dane urządzenia i buildu,
-- identyfikator sesji logów,
-- testy logowania i eksportu,
-- automatyczne gate'y,
-- testy SQLite i migracji,
-- macierz 100 scenariuszy,
-- regresję końcową,
-- tabelę defektów z dowodami diagnostycznymi.
+1. Zielony `dotnet test`.
+2. Zielony Android Debug i Release build.
+3. Smoke test na urządzeniu.
+4. 100/100 scenariuszy PASS.
+5. Test nowej instalacji i migracji SQLite.
+6. Test eksportu diagnostyki offline.
+7. Wygenerowanie PNG ikony i feature graphic.
+8. Wykonanie sześciu screenshotów finalnego release candidate.
+9. Włączenie GitHub Pages i sprawdzenie publicznych adresów.
+10. Utworzenie oraz zabezpieczenie upload key.
+11. Zbudowanie podpisanego AAB.
+12. Akceptacja AAB w Internal testing.
+13. Uzupełnienie Data Safety, content rating i target audience przez właściciela konta.
+14. Pre-launch report bez crashy i ANR.
+15. Closed testing, gdy jest wymagany dla konta.
+16. Brak otwartych defektów krytycznych i wysokich.
 
-## Weryfikacja wymagana przed publikacją
+## Informacja o tej sesji
 
-1. Uruchomić lokalny runner testów.
-2. Naprawić pierwszy błąd kompilacji albo testu.
-3. Wykonać smoke test na Androidzie.
-4. Potwierdzić `LOCAL_TEST_MARKER`, eksport ZIP i pobranie przez ADB.
-5. Wykonać test nowej bazy i migracji `Preferences -> SQLite`.
-6. Wykonać 100 scenariuszy na emulatorze lub urządzeniu.
-7. Zapisać PASS/FAIL wraz z czasem i identyfikatorem sesji logów.
-8. Sprawdzić FilePicker, klawiaturę, safe-area, systemowy back i długie tłumaczenia.
-9. Naprawić wszystkie błędy krytyczne i wysokie.
-10. Skonfigurować docelowe modele ONNX albo wyłączyć funkcje AI w buildzie publikacyjnym do czasu gotowości modeli.
-
-## Uwagi
-
-Nie uruchamiałem lokalnie `dotnet test`, ponieważ zmiany wykonuję przez GitHub connector. Kompilacja logowania, SQLite, Android build, eksport ZIP i pobieranie logów przez ADB wymagają teraz potwierdzenia podczas Twojej lokalnej sesji testowej.
+Zmiany zostały wprowadzone przez GitHub connector. Nie wykonano lokalnie `dotnet test`, Android builda, generowania PNG, podpisania AAB ani testów Play Console. Tych wyników nie można uczciwie oznaczyć jako PASS bez lokalnego środowiska, prywatnego klucza oraz dostępu właściciela do Play Console.
