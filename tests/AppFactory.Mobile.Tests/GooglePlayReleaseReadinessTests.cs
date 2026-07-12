@@ -109,6 +109,22 @@ public sealed class GooglePlayReleaseReadinessTests
     }
 
     [Fact]
+    public void ReleaseNotes_CoverEveryPublishedLocaleAndFitPlayLimit()
+    {
+        var root = GetRepoRoot();
+        var path = Path.Combine(root, "marketing", "google-play", "release-notes.json");
+        using var document = JsonDocument.Parse(File.ReadAllText(path));
+
+        Assert.Equal(1, document.RootElement.GetProperty("versionCode").GetInt32());
+        var notes = document.RootElement.GetProperty("notes");
+        foreach (var locale in new[] { "pl-PL", "en-US", "uk-UA" })
+        {
+            var note = notes.GetProperty(locale).GetString() ?? string.Empty;
+            Assert.InRange(note.Length, 1, 500);
+        }
+    }
+
+    [Fact]
     public void LegalMarketingAndSupportInfrastructure_IsComplete()
     {
         var root = GetRepoRoot();
@@ -123,20 +139,26 @@ public sealed class GooglePlayReleaseReadinessTests
             ".github/workflows/pages.yml",
             ".github/workflows/release-aab.yml",
             "marketing/brand/BRAND_GUIDE.md",
+            "marketing/LAUNCH_MARKETING_PLAN.md",
+            "marketing/TESTER_INVITE.md",
             "marketing/google-play/listings.json",
             "marketing/google-play/release-locales.json",
+            "marketing/google-play/release-notes.json",
             "marketing/google-play/source/store-icon.svg",
             "marketing/google-play/source/feature-graphic.svg",
             "marketing/google-play/SCREENSHOT_PLAN.md",
             "docs/release/GOOGLE_PLAY_RELEASE_PLAN.md",
+            "docs/release/GOOGLE_PLAY_TESTING_GUIDE.md",
             "docs/release/PLAY_CONSOLE_CHECKLIST.md",
             "docs/release/DATA_SAFETY_DECLARATION.md",
             "docs/release/CONTENT_RATING_GUIDE.md",
+            "docs/release/RELEASE_NOTES_1.0.0.md",
             "tools/release/create-upload-keystore.ps1",
             "tools/release/build-play-aab.ps1",
             "tools/release/generate-play-graphics.ps1",
             "tools/release/export-play-metadata.ps1",
-            "tools/release/capture-play-screenshot.ps1"
+            "tools/release/capture-play-screenshot.ps1",
+            "tools/release/prepare-google-play-package.ps1"
         };
 
         var missing = required
