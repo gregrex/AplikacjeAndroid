@@ -23,21 +23,6 @@ function Add-Step([string]$Name, [string]$Status, [string]$Details) {
     $steps.Add("| $Name | $Status | $Details |")
 }
 
-function Invoke-Step {
-    param([string]$Name, [scriptblock]$Action)
-    Write-Host ""
-    Write-Host "=== $Name ==="
-    try {
-        & $Action
-        Add-Step $Name "PASS" ""
-    }
-    catch {
-        Add-Step $Name "FAIL" ($_.Exception.Message -replace '\|', '/')
-        Write-Summary
-        throw
-    }
-}
-
 function Write-Summary {
     $lines = New-Object System.Collections.Generic.List[string]
     $lines.Add("# Google Play package summary")
@@ -57,6 +42,21 @@ function Write-Summary {
     $lines.Add("- Upload the signed AAB to Internal testing.")
     $lines.Add("- Complete required closed testing and production access steps.")
     Set-Content $summaryPath $lines -Encoding UTF8
+}
+
+function Invoke-Step {
+    param([string]$Name, [scriptblock]$Action)
+    Write-Host ""
+    Write-Host "=== $Name ==="
+    try {
+        & $Action
+        Add-Step $Name "PASS" ""
+    }
+    catch {
+        Add-Step $Name "FAIL" ($_.Exception.Message -replace '\|', '/')
+        Write-Summary
+        throw
+    }
 }
 
 if (-not (Get-Command pwsh -ErrorAction SilentlyContinue)) { throw "pwsh was not found in PATH." }
@@ -83,7 +83,8 @@ else {
 }
 
 Invoke-Step "Generate Google Play graphics" {
-    & pwsh (Join-Path $PSScriptRoot "generate-play-graphics.ps1") -RepoRoot $RepoRoot
+    $graphicsOutput = Join-Path $resultsRoot "generated"
+    & pwsh (Join-Path $PSScriptRoot "generate-play-graphics.ps1") -RepoRoot $RepoRoot -OutputDirectory $graphicsOutput
     if ($LASTEXITCODE -ne 0) { throw "Graphics generation failed." }
 }
 
@@ -114,7 +115,7 @@ $requiredScreenshots = @(
     "06-privacy-settings.png"
 )
 
-$missingScreenshots = $requiredScreenshots | Where-Object { -not (Test-Path (Join-Path $screenshotDirectory $_)) }
+$missingScreenshots = @($requiredScreenshots | Where-Object { -not (Test-Path (Join-Path $screenshotDirectory $_)) })
 if ($missingScreenshots.Count -eq 0) {
     Add-Step "Final screenshots" "PASS" "6/6"
 }
@@ -152,6 +153,17 @@ if ($signingArgumentsProvided) {
 }
 else {
     Add-Step "Signed Google Play AAB" "PENDING_OWNER_ACTION" "Signing secrets were not supplied"
+}
+
+Invoke-Step "Verify generated package" {
+    $arguments = @(
+        "-NoProfile", "-File", (Join-Path $PSScriptRoot "verify-google-play-package.ps1"),
+        "-RepoRoot", $RepoRoot
+    )
+    if ($RequireScreenshots) { $arguments += "-RequireScreenshots" }
+    if ($signingArgumentsProvided) { $arguments += "-RequireSignedAab" }
+    & pwsh @arguments
+    if ($LASTEXITCODE -ne 0) { throw "Google Play package verification failed." }
 }
 
 Write-Summary
