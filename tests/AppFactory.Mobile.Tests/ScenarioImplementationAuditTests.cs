@@ -86,8 +86,8 @@ public sealed class ScenarioImplementationAuditTests
         var mobile = Path.Combine(root, "src", "AppFactory.Mobile");
         var errors = new List<string>();
 
-        RequireTokens(errors, Path.Combine(mobile, "Services", "HistoryService.cs"), "Preferences.Default", "JsonSerializer", "ClearAsync");
-        RequireTokens(errors, Path.Combine(mobile, "Services", "FavoritesService.cs"), "Preferences.Default", "JsonSerializer", "RemoveAsync", "ClearAsync");
+        RequireTokens(errors, Path.Combine(mobile, "Services", "HistoryService.cs"), "Database.AddHistoryAsync", "Database.GetHistoryAsync", "ClearAsync");
+        RequireTokens(errors, Path.Combine(mobile, "Services", "FavoritesService.cs"), "Database.AddFavoriteAsync", "Database.GetFavoritesAsync", "RemoveAsync", "ClearAsync");
         RequireTokens(errors, Path.Combine(mobile, "Pages", "History.razor"), "Otwórz wynik", "Wyczyść historię", "ProjectContext.SelectProject");
         RequireTokens(errors, Path.Combine(mobile, "Pages", "Favorites.razor"), "Otwórz zapisany wynik", "Usuń z ulubionych", "ProjectContext.SelectProject");
         RequireTokens(errors, Path.Combine(mobile, "Pages", "Result.razor"), "FreeResultId = FreeResultId", "PremiumResultId = PremiumResultId");
@@ -137,7 +137,7 @@ public sealed class ScenarioImplementationAuditTests
             "quiz" => FileContainsAll(Path.Combine(mobile, "Pages", "Quiz.razor"), out evidence, "SelectAnswer", "ShowResult", "RuleEngine.Match"),
             "rule-engine" => FileContainsAll(Path.Combine(root, "src", "AppFactory.Core", "Services", "RuleEngineService.cs"), out evidence, "ConditionsMatch", "FreeResultId", "PremiumResultId"),
             "result-data" => HasResultData(project),
-            "premium" => FileContainsAll(Path.Combine(mobile, "Pages", "Result.razor"), out evidence, "UnlockPremium", "ShowRewardedAsync", "_premiumUnlocked"),
+            "premium" => FileContainsAll(Path.Combine(mobile, "Pages", "Result.razor"), out evidence, "Wszystkie kroki są dostępne", "ShowPremiumBlocks=\"true\"", "PremiumResultId"),
             "favorites" => FileContainsAll(Path.Combine(mobile, "Pages", "Result.razor"), out evidence, "Favorites.AddAsync", "FavoriteEntry")
                            && FileContainsAll(Path.Combine(mobile, "Pages", "Favorites.razor"), out evidence, "Otwórz zapisany wynik", "Usuń z ulubionych"),
             "history" => FileContainsAll(Path.Combine(mobile, "Pages", "Result.razor"), out evidence, "History.AddAsync", "HistoryEntry")
@@ -173,8 +173,8 @@ public sealed class ScenarioImplementationAuditTests
             return FileContains(Path.Combine(mobileRoot, "Services", "ProjectToolStateService.cs"), "Preferences.Default", out evidence);
         }
 
-        return FileContainsAll(Path.Combine(mobileRoot, "Services", "HistoryService.cs"), out evidence, "Preferences.Default", "JsonSerializer")
-               && FileContainsAll(Path.Combine(mobileRoot, "Services", "FavoritesService.cs"), out evidence, "Preferences.Default", "JsonSerializer");
+        return FileContainsAll(Path.Combine(mobileRoot, "Services", "HistoryService.cs"), out evidence, "Database.AddHistoryAsync", "Database.GetHistoryAsync")
+               && FileContainsAll(Path.Combine(mobileRoot, "Services", "FavoritesService.cs"), out evidence, "Database.AddFavoriteAsync", "Database.GetFavoritesAsync");
     }
 
     private static bool HasResultData(string projectRoot) =>
