@@ -2,12 +2,21 @@
 **/bin/
 **/obj/
 
-# Local test artifacts
+# Local test and release artifacts
 artifacts/
 TestResults/
 *.trx
 *.coverage
 *.coveragexml
+
+# Android signing secrets
+*.keystore
+*.jks
+*.p12
+*.pfx
+*password*.txt
+secrets/
+.signing/
 
 # Local databases
 *.db
