@@ -1,0 +1,54 @@
+name: Google Play Release Readiness
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'marketing/**'
+      - 'site/**'
+      - 'tools/release/**'
+      - 'docs/release/**'
+      - '.github/workflows/release-readiness.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: google-play-release-readiness
+  cancel-in-progress: true
+
+jobs:
+  prepare:
+    runs-on: windows-latest
+    timeout-minutes: 75
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore MAUI workloads
+        shell: pwsh
+        run: dotnet workload restore src/AppFactory.Mobile/AppFactory.Mobile.csproj
+
+      - name: Prepare unsigned Google Play package
+        shell: pwsh
+        run: pwsh ./tools/release/prepare-google-play-package.ps1
+
+      - name: Upload release readiness package
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: appfactory-google-play-readiness
+          path: |
+            artifacts/google-play/generated/**
+            artifacts/google-play/metadata/**
+            artifacts/google-play/package-summary.md
+          if-no-files-found: warn
+          retention-days: 14
