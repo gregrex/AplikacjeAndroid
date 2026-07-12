@@ -1,4 +1,4 @@
-# Play Console checklist — AppFactory Pomocniki
+# Play Console — checklista AppFactory Pomocniki 1.0
 
 ## Dane aplikacji
 
@@ -8,104 +8,156 @@
 | Package ID | `pl.gbcom.appfactory` | READY |
 | Domyślny język | polski (`pl-PL`) | READY |
 | Typ | aplikacja | READY |
-| Bezpłatna/płatna | bezpłatna | OWNER_ACTION |
+| Cena | bezpłatna | OWNER_ACTION |
 | Kategoria | Tools | OWNER_ACTION |
-| E-mail kontaktowy | `gbosko@gbcom.pl` | READY |
+| E-mail | `gbosko@gbcom.pl` | READY |
 | Strona produktu | `https://gregrex.github.io/AplikacjeAndroid/` | PENDING_PAGES |
 | Polityka prywatności | `https://gregrex.github.io/AplikacjeAndroid/privacy/` | PENDING_PAGES |
 | Pomoc | `https://gregrex.github.io/AplikacjeAndroid/support/` | PENDING_PAGES |
+| Warunki | `https://gregrex.github.io/AplikacjeAndroid/terms/` | PENDING_PAGES |
+
+## Kolejność przygotowania
+
+- [ ] Workflow `Quality Checks` jest zielony.
+- [ ] Workflow `Google Play Release Readiness` jest zielony.
+- [ ] `run-local-test-plan.ps1` przechodzi lokalnie.
+- [ ] `prepare-google-play-package.ps1` przechodzi.
+- [ ] Sześć screenshotów znajduje się w `artifacts/google-play/screenshots/final`.
+- [ ] `verify-google-play-package.ps1 -RequireScreenshots` przechodzi.
+- [ ] Publiczne strony GitHub Pages działają.
+- [ ] Dopiero potem utworzono i użyto upload key.
 
 ## Konfiguracja konta
 
 - [ ] Konto Google Play Developer jest aktywne.
 - [ ] Tożsamość właściciela została zweryfikowana.
-- [ ] Zweryfikowano urządzenie, jeżeli Play Console tego wymaga.
-- [ ] Dane dewelopera wyświetlane publicznie są poprawne.
-- [ ] Zaakceptowano aktualne umowy dystrybucyjne.
+- [ ] Urządzenie właściciela zostało zweryfikowane, jeżeli konsola tego wymaga.
+- [ ] Publiczne dane dewelopera są poprawne.
+- [ ] Zaakceptowano aktualne umowy.
 - [ ] Włączono uwierzytelnianie wieloskładnikowe.
 
 ## GitHub Pages
 
-- [ ] W repozytorium otwarto `Settings -> Pages`.
-- [ ] Jako źródło wybrano `GitHub Actions`.
+- [ ] W `Settings -> Pages` wybrano `GitHub Actions`.
 - [ ] Workflow `Publish AppFactory Site` zakończył się sukcesem.
 - [ ] Strona główna działa bez logowania.
 - [ ] Polityka prywatności działa bez logowania.
 - [ ] Strona wsparcia działa bez logowania.
-- [ ] Linki zostały otwarte na telefonie.
+- [ ] Warunki korzystania działają bez logowania.
+- [ ] Wszystkie adresy sprawdzono na telefonie.
 
 ## Store listing
 
-- [ ] Wgrano ikonę PNG 512×512, maks. 1 MB.
-- [ ] Wgrano feature graphic PNG/JPEG 1024×500 bez alpha.
-- [ ] Wgrano minimum 4, docelowo 6 screenshotów telefonu.
-- [ ] Każdy screenshot przedstawia aktualną wersję aplikacji.
+- [ ] Wgrano ikonę PNG 512×512, maksymalnie 1 MB.
+- [ ] Wgrano feature graphic 1024×500 bez przezroczystości.
+- [ ] Wgrano sześć screenshotów telefonu z finalnego release candidate.
 - [ ] Uzupełniono tekst alternatywny grafik.
-- [ ] Zaimportowano tytuł, krótki i pełny opis dla domyślnego języka.
-- [ ] Zaimportowano lokalizacje UE i ukraińską.
-- [ ] Teksty nie zawierają obietnic typu „najlepsza”, „numer 1” ani sztucznych słów kluczowych.
+- [ ] Opublikowano listing `pl-PL`.
+- [ ] Opublikowano listing `en-US`.
+- [ ] Opublikowano listing `uk-UA`.
+- [ ] Nie opublikowano pozostałych 22 szkiców przed ukończeniem lokalizacji aplikacji.
+- [ ] Dodano changelog version code `1` w PL/EN/UK.
+- [ ] Teksty nie zawierają obietnic „najlepsza”, „numer 1” ani sztucznego upychania słów kluczowych.
+- [ ] Screenshoty nie pokazują Local AI, reklam, danych prywatnych ani kontrolek testowych.
+
+Źródła:
+
+```text
+marketing/google-play/listings.json
+marketing/google-play/release-locales.json
+marketing/google-play/release-notes.json
+marketing/google-play/SCREENSHOT_PLAN.md
+```
 
 ## App content
 
-### Privacy policy
+### Polityka prywatności
 
-- [ ] Wstawiono publiczny URL polityki.
+- [ ] Wstawiono działający publiczny URL.
 - [ ] Polityka odpowiada zachowaniu finalnego AAB.
+- [ ] Kontakt w polityce jest aktualny.
 
-### Ads
+### Reklamy
 
-- [ ] Wybrano `No, my app does not contain ads` dla wersji 1.0.
-- [ ] Potwierdzono brak AdMob i identyfikatora reklamowego w AAB.
+- [ ] Wybrano `No, my app does not contain ads`.
+- [ ] Potwierdzono brak AdMob, UMP i identyfikatora reklamowego.
+- [ ] Pełna rekomendacja jest dostępna bez reklamy.
 
 ### App access
 
 - [ ] Wybrano `All functionality is available without special access`.
-- [ ] Potwierdzono brak logowania, kodu zaproszenia i płatnej blokady.
+- [ ] Brak logowania, kodu zaproszenia i płatnej blokady.
 
 ### Target audience
 
 - [ ] Wybrano wyłącznie grupy pełnoletnie.
 - [ ] Nie zaznaczono kierowania aplikacji do dzieci.
-- [ ] Listing i grafiki nie są projektowane jako produkt dla dzieci.
+- [ ] Grafiki i opis nie przedstawiają produktu jako aplikacji dziecięcej.
 
 ### Content rating
 
-- [ ] Wypełniono kwestionariusz zgodnie z `CONTENT_RATING_GUIDE.md`.
-- [ ] Sprawdzono otrzymaną klasyfikację.
+- [ ] Kwestionariusz wypełniono zgodnie z `CONTENT_RATING_GUIDE.md`.
+- [ ] Sprawdzono otrzymaną klasyfikację dla głównych rynków.
+- [ ] Zachowano zapis odpowiedzi do dokumentacji wydania.
 
 ### Data Safety
 
-- [ ] Odpowiedzi przepisano z `DATA_SAFETY_DECLARATION.md`.
-- [ ] Sprawdzono wszystkie biblioteki i uprawnienia finalnego AAB.
-- [ ] Potwierdzono brak zewnętrznej transmisji danych użytkownika.
+- [ ] Odpowiedzi przygotowano na podstawie `DATA_SAFETY_DECLARATION.md`.
+- [ ] Sprawdzono biblioteki, manifest i ruch sieciowy finalnego Release.
+- [ ] Potwierdzono `EnableLocalAiRelease=false`.
+- [ ] Potwierdzono brak automatycznej transmisji logów.
+- [ ] Potwierdzono, że ręczny arkusz udostępniania nie ma domyślnego odbiorcy.
 
-### Government apps / News apps / Health apps
+### Pozostałe deklaracje
 
 - [ ] Aplikacja nie jest aplikacją rządową.
-- [ ] Aplikacja nie jest aplikacją informacyjną/newsową.
+- [ ] Aplikacja nie jest aplikacją newsową.
 - [ ] Aplikacja nie jest wyrobem medycznym ani aplikacją zdrowotną.
+- [ ] Aplikacja nie zawiera publicznego UGC.
+- [ ] Aplikacja nie zawiera zakupów cyfrowych.
 
-## Release
+## Podpis i AAB
 
 - [ ] Włączono Play App Signing.
 - [ ] Upload key utworzono poza repozytorium.
-- [ ] Backup klucza jest zaszyfrowany i przechowywany w co najmniej dwóch bezpiecznych miejscach.
-- [ ] Hasła nie znajdują się w repo ani logach CI.
-- [ ] Podpisany AAB został przyjęty przez App Bundle Explorer.
-- [ ] Target API finalnego AAB wynosi co najmniej 35.
-- [ ] Pre-launch report nie zawiera crashy, ANR ani blokerów dostępności.
-- [ ] Internal testing zakończono smoke testem.
-- [ ] Closed testing wykonano, jeżeli wymagane dla konta.
-- [ ] Release notes są uzupełnione.
-- [ ] Managed publishing jest skonfigurowane świadomie.
+- [ ] Istnieją co najmniej dwie zaszyfrowane kopie klucza.
+- [ ] Hasła znajdują się w menedżerze haseł.
+- [ ] Klucz i hasła nie występują w repo, logach ani artefaktach publicznych.
+- [ ] Podpisany AAB zbudowano przez `build-play-aab.ps1` albo workflow `Build Signed Google Play AAB`.
+- [ ] `verify-google-play-package.ps1 -RequireScreenshots -RequireSignedAab` przechodzi.
+- [ ] SHA256 AAB zapisano w dokumentacji wydania.
+- [ ] App Bundle Explorer przyjął AAB.
+- [ ] Finalny AAB ma package ID `pl.gbcom.appfactory`.
+- [ ] Finalny AAB ma version code `1`.
+- [ ] Finalny AAB targetuje co najmniej API 35.
+
+## Testy Google Play
+
+- [ ] Internal testing został opublikowany.
+- [ ] Instalacja z linku opt-in działa.
+- [ ] Aktualizacja przez Google Play zachowuje SQLite.
+- [ ] Pre-launch report nie zawiera crashy ani ANR.
+- [ ] Sprawdzono problemy dostępności zgłoszone przez crawler.
+- [ ] Closed testing wykonano, jeżeli konto tego wymaga.
+- [ ] Spełniono dokładną liczbę testerów i okres pokazywany w Play Console.
+- [ ] Każdy kolejny AAB ma wyższy version code.
+
+Instrukcja:
+
+```text
+docs/release/GOOGLE_PLAY_TESTING_GUIDE.md
+```
 
 ## Kryterium publikacji
 
-Nie naciskać `Start rollout to production`, dopóki:
+Nie używać `Start rollout to production`, dopóki:
 
-- checklista techniczna nie jest kompletna,
-- 100 scenariuszy nie ma PASS,
+- testy automatyczne i 100 scenariuszy nie mają PASS,
 - nie ma defektów krytycznych ani wysokich,
-- polityka, Data Safety i binarka są spójne,
-- screenshoty pochodzą z finalnego release candidate,
-- właściciel konta zaakceptował finalne treści prawne i marketingowe.
+- polityka, Data Safety, listing i binarka nie są zgodne,
+- publiczne strony nie działają,
+- screenshoty nie pochodzą z finalnego release candidate,
+- podpisany AAB nie został sprawdzony w Internal testing,
+- pre-launch report zawiera crash, ANR lub bloker,
+- wymagany test zamknięty nie jest zakończony,
+- właściciel konta nie zatwierdził treści prawnych i marketingowych.
