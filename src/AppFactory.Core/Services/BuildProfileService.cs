@@ -7,9 +7,9 @@ public sealed class BuildProfileService
     public BuildProfile GetCatalogProfile() => new()
     {
         ProjectId = "catalog",
-        ApplicationTitle = "AppFactory",
+        ApplicationTitle = "AppFactory Pomocniki",
         ApplicationId = "pl.gbcom.appfactory",
-        DisplayVersion = "0.1.0",
+        DisplayVersion = "1.0.0",
         Version = 1,
         IsCatalogBuild = true
     };
