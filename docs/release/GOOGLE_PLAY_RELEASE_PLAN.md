@@ -176,7 +176,7 @@ Screenshoty nie mogą pokazywać Local AI, reklam, przycisków testowych, błęd
 
 ## Etap 5 — upload key i podpisany AAB
 
-Utwwórz klucz poza repozytorium:
+Utwórz klucz poza repozytorium:
 
 ```powershell
 pwsh ./tools/release/create-upload-keystore.ps1
