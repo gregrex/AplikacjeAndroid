@@ -9,14 +9,8 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
-        var builder = MauiApp.CreateBuilder();
-
-        builder
-            .UseMauiApp<App>()
-            .ConfigureFonts(fonts =>
-            {
-                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-            });
+        var builder = MauiApp.CreateBuilder()
+            .UseMauiApp<App>();
 
         builder.Services.AddMauiBlazorWebView();
 
@@ -62,7 +56,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<LocalMediaInputService>();
         builder.Services.AddSingleton<AiSuggestionStateService>();
         builder.Services.AddSingleton<LocalAiModelCatalogService>();
-        builder.Services.AddSingleton<LocalAiModelStore>();
+        builder.Services.AddSingleton(sp => new LocalAiModelStore(
+            logger: sp.GetRequiredService<ILogger<LocalAiModelStore>>()));
         builder.Services.AddSingleton<OnnxModelRunner>();
         builder.Services.AddSingleton<LocalAiInputTensorFactory>();
         builder.Services.AddSingleton<ImageAnalysisPolicyService>();
