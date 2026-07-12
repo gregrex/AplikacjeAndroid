@@ -1,0 +1,47 @@
+{
+  "application": {
+    "name": "AppFactory Pomocniki",
+    "packageName": "pl.gbcom.appfactory",
+    "defaultLanguage": "pl-PL",
+    "type": "APP",
+    "pricing": "FREE",
+    "category": "TOOLS",
+    "contactEmail": "gbosko@gbcom.pl",
+    "website": "https://gregrex.github.io/AplikacjeAndroid/",
+    "privacyPolicy": "https://gregrex.github.io/AplikacjeAndroid/privacy/",
+    "support": "https://gregrex.github.io/AplikacjeAndroid/support/"
+  },
+  "release": {
+    "displayVersion": "1.0.0",
+    "versionCode": 1,
+    "targetApi": 35,
+    "packageFormat": "AAB",
+    "playAppSigning": true,
+    "localAiEnabled": false,
+    "ads": false,
+    "inAppPurchases": false,
+    "requiresAccount": false,
+    "externalAnalytics": false
+  },
+  "appContent": {
+    "adsDeclaration": "NO_ADS",
+    "appAccess": "ALL_FUNCTIONALITY_AVAILABLE_WITHOUT_SPECIAL_ACCESS",
+    "targetAudience": "ADULTS_ONLY",
+    "containsUserGeneratedContent": false,
+    "isNewsApp": false,
+    "isGovernmentApp": false,
+    "isHealthApp": false,
+    "dataCollectedOffDevice": false,
+    "dataShared": false
+  },
+  "locales": {
+    "release": ["pl-PL", "en-US", "uk-UA"],
+    "preparedDrafts": [
+      "bg-BG", "hr-HR", "cs-CZ", "da-DK", "nl-NL", "et-EE", "fi-FI",
+      "fr-FR", "de-DE", "el-GR", "hu-HU", "ga-IE", "it-IT", "lv-LV",
+      "lt-LT", "mt-MT", "pt-PT", "ro-RO", "sk-SK", "sl-SI", "es-ES", "sv-SE"
+    ]
+  },
+  "ownerReviewRequired": true,
+  "note": "This file is a release source of truth, not an automatic legal submission. Revalidate every answer against the final AAB and the current Play Console forms."
+}
