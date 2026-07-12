@@ -1,10 +1,21 @@
-# Checklist produkcyjny AppFactory
+# Checklista produkcyjna — AppFactory Pomocniki 1.0
 
-Ten dokument opisuje minimalne warunki przejścia projektu z MVP do statusu produkcyjnego.
+## 1. Tożsamość wydania
 
-## 1. Dane projektu
+- nazwa: `AppFactory Pomocniki`,
+- package ID: `pl.gbcom.appfactory`,
+- display version: `1.0.0`,
+- version code: `1`,
+- format: Android App Bundle,
+- target API: 35,
+- jedna aplikacja katalogowa z 20 pomocnikami,
+- bez konta, reklam i płatności,
+- pełne wyniki dostępne bez blokady,
+- Local AI wyłączone w domyślnym buildzie Release.
 
-Każdy projekt musi mieć komplet źródeł:
+## 2. Dane 20 pomocników
+
+Każdy pomocnik musi mieć komplet source i runtime:
 
 ```text
 projects/<projectId>/data/app.json
@@ -15,45 +26,25 @@ projects/<projectId>/data/results.pl.json
 projects/<projectId>/data/results.en.json
 projects/<projectId>/data/results.uk.json
 projects/<projectId>/theme.json
+src/AppFactory.Mobile/wwwroot/projects/<projectId>/*.json
 ```
 
 Wymagania:
 
-- `appId` zgodny z katalogiem projektu,
-- unikalne ID kategorii, pytań, reguł i wyników,
-- każda reguła wskazuje istniejący wynik free i premium,
-- każda reguła ma pole `reason`,
-- PL/EN/UK mają ten sam zestaw `resultId`,
-- każdy wynik ma `title`, `summary` i przynajmniej jeden krok.
+- zgodne identyfikatory source/runtime,
+- każda reguła ma `reason`,
+- każda reguła wskazuje istniejące wyniki,
+- PL/EN/UK mają parytet identyfikatorów wyników,
+- globalny bezpieczny fallback,
+- ostrzeżenia dla projektów technicznych i bezpieczeństwa.
 
-## 2. Runtime mirror
-
-Każdy projekt musi mieć komplet runtime:
-
-```text
-src/AppFactory.Mobile/wwwroot/projects/<projectId>/app.json
-src/AppFactory.Mobile/wwwroot/projects/<projectId>/categories.json
-src/AppFactory.Mobile/wwwroot/projects/<projectId>/questions.json
-src/AppFactory.Mobile/wwwroot/projects/<projectId>/rules.json
-src/AppFactory.Mobile/wwwroot/projects/<projectId>/results.pl.json
-src/AppFactory.Mobile/wwwroot/projects/<projectId>/results.en.json
-src/AppFactory.Mobile/wwwroot/projects/<projectId>/results.uk.json
-src/AppFactory.Mobile/wwwroot/projects/<projectId>/theme.json
-```
-
-Runtime powinien być synchronizowany z `projects` poleceniem:
+Synchronizacja:
 
 ```powershell
 pwsh ./tools/quality/sync-runtime-packs.ps1
 ```
 
-## 3. Testy jakości
-
-Podstawowy gate:
-
-```powershell
-pwsh ./tools/quality/run-quality-checks.ps1 -SyncRuntimeFirst -WriteReport
-```
+## 3. Testy automatyczne
 
 Pełna lokalna sesja:
 
@@ -61,45 +52,40 @@ Pełna lokalna sesja:
 pwsh ./tools/quality/run-local-test-plan.ps1 -RestoreWorkloads -IncludeReleaseBuild -WriteReport
 ```
 
-Testy muszą przejść bez błędów. Logi lokalnej sesji trafiają do:
+Release gate:
 
-```text
-artifacts/local-test/<timestamp>
+```powershell
+dotnet test tests/AppFactory.Mobile.Tests/AppFactory.Mobile.Tests.csproj -c Release --filter "FullyQualifiedName~GooglePlayReleaseReadinessTests|FullyQualifiedName~ProductionReadinessTests"
 ```
 
-Szczegółowy plan:
+Wymagane obszary:
 
-```text
-docs/quality/LOCAL_TEST_PLAN.md
-```
+- walidacja 20 pakietów danych,
+- osiągalność reguł,
+- 100 scenariuszy,
+- SQLite i migracja,
+- logowanie i maskowanie danych,
+- UI/UX i dostępność,
+- brak mockowanych reklam,
+- branding, listing, polityka i pliki wydania,
+- konfiguracja AAB i API 35.
 
-Workflow GitHub Actions:
+## 4. Lokalna baza SQLite
 
-```text
-.github/workflows/quality-checks.yml
-```
+SQLite przechowuje:
 
-uruchamia testy jakości na push, pull request i ręczne wywołanie.
-
-## 4. Lokalna baza danych
-
-Rosnące kolekcje muszą korzystać z SQLite:
-
-- historia wyników,
-- ulubione wyniki,
-- wersja schematu.
-
-Małe ustawienia mogą pozostać w `Preferences`.
+- historię wyników,
+- ulubione,
+- wersję schematu.
 
 Wymagania:
 
-- schemat ma jawny numer wersji,
-- baza inicjalizuje się przy pierwszym użyciu,
-- historia jest sortowana i ograniczona do 100 wpisów,
-- ulubione są deduplikowane,
-- istnieje migracja wcześniejszych danych JSON z `Preferences`,
-- testy `AppDatabaseTests` przechodzą,
-- migracja została sprawdzona na urządzeniu bez czyszczenia danych.
+- wersjonowany schemat,
+- sortowanie i limit 100 wpisów historii,
+- deduplikacja ulubionych,
+- usuwanie i czyszczenie,
+- jednorazowa migracja starszych danych z `Preferences`,
+- test nowej instalacji oraz aktualizacji bez czyszczenia danych.
 
 Dokumentacja:
 
@@ -109,55 +95,17 @@ docs/quality/LOCAL_DATABASE.md
 
 ## 5. Logi i diagnostyka
 
-Aplikacja musi zapisywać lokalne logi JSONL z:
+Wersja Release zapisuje lokalne logi od poziomu `Information`:
 
-- czasem UTC,
-- identyfikatorem sesji,
-- poziomem i kategorią,
-- `EventId`,
-- wiadomością,
-- typem i stack trace wyjątku.
-
-Polityka produkcyjna:
-
-- Debug loguje od poziomu `Debug`,
-- Release loguje od poziomu `Information`,
-- retencja wynosi 7 dni,
+- JSONL,
+- retencja 7 dni,
 - maksymalnie 12 plików,
 - maksymalnie 2 MB na plik,
-- tokeny, sekrety, hasła i e-maile są maskowane,
-- logi nie są wysyłane automatycznie,
-- eksport wymaga ręcznej akcji użytkownika.
+- maskowanie e-maili, tokenów, haseł i sekretów,
+- brak automatycznej transmisji,
+- ręczny eksport ZIP.
 
-Aplikacja musi rejestrować minimum:
-
-- start i wersję buildu,
-- nieobsłużone wyjątki .NET i Android,
-- migrację SQLite,
-- zapis i czyszczenie historii oraz ulubionych,
-- wybór plików obrazu i audio,
-- tworzenie paczki diagnostycznej.
-
-Eksport w aplikacji:
-
-```text
-Ustawienia -> Logi i diagnostyka
-```
-
-Pobranie awaryjne z buildu Debug:
-
-```powershell
-pwsh ./tools/quality/pull-android-diagnostics.ps1 -CreateZip
-```
-
-Każdy defekt `FAIL` lub `BLOCKED` musi mieć:
-
-- identyfikator sesji,
-- dokładny czas zdarzenia,
-- paczkę ZIP albo logcat,
-- commit SHA i numer buildu,
-- urządzenie oraz wersję Androida,
-- screenshot lub nagranie ekranu.
+W buildzie Release nie mogą być widoczne przyciski generowania znaczników i testowych wyjątków. Eksport, podgląd i czyszczenie logów pozostają dostępne dla użytkownika.
 
 Dokumentacja:
 
@@ -165,115 +113,203 @@ Dokumentacja:
 docs/quality/LOCAL_LOGGING.md
 ```
 
-## 6. UX wyniku
+## 6. Funkcje wersji 1.0
 
-Każdy projekt musi poprawnie współpracować z ekranem wyniku:
+Wymagane:
 
-- wynik free widoczny bez reklamy,
-- wynik premium po mock rewarded ad,
-- sekcja `Dlaczego taki wynik?`,
-- widoczna reguła i punkty dopasowania,
-- widoczne dopasowane odpowiedzi,
-- alternatywne rekomendacje, jeśli silnik reguł je zwróci,
-- zapisany wynik można ponownie otworzyć z historii i ulubionych.
+- katalog 20 pomocników,
+- wyszukiwanie i filtry,
+- kategorie,
+- quiz z postępem i cofnięciem,
+- lokalny silnik reguł,
+- pełna rekomendacja bez reklamy i płatności,
+- wyjaśnienie dopasowania,
+- alternatywne rekomendacje,
+- historia i ulubione,
+- języki PL, EN i UK,
+- kopiowanie treści w odpowiednich projektach,
+- licznik rzędów i notatki szydełkowe,
+- polityka prywatności,
+- pomoc i kontakt,
+- diagnostyka użytkownika.
 
-## 7. Marketing, manual QA i scenariusze użycia
+Local AI:
 
-Każdy projekt musi mieć:
+- kod może pozostać w repo,
+- panel nie może być widoczny w domyślnym Release,
+- `EnableLocalAiRelease=false`,
+- funkcji nie wolno promować w listingu i screenshotach 1.0.
 
-```text
-projects/<projectId>/marketing/store-listing.pl.md
-projects/<projectId>/tests/manual-tests.md
-projects/<projectId>/tests/production-scenarios.md
-```
+## 7. Branding i materiały Google Play
 
-`production-scenarios.md` musi zawierać dokładnie pięć scenariuszy `SCN-01`–`SCN-05`. Każdy scenariusz musi mieć:
-
-- cel,
-- co najmniej dwa numerowane kroki,
-- oczekiwany wynik,
-- opis pokrycia.
-
-Manual QA i scenariusze produkcyjne powinny łącznie obejmować:
-
-- wejście z katalogu projektów,
-- przejście quizu,
-- wynik free,
-- odblokowanie premium,
-- zapis do ulubionych,
-- zapis w historii,
-- restart procesu i odtworzenie danych,
-- zmianę języka PL/EN/UK,
-- przypadek default/fallback,
-- bezpieczeństwo domenowe,
-- Local AI image/audio dla projektów, które mają je włączone.
-
-Automatyczne gate'y:
+Wymagane źródła:
 
 ```text
-tests/AppFactory.Mobile.Tests/ProjectProductionScenariosTests.cs
-tests/AppFactory.Mobile.Tests/ScenarioImplementationAuditTests.cs
-tests/AppFactory.Mobile.Tests/AllProjectRuleReachabilityTests.cs
-tests/AppFactory.Mobile.Tests/LocalLogStoreTests.cs
-tests/AppFactory.Mobile.Tests/DiagnosticsProductionTests.cs
+src/AppFactory.Mobile/Resources/AppIcon/
+src/AppFactory.Mobile/Resources/Splash/
+marketing/brand/BRAND_GUIDE.md
+marketing/google-play/source/store-icon.svg
+marketing/google-play/source/feature-graphic.svg
 ```
 
-## 8. Bezpieczeństwo domenowe
+Generowanie:
 
-Dla projektów technicznych i domowych wymagane są bezpieczne fallbacki:
+```powershell
+pwsh ./tools/release/generate-play-graphics.ps1
+```
 
-- brak instrukcji pracy przy prądzie, gazie lub wodzie pod ryzykiem bez fachowca,
-- ostrzeżenia przy zalaniu, dymie, zapachu spalenizny, pleśni, niepewnym mocowaniu lub dużym obciążeniu,
-- brak zachęty do używania przypadkowej chemii albo mieszania środków.
+Wynik:
 
-## 9. Wykonanie testów na Androidzie
+- ikona PNG 512×512,
+- feature graphic 1024×500,
+- sześć prawdziwych screenshotów finalnej aplikacji.
 
-Przed wydaniem trzeba wykonać:
+Screenshoty muszą odpowiadać aktualnej binarce i nie mogą pokazywać Local AI, mocków, danych prywatnych ani kontrolek testowych.
 
-- smoke test wspólnego UI,
-- test znacznika `LOCAL_TEST_MARKER`,
-- eksport ZIP z aplikacji,
-- pobranie logów przez ADB dla buildu Debug,
-- 100 scenariuszy produkcyjnych,
-- test nowej instalacji SQLite,
-- test migracji `Preferences -> SQLite`,
-- test offline,
-- test odmowy uprawnień,
-- test FilePicker,
-- test systemowego przycisku Wstecz,
-- test obrotu ekranu i wznowienia aplikacji,
-- test Local AI albo jawne wyłączenie AI w buildzie wydaniowym.
+Plan:
 
-Wyniki zapisuje się w:
+```text
+marketing/google-play/SCREENSHOT_PLAN.md
+```
+
+## 8. Listing i lokalizacje
+
+Źródło:
+
+```text
+marketing/google-play/listings.json
+```
+
+Przygotowano 25 zestawów tekstów: 24 języki urzędowe UE plus ukraiński.
+
+Pierwszy release eksportuje tylko:
+
+- `pl-PL`,
+- `en-US`,
+- `uk-UA`.
+
+Powód: pełna zawartość aplikacji jest obecnie dostępna w tych językach. Pozostałych lokalizacji nie wolno publikować przed ukończeniem i testem treści w aplikacji.
+
+Eksport:
+
+```powershell
+pwsh ./tools/release/export-play-metadata.ps1
+```
+
+## 9. Publiczna strona i dokumenty prawne
+
+Wymagane publiczne adresy HTTPS:
+
+- strona produktu,
+- polityka prywatności,
+- pomoc,
+- warunki korzystania.
+
+Źródła:
+
+```text
+site/index.html
+site/privacy/index.html
+site/support/index.html
+site/terms/index.html
+```
+
+Workflow:
+
+```text
+.github/workflows/pages.yml
+```
+
+Właściciel repozytorium musi włączyć GitHub Pages z użyciem GitHub Actions i sprawdzić wszystkie adresy bez logowania.
+
+## 10. Play Console
+
+Właściciel konta musi uzupełnić:
+
+- politykę prywatności,
+- Data Safety,
+- deklarację braku reklam,
+- App access — bez specjalnego dostępu,
+- grupę docelową — osoby pełnoletnie,
+- content rating,
+- kategorię `Tools`,
+- dane kontaktowe,
+- listing i grafiki,
+- release notes.
+
+Dokumenty robocze:
+
+```text
+docs/release/PLAY_CONSOLE_CHECKLIST.md
+docs/release/DATA_SAFETY_DECLARATION.md
+docs/release/CONTENT_RATING_GUIDE.md
+```
+
+Odpowiedzi muszą zostać ponownie sprawdzone względem finalnego AAB i aktualnego formularza Play Console.
+
+## 11. Podpis i AAB
+
+Upload keystore musi powstać poza repozytorium:
+
+```powershell
+pwsh ./tools/release/create-upload-keystore.ps1
+```
+
+Budowa:
+
+```powershell
+pwsh ./tools/release/build-play-aab.ps1 `
+  -KeystorePath <path> `
+  -KeyPasswordFile <path> `
+  -StorePasswordFile <path>
+```
+
+Wymagania:
+
+- Play App Signing włączone,
+- upload key ma co najmniej dwie zaszyfrowane kopie,
+- hasła i klucz nie trafiają do repo, logów ani artefaktów publicznych,
+- AAB jest przyjęty przez App Bundle Explorer,
+- hash SHA256 jest zapisany w dokumentacji wydania.
+
+## 12. Testy Android i Google Play
+
+Przed produkcją:
+
+- wszystkie automaty zielone,
+- Debug i Release build przechodzą,
+- smoke test na urządzeniu,
+- 100/100 scenariuszy PASS,
+- test migracji SQLite,
+- eksport logów offline,
+- systemowy Wstecz, obrót, tło/wznowienie,
+- długi tekst i powiększona czcionka,
+- Internal testing przez Play Console,
+- pre-launch report bez crashy i ANR,
+- Closed testing, jeżeli wymaga tego konto,
+- brak otwartych defektów krytycznych i wysokich.
+
+Tracker:
 
 ```text
 docs/quality/SCENARIO_EXECUTION_TRACKER.md
 ```
 
-## 10. Status produkcyjny projektu
+## 13. Kryterium publikacji
 
-Projekt można oznaczyć jako produkcyjny dopiero gdy:
+Aplikację można skierować na produkcję, gdy:
 
-- przechodzi wszystkie testy automatyczne,
-- Android Debug i Release build przechodzą,
-- ma komplet danych source i runtime,
-- ma `reason` dla każdej reguły,
-- ma PL/EN/UK parytet wyników,
-- ma manual QA,
-- ma dokładnie pięć kompletnych scenariuszy produkcyjnych,
-- wszystkie jego scenariusze mają status `PASS`,
-- baza SQLite i migracja zostały potwierdzone,
-- eksport logów i zbieranie logcat zostały potwierdzone,
-- ma listing marketingowy,
-- nie ma otwartych defektów krytycznych ani wysokich,
-- nie ma znanych blokujących ryzyk w `QUALITY_STATUS.md`.
+- finalny podpisany AAB jest zaakceptowany,
+- publiczna polityka działa,
+- Data Safety odpowiada binarce,
+- grafiki i screenshoty są zatwierdzone,
+- wszystkie testy i scenariusze przechodzą,
+- wymagany test zamknięty jest ukończony,
+- właściciel konta zaakceptował dokumenty prawne i listing,
+- wdrożenie zaczyna się od kontrolowanego rollout’u.
 
-## 11. Następne rozszerzenia
+Pełny plan:
 
-Po uzyskaniu stabilnego statusu jakości można przygotować:
-
-- testy UI automatyzowane na emulatorze,
-- screenshot tests dla ekranów wyników,
-- backup/eksport danych użytkownika,
-- osobne store listingi EN/UK,
-- opcjonalną telemetrykę opt-in z zachowaniem prywatności.
+```text
+docs/release/GOOGLE_PLAY_RELEASE_PLAN.md
+```
